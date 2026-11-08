@@ -1,0 +1,63 @@
+[h1]Traditional Preservation (Yeast)[/h1]
+
+Grow your own yeast from flour and water. Vanilla yeast is loot only, so once the stores are picked clean there's no more bread. This mod lets you ferment a wild culture on a simple wall shelf, the way bakers kept them going for centuries, and turn it into ordinary vanilla Yeast.
+
+[b]Build 42 only (42.20 or newer). This is an early release, so back up your save before enabling it. Singleplayer only: multiplayer is not supported.[/b]
+
+[h2]Features[/h2]
+[list]
+[*]A buildable Fermenting Shelf that mounts on a wall, with its own art
+[*]Each jar on the shelf shows its own progress, from pale to amber to dark brown
+[*]Makes real vanilla Yeast, for bread, baking and every mod that uses it
+[*]Temperature matters: a warm kitchen in summer, a basement shelf in winter
+[*]Keeps working while you are away
+[/list]
+
+[h2]How it works[/h2]
+[olist]
+[*][b]Build a Fermenting Shelf[/b] against a wall (Build menu, Furniture): 2 planks, 4 nails and a hammer (kept). Carpentry 2.
+[*][b]Make Fermenting Culture[/b] (crafting menu, Cooking): 5 uses of flour and a glass jar holding at least 0.3 L of water.
+[*][b]Open the shelf[/b], add up to 5 cultures and press Craft.
+[*]After [b]5 in-game days[/b] at a good temperature, take out 1 vanilla Yeast and your empty jar for each culture.
+[/olist]
+
+One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves of bread.
+
+[h2]The shelf[/h2]
+[list]
+[*]Each press of Craft starts its own timer, so you can stagger batches and always have yeast coming.
+[*]The shelf holds 5 cultures in all, counting waiting, fermenting and finished ones not yet collected.
+[*]Cancel stops every running batch and gives the cultures back.
+[*]Hover a fermenting culture for its progress, the time left at today's temperature, the temperature and its working rate.
+[/list]
+
+[h2]Temperature[/h2]
+A culture works best from 18 to 30 C. It's at 40% speed at 10 C and 20% at 5 C, and only crawls near freezing without ever dying. Real heat slows it too.
+[list]
+[*][b]Outdoors[/b] (a shelf on an outside wall): the day's weather.
+[*][b]Under a roof[/b]: a building evens out the weather. It follows the last 10 days' average outdoors plus 10 C, never over 28 C.
+[*][b]In a basement[/b]: 15 C all year, so a culture takes about 6 days in any month.
+[/list]
+
+A kitchen shelf is enough from spring to autumn, taking 5 days a culture in summer and up to a month in a cold winter. In winter, a basement shelf keeps the yeast coming.
+
+[h2]Good to know[/h2]
+[list]
+[*]Your jar always comes back as a plain Empty Jar, even if you used a crafted one.
+[*]Flour is the real cost: 5 uses per culture, so plan your wheat with yeast in mind.
+[*]No vanilla recipe, loot table, hunger or calorie value is changed.
+[*]The tiledef number 5127 must be unique among your active mods.
+[/list]
+
+[h2]Sandbox options[/h2]
+Set the fermenting time at the best temperature (5 days by default), and temperature sensitivity: Off, Forgiving, Normal or Harsh. Off makes every culture take the same time whatever the weather.
+
+[h2]Works well with[/h2]
+[b]Traditional Preservation (Vinegar)[/b] uses one packet of Yeast for each vessel run. This mod needs no other mods.
+
+[h2]Known limitations[/h2]
+[list]
+[*]Multiplayer is not supported. This mod is singleplayer only for now.
+[/list]
+
+Bug reports are welcome in the comments. Please include any repeating errors from your console.txt.

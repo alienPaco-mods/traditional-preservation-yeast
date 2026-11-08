@@ -1,0 +1,11 @@
+{
+  "Sandbox_TraditionalPreservationYeast": "Traditional Preservation (Yeast)",
+  "Sandbox_TraditionalPreservationYeast_FermentDays": "Fermenting time (days)",
+  "Sandbox_TraditionalPreservationYeast_FermentDays_tooltip": "How many in-game days a culture takes on the Fermenting Shelf at the best temperature.",
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity": "Temperature sensitivity",
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_tooltip": "How much the cold or heat slows a culture. Off makes every culture take the same time, whatever the weather.",
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option1": "Off",
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option2": "Forgiving",
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option3": "Normal",
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option4": "Harsh"
+}

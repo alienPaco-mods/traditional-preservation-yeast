@@ -1,0 +1,19 @@
+VERSION = 1,
+
+option TraditionalPreservationYeast.FermentDays {
+    type = double,
+    min = 0.5,
+    max = 30.0,
+    default = 5.0,
+    page = TraditionalPreservationYeast,
+    translation = TraditionalPreservationYeast_FermentDays,
+}
+
+option TraditionalPreservationYeast.TemperatureSensitivity {
+    type = enum,
+    numValues = 4,
+    default = 3,
+    page = TraditionalPreservationYeast,
+    translation = TraditionalPreservationYeast_TemperatureSensitivity,
+    valueTranslation = TraditionalPreservationYeast_TemperatureSensitivity,
+}

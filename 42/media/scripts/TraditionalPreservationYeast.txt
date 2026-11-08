@@ -1,0 +1,48 @@
+module TraditionalPreservationYeast
+{
+    item FermentingYeastJar
+    {
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = GlassJar,
+        WorldStaticModel = JarGlass_Ground,
+    }
+
+    craftRecipe MakeFermentingCulture
+    {
+        time = 50,
+        timedAction = Making,
+        Tags = InHandCraft,
+        category = Cooking,
+        needTobeLearn = false,
+        inputs
+        {
+            item 5 [Base.Flour2],
+            item 1 [Base.EmptyJar;Base.JarCrafted] mode:destroy,
+            -fluid 0.3 [Water],
+        }
+        outputs
+        {
+            item 1 TraditionalPreservationYeast.FermentingYeastJar,
+        }
+    }
+
+    /* time is overwritten from FERMENT_HOURS in TraditionalPreservationYeast.lua */
+    craftRecipe FermentCulture
+    {
+        time = 432000,
+        Tags = FermentingShelf,
+        category = Cooking,
+        OnStart = TraditionalPreservationYeast.onFermentStart,
+        OnUpdate = TraditionalPreservationYeast.onFermentUpdate,
+        inputs
+        {
+            item variable[1:5] [TraditionalPreservationYeast.FermentingYeastJar] flags[ItemCount] mode:destroy,
+        }
+        outputs
+        {
+            item variable[1:5] Base.Yeast,
+            item variable[1:5] Base.EmptyJar,
+        }
+    }
+}
