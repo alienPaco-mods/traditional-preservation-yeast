@@ -21,7 +21,8 @@ Y.SENSITIVITY_SCALES = { 0, 0.5, 1, 1.5 }
 Y.SENSITIVITY = 1
 Y.MIN_RATE = 0.02
 
--- Places and their temperatures are shared with the other Traditional Preservation mods.
+-- Places and their temperatures are shared with the other Traditional Preservation mods; these are the
+-- mod's public names for them, used by the Dev console and the tests.
 Y.PLACES = Weather.PLACES
 Y.placeTemperature = Weather.placeTemperature
 Y.placeOf = Weather.placeOf
