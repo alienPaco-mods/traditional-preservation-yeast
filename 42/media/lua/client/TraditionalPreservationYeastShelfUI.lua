@@ -2,8 +2,9 @@
 -- adding by free output slots, but each culture here needs two of them.
 require "Entity/ISUI/Components/Crafting/ISCraftLogicPanel"
 local UI = require "TraditionalPreservationYeast/Core/UI"
+local Tiles = require "TraditionalPreservationYeast/Tiles"
 
-local SPRITE_PREFIX = "traditionalpreservationyeast_01_"
+local SPRITE_PREFIX = Tiles.PREFIX
 local ITEMS_PER_CULTURE = 2
 
 local vanillaItemSlotAddItems = ISCraftLogicPanel.ItemSlotAddItems

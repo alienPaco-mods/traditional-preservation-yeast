@@ -8,12 +8,17 @@ Usage: python3 tools/build_shelf_tileset.py
 Needs Pillow. Rerun after editing the tables or colours here or in shelf_art.py.
 """
 import io
+import os
 import struct
+import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw
 
 from shelf_art import FACE_GEOMETRY, paint_shelf
+
+sys.path.insert(0, str(Path(os.environ.get("TPCORE", Path(__file__).resolve().parents[2] / "_tpcore")) / "tools"))
+import pzart  # noqa: E402
 
 NAME = "traditionalpreservationyeast"
 TILESET = NAME + "_01"
@@ -34,7 +39,8 @@ CULTURE_LEVEL = 0.68
 
 GLASS_EDGE = (120, 120, 112, 130)
 GLASS = (205, 222, 226, 80)
-# Fresh, halfway, done. Order matches the STATE_ values in TraditionalPreservationYeastShelf.lua.
+# Fresh, halfway, done, named in JAR_STATE_NAMES for the generated Tiles.lua.
+JAR_STATE_NAMES = ["fresh", "halfway", "done"]
 JAR_STATES = [
     dict(culture=(206, 202, 182, 245), shade=(170, 166, 148, 245), top=(226, 222, 204, 255), bubble=(236, 232, 216, 200)),
     dict(culture=(196, 158, 88, 245), shade=(160, 124, 66, 245), top=(222, 190, 124, 255), bubble=(238, 214, 158, 220)),
@@ -71,7 +77,7 @@ def jar_props(facing):
 
 
 def jar_index(face_index, slot, state):
-    """Keep in step with jarSprite in TraditionalPreservationYeastShelf.lua."""
+    """jarSprite in TraditionalPreservationYeastShelf.lua reads these numbers from the generated Tiles.lua."""
     return len(FACES) + (state * len(JAR_POSITIONS) + slot) * len(FACES) + face_index
 
 
@@ -223,8 +229,22 @@ def write_mod_icon(art, path, badge=None):
     icon.save(path)
 
 
+def lua_tiles():
+    prefix = TILESET + "_"
+    return {
+        "PREFIX": prefix,
+        "SHEETS": [{"prefix": prefix, "tiles": COLUMNS * ROWS}],
+        "FACE_COUNT": len(FACES),
+        "STATIONS": [prefix + str(index) for index in range(len(FACES))],
+        "FIRST_JAR": jar_index(0, 0, 0),
+        "JAR_SLOTS": len(JAR_POSITIONS),
+        "JAR_STATES": {name: state for state, name in enumerate(JAR_STATE_NAMES)},
+    }
+
+
 def main():
     media = Path(__file__).resolve().parent.parent / "42" / "media"
+    pzart.write_lua_tiles(media, "TraditionalPreservationYeast", lua_tiles(), "tools/build_shelf_tileset.py")
     (media / "texturepacks").mkdir(parents=True, exist_ok=True)
 
     tiles = {}

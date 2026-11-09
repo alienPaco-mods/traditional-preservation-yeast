@@ -6,13 +6,13 @@ if isClient() then return end
 TraditionalPreservationYeastShelf = TraditionalPreservationYeastShelf or {}
 local Station = require "TraditionalPreservationYeast/Core/Station"
 local Weather = require "TraditionalPreservationYeast/Core/Weather"
+local Tiles = require "TraditionalPreservationYeast/Tiles"
 
-local SPRITE_PREFIX = "traditionalpreservationyeast_01_"
-local FACE_COUNT = 4
-local MAX_JARS = 5
+local SPRITE_PREFIX = Tiles.PREFIX
+local FACE_COUNT = Tiles.FACE_COUNT
+local MAX_JARS = Tiles.JAR_SLOTS
 
--- Keep in step with JAR_STATES in tools/build_shelf_tileset.py.
-local STATE_FRESH, STATE_HALFWAY, STATE_DONE = 0, 1, 2
+local STATE_FRESH, STATE_HALFWAY, STATE_DONE = Tiles.JAR_STATES.fresh, Tiles.JAR_STATES.halfway, Tiles.JAR_STATES.done
 local HALFWAY_PROGRESS = 0.5
 
 -- Oldest first: finished jars, then running batches by progress, then ones not started.
@@ -62,9 +62,9 @@ local function readBatches(logic, uiLogic, place)
     return batches
 end
 
--- Keep in step with jar_index in tools/build_shelf_tileset.py.
+-- The same numbering as jar_index in tools/build_shelf_tileset.py.
 local function jarSprite(faceIndex, slot, state)
-    return SPRITE_PREFIX .. (FACE_COUNT + (state * MAX_JARS + slot) * FACE_COUNT + faceIndex)
+    return SPRITE_PREFIX .. (Tiles.FIRST_JAR + (state * MAX_JARS + slot) * FACE_COUNT + faceIndex)
 end
 
 local function refresh(shelf, entry)
@@ -87,9 +87,7 @@ local function refresh(shelf, entry)
     Station.showSprites(shelf, entry, faceIndex .. ":" .. table.concat(states, ","), names)
 end
 
-local faces = {}
-for faceIndex = 0, FACE_COUNT - 1 do faces[faceIndex + 1] = SPRITE_PREFIX .. faceIndex end
-local tracker = Station.tracker({ sprites = faces, refresh = refresh })
+local tracker = Station.tracker({ sprites = Tiles.STATIONS, refresh = refresh })
 
 TraditionalPreservationYeastShelf.track = tracker.track
 
