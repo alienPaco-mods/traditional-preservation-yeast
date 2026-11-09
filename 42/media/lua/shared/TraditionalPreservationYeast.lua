@@ -89,13 +89,7 @@ end
 
 function Y.applyFermentTime()
     Y.applySandbox()
-    local recipe = ScriptManager.instance:getCraftRecipe(RECIPE_NAME)
-    if not recipe then
-        print("[TraditionalPreservationYeast] Could not find " .. RECIPE_NAME)
-        return
-    end
-    local seconds = math.floor(Y.FERMENT_HOURS * SECONDS_PER_HOUR)
-    recipe:Load(RECIPE_NAME, "{ time = " .. tostring(seconds) .. ", }")
+    Weather.setRecipeHours(RECIPE_NAME, Y.FERMENT_HOURS, "TraditionalPreservationYeast")
 end
 
 Events.OnInitGlobalModData.Add(Y.applyFermentTime)

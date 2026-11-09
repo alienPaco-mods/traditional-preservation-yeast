@@ -3,6 +3,7 @@
 if not isDebugEnabled() then return end
 
 local Y = TraditionalPreservationYeast
+local Weather = require "TraditionalPreservationYeast/Core/Weather"
 TPY = {}
 
 local RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
@@ -47,8 +48,7 @@ function TPY.fast(hours)
         return say(string.format("Back to the sandbox time: %.1f hours.", Y.FERMENT_HOURS))
     end
     Y.FERMENT_HOURS = hours
-    local recipe = ScriptManager.instance:getCraftRecipe(RECIPE_NAME)
-    if recipe then recipe:Load(RECIPE_NAME, "{ time = " .. tostring(math.floor(hours * 3600)) .. ", }") end
+    Weather.setRecipeHours(RECIPE_NAME, hours, "TraditionalPreservationYeast")
     say(string.format("Test timer on: a culture takes %s hours at full speed.", tostring(hours)))
 end
 
