@@ -89,7 +89,13 @@ end
 
 dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 dofile("42/media/lua/server/TraditionalPreservationYeastShelf.lua")
-ISCraftLogicPanel = { ItemSlotAddItems = function() end }
+local vanillaAdds, halos, queuedActions = 0, {}, {}
+ISCraftLogicPanel = { ItemSlotAddItems = function() vanillaAdds = vanillaAdds + 1 end }
+ISItemSlot = { defaultVerifyItem = function() return true end, onMouseUp = function() end }
+HaloTextHelper = { addBadText = function(_, text) table.insert(halos, text) end }
+ISEntityUI = { WalkToEntity = function() return true end }
+ISItemSlotAddAction = { new = function(_, _, _, item, resource) return { item = item, resource = resource } end }
+ISTimedActionQueue = { add = function(action) table.insert(queuedActions, action) end }
 ISWidgetCraftLogicOutputProgress = { updateProgressItems = function(self) self.vanillaRan = true end }
 ISMoveableSpriteProps = { canPlaceMoveable = function() return true end }
 dofile("42/media/lua/client/TraditionalPreservationYeastShelfUI.lua")
@@ -181,5 +187,39 @@ function running:getRecipe() return nil end
 lines = {}
 slot.drawTooltip(slot, tooltip)
 check("a culture that has just finished draws nothing", #lines == 0)
+
+-- Slots: five cultures, each needing two output slots
+local function shelfSlot(stored, freeOutputs, sprite)
+    local logic = { getFreeOutputSlotCount = function() return freeOutputs end }
+    local entity = {
+        getSprite = function() return { getName = function() return sprite or "traditionalpreservationyeast_01_0" end } end,
+        getComponent = function() return logic end,
+    }
+    local resource = {
+        getIO = function() return ResourceIO.Input end,
+        getGameEntity = function() return entity end,
+        storedSize = function() return stored end,
+        getFreeItemCapacity = function() return 5 - stored end,
+    }
+    return { resource = resource }, entity, logic
+end
+local function add(slot, entity, logic, count)
+    halos, queuedActions = {}, {}
+    local items = {}
+    for i = 1, count do items[i] = {} end
+    ISCraftLogicPanel.ItemSlotAddItems({}, entity, slot, items, logic)
+end
+local slot, entity, logic = shelfSlot(0, 10)
+add(slot, entity, logic, 7)
+check("an empty shelf takes five of seven cultures and says it's full", #queuedActions == 5 and halos[1] == getText("IGUI_TraditionalPreservationYeast_Full"))
+check("each queued culture checks again when it runs", queuedActions[1].canAddItem(queuedActions[1]))
+slot, entity, logic = shelfSlot(2, 8)
+add(slot, entity, logic, 3)
+check("cultures waiting to go in count against the room", #queuedActions == 2)
+check("and the slot isn't green when there's none", not ISItemSlot.defaultVerifyItem({}, shelfSlot(3, 6), {}))
+check("but is with room", ISItemSlot.defaultVerifyItem({}, shelfSlot(2, 6), {}))
+local other, otherEntity = shelfSlot(0, 10, "carpentry_02_122")
+add(other, otherEntity, nil, 1)
+check("other stations go to vanilla", vanillaAdds == 1 and #queuedActions == 0)
 
 H.done()

@@ -1,6 +1,7 @@
 {
   "IGUI_CraftingWindow_FermentingShelf": "Fermenting Shelf",
   "IGUI_TraditionalPreservationYeast_Progress": "Progress",
+  "IGUI_TraditionalPreservationYeast_Full": "The shelf holds five cultures",
   "IGUI_TraditionalPreservationYeast_TimeLeft": "Time Remaining",
   "IGUI_TraditionalPreservationYeast_Time": "%1d %2h, if the temperature holds",
   "IGUI_TraditionalPreservationYeast_Temperature": "Temperature",

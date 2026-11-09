@@ -1,5 +1,11 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.4
+- Changed: adding more cultures than the shelf has room for now says "The shelf holds five cultures" instead of
+  quietly adding fewer. A full shelf's slot no longer shows green while you drag a culture over it, and dropping
+  one there says why.
+- Internal: the shelf's slot rule runs on the shared core's `UI.slotRules`.
+
 ## 0.4.3
 - Internal: the culture's recipe time is set through the shared core (`Weather.setRecipeHours`), also by `TPY.fast`.
   README dev notes now describe the weather ledger. No change in play.

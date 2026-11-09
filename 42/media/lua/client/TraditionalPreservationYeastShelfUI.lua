@@ -1,13 +1,11 @@
 -- Traditional Preservation (Yeast) B42: keeps the Fermenting Shelf at five cultures. Vanilla limits
--- adding by free output slots, but each culture here needs two of them.
+-- adding by free output slots, but each culture here needs two of them. Also the shelf's popups.
 require "Entity/ISUI/Components/Crafting/ISCraftLogicPanel"
 local UI = require "TraditionalPreservationYeast/Core/UI"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 local SPRITE_PREFIX = Tiles.PREFIX
 local ITEMS_PER_CULTURE = 2
-
-local vanillaItemSlotAddItems = ISCraftLogicPanel.ItemSlotAddItems
 
 local function isShelf(entity)
     local sprite = entity and entity:getSprite()
@@ -18,30 +16,23 @@ local function cultureRoom(component, resource)
     return math.floor(component:getFreeOutputSlotCount() / ITEMS_PER_CULTURE) - resource:storedSize()
 end
 
--- Vanilla's ItemSlotAddItems with cultureRoom in place of its limit, because each queued action
--- has to re-check it when it runs. Compare this with vanilla after a game update.
-local function addToShelf(player, entity, itemSlot, itemList, component)
-    if #itemList == 0 or not ISEntityUI.WalkToEntity(player, entity) then return end
-
-    local maxItems = math.min(itemSlot.resource:getFreeItemCapacity(), cultureRoom(component, itemSlot.resource))
-    for index, item in ipairs(itemList) do
-        if index <= maxItems then
-            local action = ISItemSlotAddAction:new(player, entity, item, itemSlot.resource, itemSlot)
-            action.component = component
-            action.canAddItem = function(self) return cultureRoom(self.component, self.resource) > 0 end
-            ISTimedActionQueue.add(action)
-        end
+-- queued lists the cultures already on their way in.
+local function refusal(slot, item, queued)
+    if cultureRoom(slot.component, slot.resource) <= #queued or slot.resource:getFreeItemCapacity() <= #queued then
+        return "IGUI_TraditionalPreservationYeast_Full"
     end
+    return nil
 end
 
-function ISCraftLogicPanel.ItemSlotAddItems(player, entity, itemSlot, itemList, component)
-    if not isShelf(entity) then
-        return vanillaItemSlotAddItems(player, entity, itemSlot, itemList, component)
-    end
-
-    if TraditionalPreservationYeastShelf then TraditionalPreservationYeastShelf.track(entity) end
-    addToShelf(player, entity, itemSlot, itemList, component)
-end
+UI.slotRules{
+    station = function(entity)
+        return isShelf(entity) and entity:getComponent(ComponentType.CraftLogic) or nil
+    end,
+    refusal = refusal,
+    added = function(entity)
+        if TraditionalPreservationYeastShelf then TraditionalPreservationYeastShelf.track(entity) end
+    end,
+}
 
 -- Vanilla's popup on a running culture goes by the recipe's time alone, so it gets the real time left at
 -- the shelf's temperature instead.
