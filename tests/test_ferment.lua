@@ -1,4 +1,5 @@
 -- Checks the fermenting timer outside the game. Run from the mod folder: luajit tests/test_ferment.lua
+local H = dofile((os.getenv("TPCORE") or "../_tpcore") .. "/tests/harness.lua")
 local hours = 10
 function getGameTime() return { getWorldAgeHours = function() return hours end } end
 local store = {}
@@ -12,10 +13,7 @@ function ScriptManager.instance:getCraftRecipe()
 end
 dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 
-local function check(name, condition)
-    print((condition and "ok   " or "FAIL ") .. name)
-    if not condition then os.exit(1) end
-end
+local check = H.check
 
 local function recipeData(time, elapsed)
     local data = { modData = {}, elapsed = elapsed or 0 }
@@ -107,4 +105,4 @@ SandboxVars.TraditionalPreservationYeast.TemperatureSensitivity = 1
 onInit()
 check("and the sensitivity", TraditionalPreservationYeast.SENSITIVITY == 0)
 
-print("all passed")
+H.done()
