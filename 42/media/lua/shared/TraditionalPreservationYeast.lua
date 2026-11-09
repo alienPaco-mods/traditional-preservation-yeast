@@ -27,12 +27,14 @@ Y.PLACES = Weather.PLACES
 Y.placeTemperature = Weather.placeTemperature
 Y.placeOf = Weather.placeOf
 
+-- How fast a culture works at a temperature, 0 to 1, after the sandbox's sensitivity.
 function Y.cultureRate(celsius)
     return Weather.scaled(Weather.curve(CULTURE_CURVE, celsius), Y.SENSITIVITY, Y.MIN_RATE)
 end
 
 local KINDS = { [KIND] = function(celsius) return Y.cultureRate(celsius) end }
 
+-- One total per place, under the plain place names ("Open", "OpenRate").
 function Y.newLedger(now)
     return Weather.newLedger(now, KINDS)
 end
@@ -42,6 +44,7 @@ function Y.advance(ledger, now, temperature)
     Weather.advance(ledger, now, temperature, KINDS)
 end
 
+-- The ledger in global ModData, made on first use.
 function Y.getLedger()
     return Weather.getLedger(Y.MOD_DATA_KEY, Y.newLedger)
 end
@@ -80,6 +83,7 @@ function Y.batchStatus(modData, recipeHours, ledger)
     return Weather.batchStatus(modData.done or 0, recipeHours, ledger, runPlace(modData), Y.cultureRate)
 end
 
+-- Reads the sandbox's ferment time and sensitivity.
 function Y.applySandbox()
     local options = SandboxVars and SandboxVars.TraditionalPreservationYeast
     if not options then return end
@@ -87,6 +91,7 @@ function Y.applySandbox()
     if options.TemperatureSensitivity then Y.SENSITIVITY = Y.SENSITIVITY_SCALES[options.TemperatureSensitivity] or 1 end
 end
 
+-- Sets the recipe's script time from the sandbox, so the crafting window shows the right length.
 function Y.applyFermentTime()
     Y.applySandbox()
     Weather.setRecipeHours(RECIPE_NAME, Y.FERMENT_HOURS, "TraditionalPreservationYeast")
