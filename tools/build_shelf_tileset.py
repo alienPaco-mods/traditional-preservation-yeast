@@ -7,9 +7,7 @@ fermentation state, which TraditionalPreservationYeastShelf.lua layers on top, t
 Usage: python3 tools/build_shelf_tileset.py
 Needs Pillow. Rerun after editing the tables or colours here or in shelf_art.py.
 """
-import io
 import os
-import struct
 import sys
 from pathlib import Path
 
@@ -24,14 +22,9 @@ NAME = "traditionalpreservationyeast"
 TILESET = NAME + "_01"
 COLUMNS, ROWS = 8, 8
 PAGE_SIZE = 512
-TILE_W, TILE_H = 128, 256
 SUPERSAMPLE = 8
-BUILD_ICON_SIZE = 64
 
 FACES = ["S", "E", "W", "N"]
-# The mod list icon, in the Fish mod's style.
-MOD_ICON_SIZE, MOD_ICON_MARGIN, MOD_ICON_CORNER, MOD_ICON_BADGE = 128, 8, 16, 52
-MOD_ICON_SKY = (176, 196, 204, 255)
 
 JAR_POSITIONS = [0.16, 0.33, 0.5, 0.67, 0.84]  # one per culture slot
 JAR_WIDTH, JAR_HEIGHT = 10.0, 16.0
@@ -87,12 +80,6 @@ for face_index, face in enumerate(FACES):
     for slot in range(len(JAR_POSITIONS)):
         for state in range(len(JAR_STATES)):
             TILE_PROPS[jar_index(face_index, slot, state)] = jar_props(face)
-
-
-def write_string(out, value):
-    data = value.encode("utf8")
-    out.write(struct.pack("<I", len(data)))
-    out.write(data)
 
 
 def draw_jar(layer, cx, base_y, colours):
@@ -152,81 +139,10 @@ def jar_spots(face):
 
 
 def draw_jar_tile(face, slot, state):
-    layer = Image.new("RGBA", (TILE_W * SUPERSAMPLE, TILE_H * SUPERSAMPLE), (0, 0, 0, 0))
+    layer = pzart.new_layer(SUPERSAMPLE)
     cx, base_y = jar_spots(face)[slot]
     draw_jar(layer, cx, base_y, JAR_STATES[state])
-    return layer.resize((TILE_W, TILE_H), Image.LANCZOS)
-
-
-def write_pack(path, tiles):
-    """tiles maps tile index -> full-size RGBA image."""
-    page = Image.new("RGBA", (PAGE_SIZE, PAGE_SIZE), (0, 0, 0, 0))
-    entries = []
-    x = y = row_height = 0
-    for index, tile in sorted(tiles.items()):
-        ox, oy, right, bottom = tile.getbbox()
-        image = tile.crop((ox, oy, right, bottom))
-        if x + image.width > PAGE_SIZE:
-            x, y, row_height = 0, y + row_height, 0
-        page.paste(image, (x, y))
-        entries.append((f"{TILESET}_{index}", (x, y, image.width, image.height, ox, oy, tile.width, tile.height)))
-        x += image.width
-        row_height = max(row_height, image.height)
-
-    png = io.BytesIO()
-    page.save(png, "PNG")
-    with open(path, "wb") as out:
-        out.write(b"PZPK")
-        out.write(struct.pack("<II", 1, 1))
-        write_string(out, NAME + "0")
-        out.write(struct.pack("<II", len(entries), 1))
-        for name, values in entries:
-            write_string(out, name)
-            out.write(struct.pack("<8I", *values))
-        out.write(struct.pack("<I", len(png.getvalue())))
-        out.write(png.getvalue())
-
-
-def write_tiles(path):
-    with open(path, "wb") as out:
-        out.write(b"tdef")
-        out.write(struct.pack("<II", 1, 1))
-        out.write(f"{TILESET}\n{TILESET}.png\n".encode("utf8"))
-        out.write(struct.pack("<IIII", COLUMNS, ROWS, 1, COLUMNS * ROWS))
-        for index in range(COLUMNS * ROWS):
-            props = TILE_PROPS.get(index, [])
-            out.write(struct.pack("<I", len(props)))
-            for key, value in props:
-                out.write(f"{key}\n{value}\n".encode("utf8"))
-
-
-def write_build_icon(tile, path):
-    """Crops the shelf to its art and centres it in a square, for the build menu."""
-    art = tile.crop(tile.getbbox())
-    scale = BUILD_ICON_SIZE / max(art.size)
-    art = art.resize((max(1, round(art.width * scale)), max(1, round(art.height * scale))), Image.LANCZOS)
-    icon = Image.new("RGBA", (BUILD_ICON_SIZE, BUILD_ICON_SIZE), (0, 0, 0, 0))
-    icon.alpha_composite(art, ((BUILD_ICON_SIZE - art.width) // 2, (BUILD_ICON_SIZE - art.height) // 2))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    icon.save(path)
-
-
-def write_mod_icon(art, path, badge=None):
-    """The station on the Fish mod's pale sky with rounded corners, so the series matches in the mod list."""
-    art = art.crop(art.getbbox())
-    scale = (MOD_ICON_SIZE - MOD_ICON_MARGIN) / max(art.size)
-    art = art.resize((max(1, round(art.width * scale)), max(1, round(art.height * scale))), Image.LANCZOS)
-    icon = Image.new("RGBA", (MOD_ICON_SIZE, MOD_ICON_SIZE), MOD_ICON_SKY)
-    icon.alpha_composite(art, ((MOD_ICON_SIZE - art.width) // 2, MOD_ICON_SIZE - art.height - MOD_ICON_MARGIN // 2))
-    if badge is not None:
-        badge = badge.crop(badge.getbbox())
-        badge = badge.resize((MOD_ICON_BADGE * badge.width // max(badge.size), MOD_ICON_BADGE * badge.height // max(badge.size)), Image.NEAREST)
-        icon.alpha_composite(badge, (MOD_ICON_SIZE - badge.width - MOD_ICON_MARGIN // 2, MOD_ICON_SIZE - badge.height - MOD_ICON_MARGIN // 2))
-    mask = Image.new("L", (MOD_ICON_SIZE * 4, MOD_ICON_SIZE * 4), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, mask.width - 1, mask.height - 1), MOD_ICON_CORNER * 4, fill=255)
-    icon.putalpha(mask.resize(icon.size, Image.LANCZOS))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    icon.save(path)
+    return pzart.shrink(layer)
 
 
 def lua_tiles():
@@ -253,14 +169,14 @@ def main():
         for slot in range(len(JAR_POSITIONS)):
             for state in range(len(JAR_STATES)):
                 tiles[jar_index(index, slot, state)] = draw_jar_tile(face, slot, state)
-    write_pack(media / "texturepacks" / f"{NAME}.pack", tiles)
-    write_tiles(media / f"{NAME}.tiles")
-    write_build_icon(tiles[0], media / "textures" / "Item_FermentingShelf.png")
+    pzart.write_pack(media / "texturepacks" / f"{NAME}.pack", tiles, NAME, TILESET, PAGE_SIZE)
+    pzart.write_tiles(media / f"{NAME}.tiles", [(TILESET, COLUMNS, ROWS)], TILE_PROPS)
+    pzart.write_build_icon(tiles[0], media / "textures" / "Item_FermentingShelf.png")
     # The mod list shows a full shelf at every stage, from fresh to done.
     shelf = tiles[0].copy()
     for slot in range(len(JAR_POSITIONS)):
         shelf.alpha_composite(tiles[jar_index(0, slot, slot * (len(JAR_STATES) - 1) // (len(JAR_POSITIONS) - 1))])
-    write_mod_icon(shelf, media.parent / "icon.png")
+    pzart.write_mod_icon(shelf, media.parent / "icon.png")
     print(f"wrote {NAME}.pack and {NAME}.tiles to {media}")
 
 
