@@ -4,23 +4,16 @@
 if isClient() then return end
 
 TraditionalPreservationYeastShelf = TraditionalPreservationYeastShelf or {}
+local Station = require "TraditionalPreservationYeast/Core/Station"
+local Weather = require "TraditionalPreservationYeast/Core/Weather"
 
 local SPRITE_PREFIX = "traditionalpreservationyeast_01_"
 local FACE_COUNT = 4
 local MAX_JARS = 5
-local TICKS_PER_REFRESH = 30
-local MAP_PRIORITY = 5
 
 -- Keep in step with JAR_STATES in tools/build_shelf_tileset.py.
 local STATE_FRESH, STATE_HALFWAY, STATE_DONE = 0, 1, 2
 local HALFWAY_PROGRESS = 0.5
-
-local tracked = {}
-local ticksSinceRefresh = 0
-
-local function getItems(resources, group, io)
-    return resources:getResourcesFromGroup(group, ArrayList.new(), io, ResourceType.Item)
-end
 
 -- Oldest first: finished jars, then running batches by progress, then ones not started.
 function TraditionalPreservationYeastShelf.jarStates(waiting, batches, finished)
@@ -38,19 +31,10 @@ function TraditionalPreservationYeastShelf.jarStates(waiting, batches, finished)
     return states
 end
 
-local function countWaiting(resources, logic)
-    local waiting = 0
-    local inputs = getItems(resources, logic:getInputsGroupName(), ResourceIO.Input)
-    for i = 0, inputs:size() - 1 do
-        waiting = waiting + inputs:get(i):storedSize()
-    end
-    return waiting
-end
-
 -- A finished culture is on the shelf until both its yeast and its jar are taken.
 local function countFinished(resources, logic)
     local yeast, jars = 0, 0
-    local outputs = getItems(resources, logic:getOutputsGroupName(), ResourceIO.Output)
+    local outputs = Station.itemSlots(resources, logic:getOutputsGroupName(), ResourceIO.Output)
     for i = 0, outputs:size() - 1 do
         local stored = outputs:get(i):getStoredItems()
         for j = 0, stored:size() - 1 do
@@ -83,62 +67,35 @@ local function jarSprite(faceIndex, slot, state)
     return SPRITE_PREFIX .. (FACE_COUNT + (state * MAX_JARS + slot) * FACE_COUNT + faceIndex)
 end
 
-function TraditionalPreservationYeastShelf.refresh(shelf)
-    local entry = tracked[shelf]
+local function refresh(shelf, entry)
     local resources = shelf:getComponent(ComponentType.Resources)
     local logic = shelf:getComponent(ComponentType.CraftLogic)
     local sprite = shelf:getSprite()
-    if not entry or not resources or not logic or not sprite then return end
+    if not resources or not logic or not sprite then return end
 
     local faceIndex = tonumber(string.sub(sprite:getName(), #SPRITE_PREFIX + 1))
     if not faceIndex then return end
+    local uiLogic = Station.uiLogic(shelf, entry, logic)
+    if not uiLogic then return end
 
-    if not entry.uiLogic or entry.uiLogic:getCraftLogic() ~= logic then
-        -- Its constructor reads the player's mod data, so it needs a real player.
-        local player = getPlayer()
-        if not player then return end
-        entry.uiLogic = CraftLogicUILogic.new(player, shelf, logic)
-    end
-
-    local states = TraditionalPreservationYeastShelf.jarStates(countWaiting(resources, logic), readBatches(logic, entry.uiLogic, TraditionalPreservationYeast.placeOf(shelf)), countFinished(resources, logic))
-    local signature = faceIndex .. ":" .. table.concat(states, ",")
-    if signature == entry.signature then return end
-    entry.signature = signature
-
+    local waiting = Station.countItems(resources, logic:getInputsGroupName(), ResourceIO.Input)
+    local states = TraditionalPreservationYeastShelf.jarStates(waiting, readBatches(logic, uiLogic, Weather.placeOf(shelf)), countFinished(resources, logic))
     -- Shelves from before 0.3.0 show their jars as a single overlay.
     if shelf:hasOverlaySprite() then shelf:setOverlaySprite(nil) end
-    shelf:clearAttachedAnimSprite()
-    for slot, state in ipairs(states) do
-        shelf:addAttachedAnimSpriteByName(jarSprite(faceIndex, slot - 1, state))
-    end
+    local names = {}
+    for slot, state in ipairs(states) do names[slot] = jarSprite(faceIndex, slot - 1, state) end
+    Station.showSprites(shelf, entry, faceIndex .. ":" .. table.concat(states, ","), names)
 end
 
-function TraditionalPreservationYeastShelf.track(shelf)
-    tracked[shelf] = tracked[shelf] or {}
-end
+local faces = {}
+for faceIndex = 0, FACE_COUNT - 1 do faces[faceIndex + 1] = SPRITE_PREFIX .. faceIndex end
+local tracker = Station.tracker({ sprites = faces, refresh = refresh })
 
-local function onTick()
-    ticksSinceRefresh = ticksSinceRefresh + 1
-    if ticksSinceRefresh < TICKS_PER_REFRESH then return end
-    ticksSinceRefresh = 0
+TraditionalPreservationYeastShelf.track = tracker.track
 
-    for shelf in pairs(tracked) do
-        if shelf:getSquare() and shelf:getObjectIndex() >= 0 then
-            TraditionalPreservationYeastShelf.refresh(shelf)
-        else
-            tracked[shelf] = nil
-        end
-    end
-end
-
-local function recordWeather()
+Weather.record(function(now, climate)
     local Y = TraditionalPreservationYeast
-    Y.advance(Y.getLedger(), getGameTime():getWorldAgeHours(), getClimateManager():getTemperature())
-end
+    Y.advance(Y.getLedger(), now, climate:getTemperature())
+end)
 
-Events.OnTick.Add(onTick)
-Events.EveryTenMinutes.Add(recordWeather)
-
-for faceIndex = 0, FACE_COUNT - 1 do
-    MapObjects.OnLoadWithSprite(SPRITE_PREFIX .. faceIndex, TraditionalPreservationYeastShelf.track, MAP_PRIORITY)
-end
+tracker.start()

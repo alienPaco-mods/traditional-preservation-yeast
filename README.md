@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.0)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.1)
 
 ## Install (Arch Linux / Steam)
 
@@ -77,5 +77,7 @@ In debug mode, `TPY.help()` in the Lua console lists commands for testing this m
 - If the shelf or recipes don't appear, review `~/Zomboid/console.txt`.
 
 ## Engineering notes
+
+The `TraditionalPreservationYeast/Core/` folders under `42/media/lua/shared` and `42/media/lua/client` are the shared Traditional Preservation core (weather, places, station tracking, popups), copied in from `~/MODS/_tpcore` by `tp sync`. Edit them there, not here. The fermenting curve, the jars and the five-culture limit stay in this mod's own files.
 
 The shelf uses no `SpriteOverlayConfig`, because that shows one sprite for the first batch only. `42/media/lua/server/TraditionalPreservationYeastShelf.lua` reads each batch's progress through `CraftLogicUILogic` and layers one attached sprite per jar instead. Each culture makes two output items, so the output slot holds 10 and `42/media/lua/client/TraditionalPreservationYeastShelfUI.lua` limits adding to 5 cultures. Its add loop is copied from vanilla's `ISCraftLogicPanel.ItemSlotAddItems`, so compare the two after a game update. The recipe `time` is in game seconds. The engine's craft timers run at the fixed speed of a 60-minute day and ignore Day Length, so the recipe's `OnStart` in `TraditionalPreservationYeast.lua` notes the start hour and its `OnUpdate` sets the elapsed time from the game clock. That keeps the shelf's Time Remaining and Duration readouts in step with a watch. `TraditionalPreservationYeast.lua` overwrites it with `recipe:Load()` on `OnInitGlobalModData`.

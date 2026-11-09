@@ -11,6 +11,7 @@ ScriptManager = { instance = {} }
 function ScriptManager.instance:getCraftRecipe()
     return { Load = function(_, name, text) loaded[name] = text end }
 end
+H.useModPaths()
 dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 
 local check = H.check
