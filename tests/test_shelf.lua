@@ -80,6 +80,7 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     function object:getSquare() return self.square end
     function object:getObjectIndex() return 0 end
     function object:isOutside() return outside end
+    function object.square:isOutside() return outside end
     function object:hasOverlaySprite() return self.overlay end
     function object:setOverlaySprite(sprite) self.overlay = sprite ~= nil end
     function object:clearAttachedAnimSprite() self.sprites = {} self.clears = self.clears + 1 end
