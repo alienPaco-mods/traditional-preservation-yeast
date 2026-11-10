@@ -64,7 +64,7 @@ That's it. One culture gives one full Yeast packet (10 uses).
 ## 5. Secrets & Hidden Features
 
 - ⏱ **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
-- 🌡 **Warmth matters.** Best at 18–30 C. A cold winter kitchen can stretch 5 days to a month, but a **basement shelf stays at 15 C and takes about 6 days all year**. Rain doesn't matter. Hover a fermenting culture for its real time left.
+- 🌡 **Warmth matters.** Best at 18–30 C. A cold winter kitchen can stretch 5 days to a month, but a **basement shelf stays at 15 C and takes about 6 days all year**. "Under a roof" means any roof overhead, walls or not. Rain doesn't matter. Hover a fermenting culture for its real time left.
 - 🫙 **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
 - 🍞 **It's real vanilla Yeast**, so it works in bread, baking and other mods' recipes (including the Vinegar mod's fermentation vessel).
 - 🧮 **One packet is 10 uses.** Vanilla bread dough takes 1 use, so one culture is about 10 loaves.
