@@ -1,6 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.6
+- Internal: new `tests/test_console.lua` loads the debug console (TPY) and calls every command, so one can't
+  break unseen as `TPY.here()` did.
 - Changed: the season's mean temperature (the shelf's temperature under a roof) is the series' own, kept once by TP
   Core, so Yeast added to a running save agrees with the other mods from its first day. Save keys unchanged.
 - Internal: the shelf is told by TP Core's `Station.kinds` lookup; the sensitivity scale is the core's
