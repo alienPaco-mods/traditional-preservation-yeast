@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw
 
 from shelf_art import FACE_GEOMETRY, paint_shelf
 
-sys.path.insert(0, str(Path(os.environ.get("TPCORE", Path(__file__).resolve().parents[2] / "_tpcore")) / "tools"))
+sys.path.insert(0, str(Path(os.environ.get("TPCORE", Path(__file__).resolve().parents[2] / "TraditionalPreservationCore")) / "tools"))
 import pzart  # noqa: E402
 
 NAME = "traditionalpreservationyeast"

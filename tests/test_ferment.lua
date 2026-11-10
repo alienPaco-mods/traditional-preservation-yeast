@@ -1,5 +1,5 @@
 -- Checks the fermenting timer outside the game. Run from the mod folder: luajit tests/test_ferment.lua
-local H = dofile((os.getenv("TPCORE") or "../_tpcore") .. "/tests/harness.lua")
+local H = dofile((os.getenv("TPCORE") or "../TraditionalPreservationCore") .. "/tests/harness.lua")
 local hours = 10
 function getGameTime() return { getWorldAgeHours = function() return hours end } end
 local store = {}
