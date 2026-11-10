@@ -11,7 +11,9 @@ H.installGetText()
 -- The mod's own modules load for real, vanilla's are left out.
 local realRequire = require
 require = function(name)
-    if name:find("^TraditionalPreservationYeast/") then return realRequire(name) end
+    if name:find("^TraditionalPreservationYeast/") or name:find("^TraditionalPreservationCore/") then
+        return realRequire(name)
+    end
 end
 
 -- Engine stand-ins

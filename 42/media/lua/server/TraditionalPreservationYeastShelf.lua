@@ -4,8 +4,8 @@
 if isClient() then return end
 
 TraditionalPreservationYeastShelf = TraditionalPreservationYeastShelf or {}
-local Station = require "TraditionalPreservationYeast/Core/Station"
-local Weather = require "TraditionalPreservationYeast/Core/Weather"
+local Station = require "TraditionalPreservationCore/Station"
+local Weather = require "TraditionalPreservationCore/Weather"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 local SPRITE_PREFIX = Tiles.PREFIX

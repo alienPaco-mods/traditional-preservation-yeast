@@ -3,7 +3,7 @@
 if not isDebugEnabled() then return end
 
 local Y = TraditionalPreservationYeast
-local Weather = require "TraditionalPreservationYeast/Core/Weather"
+local Weather = require "TraditionalPreservationCore/Weather"
 TPY = {}
 
 local RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"

@@ -1,6 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
-## Unreleased
+## 0.4.6
+- Changed: Yeast now requires the **TP Core** mod (Traditional Preservation Core) and loads after it. Its own copy
+  of the shared core (weather ledger, places, shelf tracking, popups) is gone; it uses TP Core's instead, which is
+  the same code. Saves carry over: every save key, item and entity name is unchanged. No change in play.
 - Internal: the synced core copies name the core's new source path (TP Core is now a mod). Comment line only.
 - Internal: the shared core's folder is now `TraditionalPreservationCore` (was `_tpcore`): comments and test
   paths only. No change in play.

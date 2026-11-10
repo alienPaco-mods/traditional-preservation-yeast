@@ -1,7 +1,7 @@
 -- Traditional Preservation (Yeast) B42: keeps the Fermenting Shelf at five cultures. Vanilla limits
 -- adding by free output slots, but each culture here needs two of them. Also the shelf's popups.
 require "Entity/ISUI/Components/Crafting/ISCraftLogicPanel"
-local UI = require "TraditionalPreservationYeast/Core/UI"
+local UI = require "TraditionalPreservationCore/UI"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 local SPRITE_PREFIX = Tiles.PREFIX

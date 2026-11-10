@@ -4,7 +4,7 @@
 -- of the weather in global ModData say how much each one has done, even while its area was unloaded.
 TraditionalPreservationYeast = TraditionalPreservationYeast or {}
 local Y = TraditionalPreservationYeast
-local Weather = require "TraditionalPreservationYeast/Core/Weather"
+local Weather = require "TraditionalPreservationCore/Weather"
 
 Y.FERMENT_HOURS = 120  -- five 24-hour in-game days at the best temperature
 Y.MOD_DATA_KEY = "TraditionalPreservationYeast"
