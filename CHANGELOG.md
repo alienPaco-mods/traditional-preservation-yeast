@@ -1,6 +1,7 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.6
+- Balance (series pass, F1): Make Fermenting Culture gives Cooking 3 (was none).
 - Internal: new `tests/test_console.lua` loads the debug console (TPY) and calls every command, so one can't
   break unseen as `TPY.here()` did.
 - Changed: the season's mean temperature (the shelf's temperature under a roof) is the series' own, kept once by TP

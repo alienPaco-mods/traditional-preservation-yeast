@@ -14,6 +14,7 @@ module TraditionalPreservationYeast
         timedAction = Making,
         Tags = InHandCraft,
         category = Cooking,
+        xpAward = Cooking:3,
         needTobeLearn = false,
         inputs
         {
