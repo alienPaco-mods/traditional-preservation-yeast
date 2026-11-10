@@ -31,8 +31,7 @@ function TPY.weather()
 end
 
 function TPY.here()
-    local square = getPlayer():getCurrentSquare()
-    say("You're in: " .. tostring(Y.placeOf(square)))
+    say("You're in: " .. tostring(Y.placeOf(getPlayer())))
 end
 
 function TPY.age(hours)

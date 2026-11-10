@@ -55,7 +55,7 @@ A kitchen shelf is enough from spring to autumn, taking 5 days a culture in summ
 Set the fermenting time at the best temperature (5 days by default), and temperature sensitivity: Off, Forgiving, Normal or Harsh. Off makes every culture take the same time whatever the weather.
 
 [h2]Works well with[/h2]
-[b]Traditional Preservation (Vinegar)[/b] uses one packet of Yeast for each vessel run. This mod needs no other mods.
+[b]Traditional Preservation (Vinegar)[/b] uses one packet of Yeast for each vessel run. This mod needs no other mods besides TP Core.
 
 [h2]Known limitations[/h2]
 [list]

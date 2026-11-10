@@ -24,7 +24,9 @@ ResourceType = { Item = "Item" }
 ArrayList = { new = function() return list({}) end }
 function getPlayer() return {} end
 local temperature = 22
-function getClimateManager() return { getTemperature = function() return temperature end } end
+function getClimateManager()
+    return { getTemperature = function() return temperature end, getHumidity = function() return 50 end }
+end
 local loaders = {}
 MapObjects = { OnLoadWithSprite = function(name, handler) loaders[name] = handler end }
 local cellSquares = {}
@@ -94,6 +96,7 @@ dofile("42/media/lua/server/TraditionalPreservationYeastShelf.lua")
 local vanillaAdds, halos, queuedActions = 0, {}, {}
 ISCraftLogicPanel = { ItemSlotAddItems = function() vanillaAdds = vanillaAdds + 1 end }
 ISItemSlot = { defaultVerifyItem = function() return true end, onMouseUp = function() end }
+instanceof = function() return true end
 HaloTextHelper = { addBadText = function(_, text) table.insert(halos, text) end }
 ISEntityUI = { WalkToEntity = function() return true end }
 ISItemSlotAddAction = { new = function(_, _, _, item, resource) return { item = item, resource = resource } end }

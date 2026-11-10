@@ -1,9 +1,11 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.5)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.6)
 
 ## Install (Arch Linux / Steam)
 
 Copy the `TraditionalPreservationYeast` folder into `~/Zomboid/mods/`, so the metadata file is:
 `~/Zomboid/mods/TraditionalPreservationYeast/42/mod.info`
+
+It needs the **TP Core** mod (`TraditionalPreservationCore`, the series' shared mod) installed and enabled the same way (`~/Zomboid/mods/TraditionalPreservationCore`), and no other mods.
 
 Enable **Traditional Preservation (Yeast)** for your existing save from
 **Load → select save → More → Choose Mods** (wording can differ by game version).

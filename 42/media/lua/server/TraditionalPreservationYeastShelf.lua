@@ -10,6 +10,7 @@ local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 local SPRITE_PREFIX = Tiles.PREFIX
 local FACE_COUNT = Tiles.FACE_COUNT
+local shelfKind = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
 local MAX_JARS = Tiles.JAR_SLOTS
 
 local STATE_FRESH, STATE_HALFWAY, STATE_DONE = Tiles.JAR_STATES.fresh, Tiles.JAR_STATES.halfway, Tiles.JAR_STATES.done
@@ -70,11 +71,9 @@ end
 local function refresh(shelf, entry)
     local resources = shelf:getComponent(ComponentType.Resources)
     local logic = shelf:getComponent(ComponentType.CraftLogic)
-    local sprite = shelf:getSprite()
-    if not resources or not logic or not sprite then return end
+    local _, faceIndex = shelfKind(shelf)
+    if not resources or not logic or not faceIndex then return end
 
-    local faceIndex = tonumber(string.sub(sprite:getName(), #SPRITE_PREFIX + 1))
-    if not faceIndex then return end
     local uiLogic = Station.uiLogic(shelf, entry, logic)
     if not uiLogic then return end
 

@@ -30,6 +30,8 @@ The result is ordinary vanilla **Yeast**, so it works in every vanilla recipe an
 
 ## 2. Quick Start
 
+> **Requires TP Core** (Traditional Preservation Core), the series' shared mod. Enable it alongside this one; it loads first.
+
 | Step | You need | You get |
 |---|---|---|
 | Build a **Fermenting Shelf** | 2 planks, 4 nails, hammer (kept). Carpentry 2. Against a wall | The shelf |

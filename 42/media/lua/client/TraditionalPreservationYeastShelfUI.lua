@@ -2,15 +2,12 @@
 -- adding by free output slots, but each culture here needs two of them. Also the shelf's popups.
 require "Entity/ISUI/Components/Crafting/ISCraftLogicPanel"
 local UI = require "TraditionalPreservationCore/UI"
+local Station = require "TraditionalPreservationCore/Station"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
-local SPRITE_PREFIX = Tiles.PREFIX
 local ITEMS_PER_CULTURE = 2
 
-local function isShelf(entity)
-    local sprite = entity and entity:getSprite()
-    return sprite and string.sub(sprite:getName(), 1, #SPRITE_PREFIX) == SPRITE_PREFIX
-end
+local isShelf = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
 
 local function cultureRoom(component, resource)
     return math.floor(component:getFreeOutputSlotCount() / ITEMS_PER_CULTURE) - resource:storedSize()

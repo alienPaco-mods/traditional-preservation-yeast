@@ -1,6 +1,14 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.6
+- Changed: the season's mean temperature (the shelf's temperature under a roof) is the series' own, kept once by TP
+  Core, so Yeast added to a running save agrees with the other mods from its first day. Save keys unchanged.
+- Internal: the shelf is told by TP Core's `Station.kinds` lookup; the sensitivity scale is the core's
+  (`Y.SENSITIVITY_SCALES` is gone).
+- Fixed (debug console only): `TPY.here()` threw since Yeast moved onto the core's `placeOf`; it passes the player
+  now.
+- Docs: README Install and the Workshop text say the mod needs TP Core (the Workshop text said "no other mods").
+- Internal: `test_shelf.lua` stubs `instanceof`, which the core's slot rules now call.
 - Changed: Yeast now requires the **TP Core** mod (Traditional Preservation Core) and loads after it. Its own copy
   of the shared core (weather ledger, places, shelf tracking, popups) is gone; it uses TP Core's instead, which is
   the same code. Saves carry over: every save key, item and entity name is unchanged. No change in play.

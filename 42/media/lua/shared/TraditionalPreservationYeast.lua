@@ -16,8 +16,6 @@ local KIND = ""
 -- A wild yeast culture is happiest in a warm kitchen, slows in the cold without dying, and suffers
 -- in real heat. { temperature, share of full speed } points, joined by straight lines.
 local CULTURE_CURVE = { { -5, 0.05 }, { 0, 0.1 }, { 5, 0.2 }, { 10, 0.4 }, { 18, 1 }, { 30, 1 }, { 35, 0.6 }, { 40, 0.1 } }
--- Off, Forgiving, Normal, Harsh: how much of a temperature's slowdown applies.
-Y.SENSITIVITY_SCALES = { 0, 0.5, 1, 1.5 }
 Y.SENSITIVITY = 1
 Y.MIN_RATE = 0.02
 
@@ -88,7 +86,7 @@ function Y.applySandbox()
     local options = SandboxVars and SandboxVars.TraditionalPreservationYeast
     if not options then return end
     if options.FermentDays then Y.FERMENT_HOURS = options.FermentDays * 24 end
-    if options.TemperatureSensitivity then Y.SENSITIVITY = Y.SENSITIVITY_SCALES[options.TemperatureSensitivity] or 1 end
+    if options.TemperatureSensitivity then Y.SENSITIVITY = Weather.sensitivity(options.TemperatureSensitivity) end
 end
 
 -- Sets the recipe's script time from the sandbox, so the crafting window shows the right length.
