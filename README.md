@@ -12,8 +12,8 @@ Enable **Traditional Preservation (Yeast)** for your existing save from
 
 ## How it works
 
-1. **Build a Fermenting Shelf** against a wall (Build menu, Furniture): 2 planks + 4 nails + any hammer, Carpentry 2.
-2. **Make Fermenting Culture** (Cooking): 5 uses of flour + a glass jar holding at least 0.3 L water → 1 Fermenting Culture.
+1. **Build a Fermenting Shelf** against a wall (Build menu, Furniture): 2 planks + 4 nails + any hammer (kept), Carpentry 2. Gives 5 Carpentry XP.
+2. **Make Fermenting Culture** (Cooking): 5 uses of flour + a glass jar (Empty Jar or Crafted Jar) holding at least 0.3 L water → 1 Fermenting Culture. Gives 3 Cooking XP.
 3. Open the shelf, add up to 5 cultures and press **Craft**.
 4. After five in-game days at a good temperature, take 1 vanilla `Base.Yeast` and 1 empty jar per culture from the shelf.
 
@@ -60,7 +60,7 @@ So a kitchen shelf is enough from spring to autumn, and in winter a basement she
 
 Set **Fermenting time (days)** (the time at the best temperature) and **Temperature sensitivity** (Off, Forgiving, Normal, Harsh) under Traditional Preservation (Yeast) in the sandbox options. The default is `FERMENT_HOURS` at the top of `42/media/lua/shared/TraditionalPreservationYeast.lua`. Fractions work. Running batches pick up the new time after a game restart.
 
-`luajit tests/test_ferment.lua` checks the temperature curve, places, the timer, cultures from older saves and the sandbox options.
+`luajit tests/test_ferment.lua` checks the temperature curve, places, the timer, cultures from older saves and the sandbox options, `luajit tests/test_shelf.lua` the shelf's jars and its five-culture rule, and `luajit tests/test_console.lua` the debug commands. `luajit tools/season_report.lua` runs the rules against `tools/climate_year.csv`, the game's forecasts (golden-checked by `tp test Yeast`).
 
 ## Rebuilding the tileset
 

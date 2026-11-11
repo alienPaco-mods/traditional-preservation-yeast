@@ -1,6 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.6
+- Docs (2026-11-11 pass against the code): README names the XP (shelf Carpentry 5, culture Cooking 3), the jars the
+  culture takes and every test; guide and Workshop text call the required mod by its name, Traditional Preservation
+  (Core). No change in play.
 - Balance (series pass, F1): Make Fermenting Culture gives Cooking 3 (was none).
 - Internal: new `tests/test_console.lua` loads the debug console (TPY) and calls every command, so one can't
   break unseen as `TPY.here()` did.

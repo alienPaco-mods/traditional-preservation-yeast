@@ -30,7 +30,7 @@ The result is ordinary vanilla **Yeast**, so it works in every vanilla recipe an
 
 ## 2. Quick Start
 
-> **Requires TP Core** (Traditional Preservation Core), the series' shared mod. Enable it alongside this one; it loads first.
+> **Requires Traditional Preservation (Core)**, the series' shared mod (TP Core for short). Enable it alongside this one; it loads first.
 
 | Step | You need | You get |
 |---|---|---|
