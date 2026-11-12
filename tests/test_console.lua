@@ -44,8 +44,9 @@ check("fast sets the test timer and reloads the recipe", Y.FERMENT_HOURS == 2 an
 run("fast")
 check("fast with no number goes back to the sandbox time", Y.FERMENT_HOURS == sandbox)
 
-run("cultures", 3)
-run("flour")
+run("give", "culture", 3)
+run("give", "flour")
+check("give with no name lists the things", run("give"):find("culture", 1, true) ~= nil and #player.given == 4)
 check("cultures and flour land in the inventory", #player.given == 4
     and player.given[1] == "TraditionalPreservationYeast.FermentingYeastJar" and player.given[4] == "Base.Flour2")
 

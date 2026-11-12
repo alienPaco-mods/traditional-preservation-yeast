@@ -15,8 +15,7 @@ function TPY.help()
     say("TPY.here()           which place you're standing in (outdoors, under a roof or a basement)")
     say("TPY.age(hours)       give every shelf this many hours of perfect fermenting weather")
     say("TPY.fast(hours)      test timer: a culture takes this many hours. TPY.fast() goes back to the sandbox time")
-    say("TPY.cultures(n)      spawn n Fermenting Cultures")
-    say("TPY.flour(n)         spawn n bags of flour")
+    say("TPY.give(name, n)    spawn n of: culture (a Fermenting Culture), flour. TPY.give() lists them")
 end
 
 function TPY.weather()
@@ -51,16 +50,14 @@ function TPY.fast(hours)
     say(string.format("Test timer on: a culture takes %s hours at full speed.", tostring(hours)))
 end
 
-function TPY.cultures(count)
-    local inventory = getPlayer():getInventory()
-    for _ = 1, count or 1 do inventory:AddItem("TraditionalPreservationYeast.FermentingYeastJar") end
-    say("Gave " .. (count or 1) .. " Fermenting Culture(s).")
-end
+local GIVES = { culture = "TraditionalPreservationYeast.FermentingYeastJar", flour = "Base.Flour2" }
 
-function TPY.flour(count)
+function TPY.give(name, count)
+    local fullType = GIVES[name]
+    if not fullType then return say("Things: culture (a Fermenting Culture), flour") end
     local inventory = getPlayer():getInventory()
-    for _ = 1, count or 1 do inventory:AddItem("Base.Flour2") end
-    say("Gave " .. (count or 1) .. " flour.")
+    for _ = 1, count or 1 do inventory:AddItem(fullType) end
+    say("Gave " .. (count or 1) .. " " .. name .. ".")
 end
 
 say("Debug commands loaded. Type TPY.help() in the Lua console.")

@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.6)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.7)
 
 ## Install (Arch Linux / Steam)
 

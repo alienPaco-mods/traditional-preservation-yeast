@@ -1,5 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.7
+- Debug console by the series' convention (2026-11-12, consistency sweep): `TPY.give(name, n)` for `"culture"` and
+  `"flour"` (`cultures` and `flour` are gone). Tests, DEVHELP, guide.
+
 ## 0.4.6
 - Docs (2026-11-11 pass against the code): README names the XP (shelf Carpentry 5, culture Cooking 3), the jars the
   culture takes and every test; guide and Workshop text call the required mod by its name, Traditional Preservation
