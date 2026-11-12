@@ -33,6 +33,7 @@ A culture works by the temperature where the shelf stands, like the stations in 
 
 - **Open air** (a shelf on an outside wall): the day's weather.
 - **Under an open roof** (a porch, an open shed) or **indoors** (a room): an unheated building follows the average outdoor temperature of the last 10 days or so. A warm afternoon or a cold night makes no difference. A room is **22 C while the power grid is on**, as vanilla's are.
+- **In a loft** (the top storey: a room upstairs with no room over it): as indoors, plus three tenths of whatever the 10-day average is above 10 C: the sun on the roof (about 24 C in a 21 C July, no warmer than a room from October to April); 22 C while the power grid is on.
 - **In a basement** (any level below ground): the earth takes the edge off the seasons and holds them back a month, about 5 C from January to March and 13 C from July to September.
 - **By a fire**: any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds the shelf at **28 C**, banked embers at 24 C: **5 days in any month**. While you're away, the fire counts for as long as its fuel would last.
 

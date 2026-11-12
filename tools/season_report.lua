@@ -60,7 +60,7 @@ local seconds = Y.FERMENT_HOURS * SECONDS_PER_HOUR
 -- halfway through its first day. Updated every in-game hour, as an open window would.
 local runs = {}
 local function startRuns(index)
-    for _, place in ipairs({ "Open", "Sheltered", "Basement", "Moved" }) do
+    for _, place in ipairs({ "Open", "Sheltered", "Loft", "Basement", "Moved" }) do
         local data = recipeData(seconds)
         Y.onFermentStart(data)
         data.modData.place = place == "Moved" and "Sheltered" or place
@@ -99,11 +99,11 @@ local function cell(month, place)
 end
 
 print(string.format("Days for one culture (%d hours at full speed), started on the first of the month", Y.FERMENT_HOURS))
-print("| Month | Outdoors | Indoors | Basement | Indoors, then basement |")
-print("|---|---|---|---|---|")
+print("| Month | Outdoors | Indoors | Loft | Basement | Indoors, then basement |")
+print("|---|---|---|---|---|---|")
 for month = 1, 12 do
-    print(string.format("| %s | %s | %s | %s | %s |", MONTHS[month],
-        cell(month, "Open"), cell(month, "Sheltered"), cell(month, "Basement"), cell(month, "Moved")))
+    print(string.format("| %s | %s | %s | %s | %s | %s |", MONTHS[month],
+        cell(month, "Open"), cell(month, "Sheltered"), cell(month, "Loft"), cell(month, "Basement"), cell(month, "Moved")))
 end
 -- By a fire the temperature holds while the fuel lasts, whatever the month.
 local Hearth = require "TraditionalPreservationCore/Hearth"
@@ -115,7 +115,7 @@ end
 print("")
 print("Popup after one day: progress, hours left, temperature, rate")
 for month = 1, 12 do
-    for _, place in ipairs({ "Open", "Sheltered", "Basement", "Moved" }) do
+    for _, place in ipairs({ "Open", "Sheltered", "Loft", "Basement", "Moved" }) do
         local s = statuses[month .. place]
         if s then
             print(string.format("%s %-9s %.6f %.6f %.6f %.6f %s", MONTHS[month], place, s.progress, s.hoursLeft, s.temperature, s.rate, s.place))

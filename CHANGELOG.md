@@ -1,5 +1,10 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.11
+- **TP Core's loft** (2026-11-12, consistency sweep step H): a shelf in the top storey reads the loft's temperature,
+  a room's with the roof's summer warmth: the same as indoors from November to April, up to a day sooner in May,
+  September and October. Season report has a Loft column; golden re-recorded. README, guide, Workshop text.
+
 ## 0.4.10
 - Guide: no emojis (2026-11-12): the decorative bullets and margin-note marks are gone, warning signs read **Warning:**.
 - **Info in the Fermenting Shelf's window** (2026-11-12, consistency sweep step E, TP Core's StationInfo): under

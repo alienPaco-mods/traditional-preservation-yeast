@@ -94,6 +94,8 @@ Days a culture takes, by the month it's started (the grid off):
 
 > *Margin note:* indoors is slower than open air in winter. An unheated house holds the cold average, while a sunny afternoon outside still warms the jar for a few hours.
 
+> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) reads as indoors, plus three tenths of whatever the 10-day average is above 10 C: the sun on the roof (about 24 C in a 21 C July, no warmer than a room from October to April); 22 C while the power grid is on. A shelf up there keeps the Indoors column from October to April and saves up to a day in May, September and October.
+
 > *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
 ## 5¾. The Baker's Diary
