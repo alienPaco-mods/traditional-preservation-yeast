@@ -97,13 +97,16 @@ local function cell(month, place)
     local taken = results[month .. place]
     return taken and string.format("%.2f", taken) or ""
 end
+-- A room while the power grid is on holds Weather.GRID_ROOM_C (22 C) whatever the month, so its days are the rate's.
+local Weather = require "TraditionalPreservationCore/Weather"
+local gridDays = string.format("%.2f", Y.FERMENT_HOURS / Y.cultureRate(Weather.GRID_ROOM_C) / 24)
 
 print(string.format("Days for one culture (%d hours at full speed), started on the first of the month", Y.FERMENT_HOURS))
-print("| Month | Outdoors | Indoors | Loft | Basement | Indoors, then basement |")
-print("|---|---|---|---|---|---|")
+print("| Month | Outdoors | Indoors | Indoors, grid on | Loft | Basement | Indoors, then basement |")
+print("|---|---|---|---|---|---|---|")
 for month = 1, 12 do
-    print(string.format("| %s | %s | %s | %s | %s | %s |", MONTHS[month],
-        cell(month, "Open"), cell(month, "Sheltered"), cell(month, "Loft"), cell(month, "Basement"), cell(month, "Moved")))
+    print(string.format("| %s | %s | %s | %s | %s | %s | %s |", MONTHS[month],
+        cell(month, "Open"), cell(month, "Sheltered"), gridDays, cell(month, "Loft"), cell(month, "Basement"), cell(month, "Moved")))
 end
 -- By a fire the temperature holds while the fuel lasts, whatever the month.
 local Hearth = require "TraditionalPreservationCore/Hearth"
