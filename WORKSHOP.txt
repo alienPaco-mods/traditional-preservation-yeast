@@ -43,7 +43,7 @@ A culture works best from 18 to 30 C. It's at 40% speed at 10 C and 20% at 5 C, 
 [*][b]By a fire[/b]: any lit fire within 2 tiles holds 28 C (banked embers 24 C): 5 days in any month.
 [/list]
 
-A kitchen shelf is enough from May to September, taking 5 days a culture in summer and up to two months in a cold winter. In winter, set the shelf by the fire.
+A kitchen shelf is enough from May to September, taking 5 days a culture in summer and up to two and a half months in a cold winter. In winter, set the shelf by the fire.
 
 [h2]Good to know[/h2]
 [list]

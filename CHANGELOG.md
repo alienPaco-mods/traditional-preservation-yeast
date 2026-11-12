@@ -1,6 +1,7 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.13
+- **Docs pass, sweep step G** (2026-11-12): the Baker's Almanac and the README's table regenerated from `tools/season_report.lua` (both sampled years; they were narrower than the old ranges), with a Loft column and the grid's 5 days; the days quoted in the text follow it; `TPY.weather()` lists the loft and *In a shed*.
 - **The Fermenting Shelf gives 10 Carpentry XP** (was 5; sweep step F): five a level, as the other stations.
 - Needs Build 42.22 or newer (`versionMin`, was 42.20: everything is checked on 42.22). README, Workshop text.
 

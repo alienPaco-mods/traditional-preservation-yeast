@@ -39,22 +39,24 @@ A culture works by the temperature where the shelf stands, like the stations in 
 
 Time keeps counting while you're away, from the weather recorded every 10 in-game minutes. Hover a fermenting culture in the shelf's window for its progress, real time left at today's temperature, the temperature and place, and its working rate. **Temperature sensitivity** in the sandbox options sets how much this matters, and **Off** makes every culture take the same time whatever the weather, as before 0.4.0.
 
-Days a culture takes by the month it's started, on the game's forecasts for default weather:
+Days a culture takes by the month it's started, on the game's forecasts for default weather, the grid off (`tools/season_report.lua`):
 
-| Month | Open air | Indoors, or under an open roof | Basement | By a fire |
-|---|---|---|---|---|
-| Jan | 42–62 | 57–82 | 21–28 | 5 |
-| Feb | 31–52 | 40–68 | 17–26 | 5 |
-| Mar | 16–34 | 17–46 | 14–24 | 5 |
-| Apr | 9–20 | 6–27 | 9–17 | 5 |
-| May | 5–13 | 5–16 | 7–14 | 5 |
-| Jun | 5–8 | 5–10 | 6–11 | 5 |
-| Jul | 5–6 | 5–7 | 6–9 | 5 |
-| Aug | 5–8 | 5–9 | 6–11 | 5 |
-| Sep | 5–10 | 5–13 | 7–13 | 5 |
-| Oct | 8–18 | 5–27 | 9–16 | 5 |
-| Nov | 18–61 | 14–84 | 13–25 | 5 |
-| Dec | 59–62 | 67–86 | 20–27 | 5 |
+| Month | Open air | Indoors, or under an open roof | Loft | Basement | By a fire, or banked embers |
+|---|---|---|---|---|---|
+| Jan | 51–58 | 67–72 | 67–72 | 23–24 | 5 |
+| Feb | 40–44 | 51–56 | 51–56 | 25 | 5 |
+| Mar | 27 | 36–37 | 36–37 | 23–24 | 5 |
+| Apr | 15 | 22–23 | 22–23 | 19 | 5 |
+| May | 8 | 10–11 | 10–11 | 15 | 5 |
+| Jun | 5–6 | 5–6 | 5 | 11 | 5 |
+| Jul | 6 | 5 | 5 | 9 | 5 |
+| Aug | 5–7 | 5 | 5 | 8 | 5 |
+| Sep | 6–7 | 6 | 5 | 8 | 5 |
+| Oct | 13 | 10 | 9 | 9 | 5 |
+| Nov | 42 | 32 | 32 | 12 | 5 |
+| Dec | 62 | 78 | 78 | 17 | 5 |
+
+While the grid is on, a room or a loft is 22 C: 5 days in any month.
 
 So a kitchen shelf is enough from May to September. In winter, set it by the fire, or wait three to four weeks in a basement.
 
