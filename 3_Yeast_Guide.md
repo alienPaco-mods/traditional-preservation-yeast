@@ -16,7 +16,8 @@
 8. Tips
 9. Troubleshooting
 10. Sandbox Settings
-11. Appendix: The Tester's Toolkit
+11. The Yearly Plan
+12. Appendix: The Tester's Toolkit
 
 ---
 
@@ -169,7 +170,23 @@ Days a culture takes, by the month it's started (the grid off; the game's sample
 
 ---
 
-## 11. Appendix: The Tester's Toolkit
+## 11. The Yearly Plan
+
+One process, culturing, laid out by place as the game's planting seasons: the months it works there, its best and poor months, and the months it is out of season. A culture takes **5 days** at its best (18 to 30 C) and waits in the cold without dying. The days are the Baker's Almanac's (chapter 6), the grid off.
+
+| Process | Season | Best months | Poor months | Out of season | Where, at its best | Takes, at its best |
+|---|---|---|---|---|---|---|
+| **Culturing in the open air** | April to October | May, June, July, August, September | April (15 days), October (13) | November to March: 40 to 62 days | A shelf outdoors | 5 to 8 days |
+| **Culturing indoors**, or under an open roof | May to October | June, July, August, September | May, October (10 to 11 days) | November to April: 51 to 78 days | A shelf in a room or porch | 5 to 6 days |
+| **Culturing in a loft** | May to October | June, July, August, September, October | May (10 to 11 days) | November to April, as indoors | A shelf on the top storey | 5 days; 9 in October |
+| **Culturing in a basement** | All year | July, August, September, October | November to June (12 to 25 days): yet from November to March still the quickest place without a fire | None | A shelf below ground | 8 to 9 days |
+| **Culturing by a fire or banked embers**, or in a powered room (22 C) | All year | Any | None | None | Within 2 tiles of a lit fire, a banked Hearth or Firebox | 5 days |
+
+> *Margin note:* the baker's year in one line: the open air in spring, anywhere in summer, the cellar in autumn, the hearth in winter. A full summer shelf gives 5 packets, 50 uses, every 5 days: stock up for the winter's bread and the vinegar vessel.
+
+---
+
+## 12. Appendix: The Tester's Toolkit
 
 *For testers, modders and the curious. These commands exist only when the game is started in debug mode (Steam launch option `-debug`). Type them into the in-game **Command Console** and press Enter. `TPY.help()` lists them in the game.*
 
