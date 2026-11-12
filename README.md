@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.8)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.9)
 
 ## Install (Arch Linux / Steam)
 
@@ -33,7 +33,7 @@ A culture works by the temperature where the shelf stands, like the stations in 
 
 - **Open air** (a shelf on an outside wall): the day's weather.
 - **Under an open roof** (a porch, an open shed) or **indoors** (a room): an unheated building follows the average outdoor temperature of the last 10 days or so. A warm afternoon or a cold night makes no difference. A room is **22 C while the power grid is on**, as vanilla's are.
-- **In a basement** (any level below ground): the earth takes the edge off the seasons, about 5 C in January and 14 C in July.
+- **In a basement** (any level below ground): the earth takes the edge off the seasons and holds them back a month, about 5 C from January to March and 13 C from July to September.
 - **By a fire**: any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds the shelf at **28 C**, banked embers at 24 C: **5 days in any month**. While you're away, the fire counts for as long as its fuel would last.
 
 Time keeps counting while you're away, from the weather recorded every 10 in-game minutes. Hover a fermenting culture in the shelf's window for its progress, real time left at today's temperature, the temperature and place, and its working rate. **Temperature sensitivity** in the sandbox options sets how much this matters, and **Off** makes every culture take the same time whatever the weather, as before 0.4.0.

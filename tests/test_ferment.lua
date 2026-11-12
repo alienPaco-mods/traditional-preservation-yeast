@@ -44,7 +44,7 @@ check("sensitivity off runs at full speed in any weather", Y.cultureRate(-20) ==
 Y.SENSITIVITY = 1.5
 check("harsh never stops it", Y.cultureRate(-20) >= Y.MIN_RATE)
 Y.SENSITIVITY = 1
-check("a basement swings a third as far as the season", Y.placeTemperature({ temperature = -15, seasonTemperature = -10 }, "Basement") == 3)
+check("a basement swings two fifths as far as the ground", Y.placeTemperature({ temperature = -15, seasonTemperature = -5, groundTemperature = -10 }, "Basement") == 2)
 check("a room is the season's mean", Y.placeTemperature({ temperature = 0, seasonTemperature = 5 }, "Sheltered") == 5 and Y.placeTemperature({ temperature = 0, seasonTemperature = 25 }, "Sheltered") == 25)
 
 -- Timers

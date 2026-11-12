@@ -1,5 +1,12 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.9
+- **The cellar runs a month behind** (2026-11-12, TP Core): a basement follows the ground, about 5 C from January to
+  March and 13 C from July to September, so a basement shelf is at its best in autumn (about 9 days a culture in
+  October) and slow in spring. The season report starts from a long-running save's weather and reads 30-day months
+  (each month's forecast also held the 10 days before it, which stretched the old almanac). Guide almanac and
+  tips, README, Workshop text.
+
 ## 0.4.8
 - **By a fire** (2026-11-12, consistency sweep step C): a shelf within 2 tiles of a lit fire works at 28 C, by banked
   embers 24 C (5 days a culture in any month); while you're away the fire counts for as long as its fuel lasts

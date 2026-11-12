@@ -64,7 +64,7 @@ That's it. One culture gives one full Yeast packet (10 uses).
 ## 5. Secrets & Hidden Features
 
 - ⏱ **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
-- 🌡 **Warmth matters.** Best at 18–30 C. An unheated room follows the season, so a winter kitchen can stretch 5 days to two months. A **basement** swings less (about 5 C in January, 14 C in July): 3 to 4 weeks in winter.
+- 🌡 **Warmth matters.** Best at 18–30 C. An unheated room follows the season, so a winter kitchen can stretch 5 days to two months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, a week from July to October.
 - 🔥 **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds it at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Rain doesn't matter. Hover a fermenting culture for its real time left.
 - 💡 **While the grid is on**, a room is 22 C, as vanilla's are: 5 days.
 - 🫙 **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
@@ -79,20 +79,22 @@ Days a culture takes, by the month it's started (the grid off):
 
 | Month | Open air | Indoors, or under an open roof | Basement | By a fire, or banked embers |
 |---|---|---|---|---|
-| Jan | 42–62 | 57–82 | 21–28 | 5 |
-| Feb | 31–52 | 40–68 | 17–26 | 5 |
-| Mar | 16–34 | 17–46 | 14–24 | 5 |
-| Apr | 9–20 | 6–27 | 9–17 | 5 |
-| May | 5–13 | 5–16 | 7–14 | 5 |
-| Jun | 5–8 | 5–10 | 6–11 | 5 |
-| Jul | 5–6 | 5–7 | 6–9 | 5 |
-| Aug | 5–8 | 5–9 | 6–11 | 5 |
-| Sep | 5–10 | 5–13 | 7–13 | 5 |
-| Oct | 8–18 | 5–27 | 9–16 | 5 |
-| Nov | 18–61 | 14–84 | 13–25 | 5 |
-| Dec | 59–62 | 67–86 | 20–27 | 5 |
+| Jan | 40–58 | 51–72 | 23–26 | 5 |
+| Feb | 26–44 | 38–56 | 24–25 | 5 |
+| Mar | 15–27 | 21–38 | 19–25 | 5 |
+| Apr | 8–18 | 11–22 | 15–19 | 5 |
+| May | 5–8 | 5–11 | 11–15 | 5 |
+| Jun | 5–6 | 5 | 8–11 | 5 |
+| Jul | 5–6 | 5 | 7–8 | 5 |
+| Aug | 5–8 | 5–6 | 7–8 | 5 |
+| Sep | 5–13 | 5–9 | 8–9 | 5 |
+| Oct | 13–41 | 10–31 | 9–12 | 5 |
+| Nov | 42–63 | 33–79 | 12–17 | 5 |
+| Dec | 52–64 | 67–79 | 17–23 | 5 |
 
 > ✏ *Margin note:* indoors is slower than open air in winter. An unheated house holds the cold average, while a sunny afternoon outside still warms the jar for a few hours.
+
+> ✏ *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
 ## 5¾. The Baker's Diary
 
@@ -110,7 +112,7 @@ Days a culture takes, by the month it's started (the grid off):
 | Temperature | Working speed | A culture takes |
 |---|---|---|
 | 18 to 30 C (by a fire, banked embers, a powered room) | full | 5 days |
-| 14 C (a basement in July) | about 70% | about 7 days |
+| 13 C (a basement in August) | about 60% | about 8 days |
 | 10 C | 40% | about 12 days |
 | 5 C | 20% | about 25 days |
 | 35 C | 60% | about 8 days |
@@ -121,7 +123,7 @@ Days a culture takes, by the month it's started (the grid off):
 
 - **Where does the yeast come from?** It's already there. Wild yeasts live on the grain and in the air, and flour and water give them food and a home. Feed them and wait, and they take over the jar.
 - **Why does warmth matter?** Yeast grows fastest at about body temperature or a little below. In the cold it slows almost to a stop but goes dormant rather than dying. Too hot and it suffers, which is why 35 C is slower than 25 C.
-- **Why a basement?** Below ground, the earth takes the edge off the seasons: a cellar is mild in January and cool in July. That's why cellars were kept for bread, cheese and beer long before refrigerators.
+- **Why a basement?** Below ground, the earth takes the edge off the seasons: a cellar is mild in January and cool in July, and it runs a month behind the weather: coldest in March, warmest in August. That's why cellars were kept for bread, cheese and beer long before refrigerators.
 - **Why by the fire?** Bakers kept the starter crock on the warm side of the hearth in winter, as they set dough to rise by the stove.
 
 ### Old names, old ways
@@ -136,7 +138,7 @@ Days a culture takes, by the month it's started (the grid off):
 
 - **Keep the shelf full.** 5 cultures every 5 days is 50 yeast uses a cycle, plenty for a household.
 - **Stagger your batches** (press Craft at different times) to always have fresh yeast coming.
-- **Put a shelf in the basement for winter.** Six days a culture, whatever the weather.
+- **Put a shelf in the basement for autumn and winter.** About 9 days a culture in October and 2 to 3 weeks in winter, steadier than any unheated room.
 - **Flour is the real cost.** 5 flour uses per culture. Plan your wheat harvest with yeast in mind.
 - **Hoard glass jars.** Each culture borrows one for 5 days.
 
