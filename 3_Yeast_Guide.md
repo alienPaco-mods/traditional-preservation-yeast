@@ -11,12 +11,12 @@
 3. Walkthrough
 4. The Fermenting Shelf
 5. Secrets & Hidden Features
-5½. The Baker's Almanac
-5¾. The Baker's Diary
-6. Tips
-7. Troubleshooting
-8. Sandbox Settings
-9. Appendix: The Tester's Toolkit
+6. The Baker's Almanac
+7. The Baker's Diary
+8. Tips
+9. Troubleshooting
+10. Sandbox Settings
+11. Appendix: The Tester's Toolkit
 
 ---
 
@@ -58,6 +58,7 @@ That's it. One culture gives one full Yeast packet (10 uses).
 - **Holds 5 cultures in total**, counting waiting, fermenting and finished-but-uncollected ones.
 - **Cancel** stops every running batch and gives the cultures back.
 - **The jars show their progress:** pale when fresh, amber from halfway, **dark brown when done**. A finished jar stays visible until both its yeast and empty jar are collected.
+- **The shelf's own window tells you the rest:** where it stands, the temperature and the working rate there, a bar for each running batch with its time left, and what is waiting or finished.
 
 ---
 
@@ -73,7 +74,7 @@ That's it. One culture gives one full Yeast packet (10 uses).
 
 ---
 
-## 5½. The Baker's Almanac
+## 6. The Baker's Almanac
 
 Days a culture takes, by the month it's started (the grid off):
 
@@ -98,7 +99,7 @@ Days a culture takes, by the month it's started (the grid off):
 
 > *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
-## 5¾. The Baker's Diary
+## 7. The Baker's Diary
 
 *Tucked inside a flour tin, the corners dusted white.*
 
@@ -136,28 +137,28 @@ Days a culture takes, by the month it's started (the grid off):
 
 ---
 
-## 6. Tips
+## 8. Tips
 
 - **Keep the shelf full.** 5 cultures every 5 days is 50 yeast uses a cycle, plenty for a household.
 - **Stagger your batches** (press Craft at different times) to always have fresh yeast coming.
-- **Put a shelf in the basement for autumn and winter.** About 9 days a culture in October and 2 to 3 weeks in winter, steadier than any unheated room.
+- **Put a shelf in the basement for autumn and winter.** About 9 days a culture in October, 2 to 3 weeks in November and December and 3 to 4 from January to March: steadier than any unheated room.
 - **Flour is the real cost.** 5 flour uses per culture. Plan your wheat harvest with yeast in mind.
 - **Hoard glass jars.** Each culture borrows one for 5 days.
 
 ---
 
-## 7. Troubleshooting
+## 9. Troubleshooting
 
 | Problem | Why |
 |---|---|
 | Shelf won't place | It must go against a wall |
 | Can't add a culture | The shelf already has 5 (waiting, fermenting or uncollected) |
 | Culture recipe greyed out | The jar needs at least 0.3 L of water, and you need 5 flour uses |
-| Shelf or recipes missing | Check `~/Zomboid/console.txt`. The tiledef 5127 must be unique among your mods |
+| Shelf or recipes missing | TP Core must be enabled. Then check `~/Zomboid/console.txt`: the tile number 5127 must be unique among your mods |
 
 ---
 
-## 8. Sandbox Settings
+## 10. Sandbox Settings
 
 | Option | Default | Effect |
 |---|---|---|
@@ -166,7 +167,7 @@ Days a culture takes, by the month it's started (the grid off):
 
 ---
 
-## 9. Appendix: The Tester's Toolkit
+## 11. Appendix: The Tester's Toolkit
 
 *For testers, modders and the curious. These commands exist only when the game is started in debug mode (Steam launch option `-debug`). Type them into the in-game **Command Console** and press Enter. `TPY.help()` lists them in the game.*
 
@@ -181,3 +182,13 @@ Days a culture takes, by the month it's started (the grid off):
 | `TPY.give(name, n)` | Spawns `n` of: `"culture"` (a Fermenting Culture) or `"flour"`. `TPY.give()` lists them. |
 
 **Typical check:** `TPY.give("culture", 5)`, load the shelf and press Craft, then `TPY.age(60)`. The jars should turn amber at halfway, and `TPY.age(60)` again finishes them.
+
+---
+
+## Credits
+
+**Design and code:** alienPaco
+
+**Made for:** Project Zomboid, Build 42. Singleplayer.
+
+*Traditional Preservation is a fan-made modification. It is not made or endorsed by The Indie Stone.*

@@ -74,15 +74,12 @@ function Y.onFermentUpdate(craftRecipeData)
         modData.last = Weather.mark({}, ledger, KIND)
     end
 
-    local place = runPlace(modData)
-    modData.done = modData.done + Hearth.catchUp(modData, modData.last, ledger, KIND, place, Y.cultureRate)
-    Weather.showProgress(craftRecipeData, ledger, KIND, place, 1, now, Y.cultureRate)
+    Hearth.updateRun(craftRecipeData, ledger, KIND, runPlace(modData), Y.cultureRate)
 end
 
 -- Brings a running culture up to now at the place it was last told.
 local function catchUpRun(modData)
-    if not (modData.done and modData.last) then return end
-    modData.done = modData.done + Hearth.catchUp(modData, modData.last, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
+    Hearth.catchUpRun(modData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
 end
 
 -- Tells a running culture where its shelf stands (the shelf's World, at each look): the place, and the fire's

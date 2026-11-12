@@ -1,5 +1,13 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.12
+- **On TP Core's shared modules** (2026-11-12; nothing a player sees): a culture's catch-up and bar go through
+  Core's `Hearth.catchUpRun` and `Hearth.updateRun`. In-game step 101 of `TESTING_GUIDE.md`.
+- Guide (2026-11-12): checked line by line against the code. The shelf's window block is described; the basement
+  takes 3 to 4 weeks from January to March; whole chapter numbers (the Almanac is chapter 6, the Diary 7), a
+  Credits page.
+
+
 ## 0.4.11
 - **TP Core's loft** (2026-11-12, consistency sweep step H): a shelf in the top storey reads the loft's temperature,
   a room's with the roof's summer warmth: the same as indoors from November to April, up to a day sooner in May,
