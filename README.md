@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.12)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.13)
 
 ## Install (Arch Linux / Steam)
 
@@ -12,7 +12,7 @@ Enable **Traditional Preservation (Yeast)** for your existing save from
 
 ## How it works
 
-1. **Build a Fermenting Shelf** against a wall (Build menu, Furniture): 2 planks + 4 nails + any hammer (kept), Carpentry 2. Gives 5 Carpentry XP.
+1. **Build a Fermenting Shelf** against a wall (Build menu, Furniture): 2 planks + 4 nails + any hammer (kept), Carpentry 2. Gives 10 Carpentry XP.
 2. **Make Fermenting Culture** (Cooking): 5 uses of flour + a glass jar (Empty Jar or Crafted Jar) holding at least 0.3 L water → 1 Fermenting Culture. Gives 3 Cooking XP.
 3. Open the shelf, add up to 5 cultures and press **Craft**.
 4. After five in-game days at a good temperature, take 1 vanilla `Base.Yeast` and 1 empty jar per culture from the shelf.

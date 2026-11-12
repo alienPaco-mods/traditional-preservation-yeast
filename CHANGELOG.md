@@ -1,5 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.13
+- **The Fermenting Shelf gives 10 Carpentry XP** (was 5; sweep step F): five a level, as the other stations.
+- Needs Build 42.22 or newer (`versionMin`, was 42.20: everything is checked on 42.22). README, Workshop text.
+
 ## 0.4.12
 - **On TP Core's shared modules** (2026-11-12; nothing a player sees): a culture's catch-up and bar go through
   Core's `Hearth.catchUpRun` and `Hearth.updateRun`. In-game step 101 of `TESTING_GUIDE.md`.

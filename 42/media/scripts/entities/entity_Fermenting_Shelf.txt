@@ -67,7 +67,7 @@ module TraditionalPreservationYeast
             timedAction = BuildWoodenStructureSmall,
             time = 50,
             SkillRequired = Woodwork:2,
-            xpAward = Woodwork:5,
+            xpAward = Woodwork:10,
             category = Furniture,
             Tags = Carpentry;Furniture,
             Tooltip = Tooltip_craft_fermentingShelfDesc,
