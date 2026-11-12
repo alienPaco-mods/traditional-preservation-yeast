@@ -1,5 +1,10 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.10
+- **Info in the Fermenting Shelf's window** (2026-11-12, consistency sweep step E, TP Core's StationInfo): under
+  In Progress, the shelf's place, its temperature and the cultures' working rate there, a bar for each running batch
+  with its time left, and what is waiting or finished. Shown even with nothing running.
+
 ## 0.4.9
 - **The cellar runs a month behind** (2026-11-12, TP Core): a basement follows the ground, about 5 C from January to
   March and 13 C from July to September, so a basement shelf is at its best in autumn (about 9 days a culture in

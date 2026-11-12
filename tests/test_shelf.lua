@@ -72,7 +72,11 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     for _, fullType in ipairs(outputs) do table.insert(items, { getFullType = function() return fullType end }) end
     local resources = {}
     function resources:getResourcesFromGroup(group)
-        if group == "in" then return list({ { storedSize = function() return waiting end } }) end
+        if group == "in" then
+            local jars = {}
+            for i = 1, waiting do jars[i] = { getFullType = function() return "TraditionalPreservationYeast.FermentingYeastJar" end } end
+            return list({ { storedSize = function() return waiting end, getStoredItems = function() return list(jars) end } })
+        end
         return list({ { getStoredItems = function() return list(items) end } })
     end
     local object = { square = square(x, z), sprites = {}, clears = 0, overlay = true }
@@ -106,6 +110,11 @@ ISItemSlotAddAction = { new = function(_, _, _, item, resource) return { item = 
 ISTimedActionQueue = { add = function(action) table.insert(queuedActions, action) end }
 ISWidgetCraftLogicOutputProgress = { updateProgressItems = function(self) self.vanillaRan = true end }
 ISMoveableSpriteProps = { canPlaceMoveable = function() return true end }
+-- What TP Core's StationInfo and InfoWindow derive from; the shelf's provider is kept here instead of hooked.
+ISPanel = H.class("ISPanel")
+ISCollapsableWindow = H.class("ISCollapsableWindow")
+local shelfInfo
+require("TraditionalPreservationCore/StationInfo").add = function(provider) shelfInfo = provider end
 dofile("42/media/lua/client/TraditionalPreservationYeastShelfUI.lua")
 local Y = TraditionalPreservationYeast
 Y.getLedger()
@@ -195,6 +204,21 @@ function running:getRecipe() return nil end
 lines = {}
 slot.drawTooltip(slot, tooltip)
 check("a culture that has just finished draws nothing", #lines == 0)
+
+-- The info block in the shelf's window: the kitchen shelf (indoors: the season's 22 C) with two batches, a culture
+-- waiting and one finished.
+halfway.modData.done, fresh.modData.done = 72, 12
+local block = shelfInfo(kitchen)
+local rows = {}
+for _, row in ipairs(block.rows) do table.insert(rows, getText(row[1]) .. " " .. row[2]) end
+check("the block's rows", table.concat(rows, " | ") == "Place Indoors | Temperature 22 C | Working rate 100%")
+check("a numbered bar a batch, furthest along first", #block.bars == 2 and near(block.bars[1].share, 0.6)
+    and block.bars[1].text == "1. Cultures: 1" and block.bars[2].text == "2. Cultures: 2")
+check("with its time left", block.bars[1].value == "60%, 2 d 0 h left")
+check("full speed is green", block.bars[1].colour[1] == 0.35)
+check("waiting, finished and the weather note", table.concat(block.notes, " | ") == "Loaded and not started: 1 (press Craft) | "
+    .. "Finished and waiting to be taken: 1 | Times left assume the temperature holds as it is now.")
+check("anything else gets no block", shelfInfo({ getSprite = function() return { getName = function() return "x" end } end }) == nil)
 
 -- Slots: five cultures, each needing two output slots
 local function shelfSlot(stored, freeOutputs, sprite)
