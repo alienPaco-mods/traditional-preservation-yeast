@@ -1,6 +1,7 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.10
+- Guide: no emojis (2026-11-12): the decorative bullets and margin-note marks are gone, warning signs read **Warning:**.
 - **Info in the Fermenting Shelf's window** (2026-11-12, consistency sweep step E, TP Core's StationInfo): under
   In Progress, the shelf's place, its temperature and the cultures' working rate there, a bar for each running batch
   with its time left, and what is waiting or finished. Shown even with nothing running.

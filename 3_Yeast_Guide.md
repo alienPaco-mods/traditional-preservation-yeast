@@ -63,13 +63,13 @@ That's it. One culture gives one full Yeast packet (10 uses).
 
 ## 5. Secrets & Hidden Features
 
-- ⏱ **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
-- 🌡 **Warmth matters.** Best at 18–30 C. An unheated room follows the season, so a winter kitchen can stretch 5 days to two months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, a week from July to October.
-- 🔥 **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds it at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Rain doesn't matter. Hover a fermenting culture for its real time left.
-- 💡 **While the grid is on**, a room is 22 C, as vanilla's are: 5 days.
-- 🫙 **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
-- 🍞 **It's real vanilla Yeast**, so it works in bread, baking and other mods' recipes (including the Vinegar mod's fermentation vessel).
-- 🧮 **One packet is 10 uses.** Vanilla bread dough takes 1 use, so one culture is about 10 loaves.
+- **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
+- **Warmth matters.** Best at 18–30 C. An unheated room follows the season, so a winter kitchen can stretch 5 days to two months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, a week from July to October.
+- **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds it at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Rain doesn't matter. Hover a fermenting culture for its real time left.
+- **While the grid is on**, a room is 22 C, as vanilla's are: 5 days.
+- **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
+- **It's real vanilla Yeast**, so it works in bread, baking and other mods' recipes (including the Vinegar mod's fermentation vessel).
+- **One packet is 10 uses.** Vanilla bread dough takes 1 use, so one culture is about 10 loaves.
 
 ---
 
@@ -92,9 +92,9 @@ Days a culture takes, by the month it's started (the grid off):
 | Nov | 42–63 | 33–79 | 12–17 | 5 |
 | Dec | 52–64 | 67–79 | 17–23 | 5 |
 
-> ✏ *Margin note:* indoors is slower than open air in winter. An unheated house holds the cold average, while a sunny afternoon outside still warms the jar for a few hours.
+> *Margin note:* indoors is slower than open air in winter. An unheated house holds the cold average, while a sunny afternoon outside still warms the jar for a few hours.
 
-> ✏ *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
+> *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
 ## 5¾. The Baker's Diary
 
@@ -117,7 +117,7 @@ Days a culture takes, by the month it's started (the grid off):
 | 5 C | 20% | about 25 days |
 | 35 C | 60% | about 8 days |
 
-> ✏ *Margin note:* a culture never dies of cold here, it just waits. A shelf in an unheated winter kitchen will get there in the end. It just takes two months.
+> *Margin note:* a culture never dies of cold here, it just waits. A shelf in an unheated winter kitchen will get there in the end. It just takes two months.
 
 ### Why it works the way it does
 
@@ -168,7 +168,7 @@ Days a culture takes, by the month it's started (the grid off):
 
 *For testers, modders and the curious. These commands exist only when the game is started in debug mode (Steam launch option `-debug`). Type them into the in-game **Command Console** and press Enter. `TPY.help()` lists them in the game.*
 
-> ⚠ They change your save directly, so try them on a test save, not a playthrough you care about.
+> **Warning:** They change your save directly, so try them on a test save, not a playthrough you care about.
 
 | Command | What it does |
 |---|---|
