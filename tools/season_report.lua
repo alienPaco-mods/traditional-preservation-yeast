@@ -87,11 +87,17 @@ local function cell(month, place)
 end
 
 print(string.format("Days for one culture (%d hours at full speed), started on the first of the month", Y.FERMENT_HOURS))
-print("| Month | Outdoors | Under a roof | Basement | Roof, then basement |")
+print("| Month | Outdoors | Indoors | Basement | Indoors, then basement |")
 print("|---|---|---|---|---|")
 for month = 1, 12 do
     print(string.format("| %s | %s | %s | %s | %s |", MONTHS[month],
         cell(month, "Open"), cell(month, "Sheltered"), cell(month, "Basement"), cell(month, "Moved")))
+end
+-- By a fire the temperature holds while the fuel lasts, whatever the month.
+local Hearth = require "TraditionalPreservationCore/Hearth"
+for _, place in ipairs({ Hearth.PLACE, Hearth.EMBERS }) do
+    print(string.format("%s (%d C), any month: %.2f days", place, Hearth.fireC(place),
+        Y.FERMENT_HOURS / Y.cultureRate(Hearth.fireC(place)) / 24))
 end
 
 print("")

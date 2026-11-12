@@ -6,7 +6,7 @@ These console commands load only when the game runs in **debug mode** (launch op
 
 | Command | What it does |
 |---|---|
-| `TPY.weather()` | The temperature outdoors, under a roof and in a basement, how fast a culture works in each, and how many days it takes there. |
+| `TPY.weather()` | The temperature in each place (open air, under an open roof, indoors, a basement, by a fire, by banked embers), how fast a culture works there, and how many days it takes. By a fire counts by the clock, so `TPY.age` doesn't move it. |
 | `TPY.here()` | Which kind of place you're standing in. |
 | `TPY.age(hours)` | Gives every shelf this many hours of perfect fermenting weather. `TPY.age(120)` finishes a culture. |
 | `TPY.fast(hours)` | Test timer: a culture takes this many hours. `TPY.fast()` goes back to the sandbox time. |

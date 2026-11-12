@@ -16,6 +16,7 @@ function ScriptManager.instance:getCraftRecipe()
     return { Load = function(_, name, text) loaded[name] = text end }
 end
 SandboxVars = { TraditionalPreservationYeast = { FermentDays = 5 } }
+function getCell() return { getGridSquare = function() return nil end } end
 local player = H.player({ z = -1 })
 function getPlayer() return player end
 

@@ -4,6 +4,7 @@ if not isDebugEnabled() then return end
 
 local Y = TraditionalPreservationYeast
 local Weather = require "TraditionalPreservationCore/Weather"
+local Hearth = require "TraditionalPreservationCore/Hearth"
 TPY = {}
 
 local RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
@@ -12,7 +13,7 @@ local function say(text) print("[TPY] " .. text) end
 
 function TPY.help()
     say("TPY.weather()        the temperature by place, and how fast a culture works there")
-    say("TPY.here()           which place you're standing in (outdoors, under a roof or a basement)")
+    say("TPY.here()           which place you're standing in (open air, an open roof, indoors, a basement, by a fire)")
     say("TPY.age(hours)       give every shelf this many hours of perfect fermenting weather")
     say("TPY.fast(hours)      test timer: a culture takes this many hours. TPY.fast() goes back to the sandbox time")
     say("TPY.give(name, n)    spawn n of: culture (a Fermenting Culture), flour. TPY.give() lists them")
@@ -26,6 +27,11 @@ function TPY.weather()
         local rate = ledger[place .. "Rate"] or 0
         say(string.format("%-9s %.1f C: %.0f%% speed, about %.1f days a culture", place, Y.placeTemperature(ledger, place),
             rate * 100, rate > 0 and Y.FERMENT_HOURS / rate / 24 or 0))
+    end
+    for _, place in ipairs({ Hearth.PLACE, Hearth.EMBERS }) do
+        local rate = Y.cultureRate(Hearth.fireC(place))
+        say(string.format("%-9s %.1f C: %.0f%% speed, about %.1f days a culture (by the clock: TPY.age skips it)", place,
+            Hearth.fireC(place), rate * 100, Y.FERMENT_HOURS / rate / 24))
     end
 end
 

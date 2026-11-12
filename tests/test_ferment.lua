@@ -44,8 +44,8 @@ check("sensitivity off runs at full speed in any weather", Y.cultureRate(-20) ==
 Y.SENSITIVITY = 1.5
 check("harsh never stops it", Y.cultureRate(-20) >= Y.MIN_RATE)
 Y.SENSITIVITY = 1
-check("a basement is 15 C all year", Y.placeTemperature({ temperature = -15, seasonTemperature = -10 }, "Basement") == 15)
-check("a roof follows the season, plus 10, up to 28", Y.placeTemperature({ temperature = 0, seasonTemperature = 5 }, "Sheltered") == 15 and Y.placeTemperature({ temperature = 0, seasonTemperature = 25 }, "Sheltered") == 28)
+check("a basement swings a third as far as the season", Y.placeTemperature({ temperature = -15, seasonTemperature = -10 }, "Basement") == 3)
+check("a room is the season's mean", Y.placeTemperature({ temperature = 0, seasonTemperature = 5 }, "Sheltered") == 5 and Y.placeTemperature({ temperature = 0, seasonTemperature = 25 }, "Sheltered") == 25)
 
 -- Timers
 local warm = recipeData(TIME)
@@ -70,7 +70,22 @@ Y.onFermentStart(downstairs)
 downstairs.modData.place = "Basement"
 weather(24, -10)
 Y.onFermentUpdate(downstairs)
-check("a basement shelf carries on through a frost", math.abs(downstairs.elapsed - 24 * Y.cultureRate(15) * 3600) < 1)
+-- The season slips towards the frost hour by hour, the basement a third as far: no slower than its last hour's rate.
+check("a basement shelf carries on through a frost", downstairs.elapsed >= 24 * Y.cultureRate(Y.placeTemperature(Y.getLedger(), "Basement")) * 3600 - 1
+    and downstairs.elapsed > 2 * 24 * Y.cultureRate(-10) * 3600)
+
+-- By a fire: 28 C, full speed, by the clock until the fire's noted fuel ran out, then the room under it.
+local Hearth = require "TraditionalPreservationCore/Hearth"
+local hearthside = recipeData(TIME)
+Y.onFermentStart(hearthside)
+hearthside.modData.place = Hearth.PLACE
+hearthside.modData.fireUntil = hours + 10
+hearthside.modData.under = "Open"
+weather(20, -10)
+Y.onFermentUpdate(hearthside)
+check("by a fire in a frost: 10 hours at full speed, then 10 in the frost",
+    math.abs(hearthside.elapsed - (10 + 10 * Y.cultureRate(-10)) * 3600) < 1)
+check("banked embers (24 C) are full speed too", Y.cultureRate(Y.placeTemperature(Y.getLedger(), Hearth.EMBERS)) == 1)
 
 local away = recipeData(TIME)
 Y.onFermentStart(away)

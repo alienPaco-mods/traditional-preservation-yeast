@@ -45,6 +45,7 @@ local function square(x, z)
     function s:getX() return x end
     function s:getY() return 0 end
     function s:getZ() return z end
+    function s:getObjects() return H.list({}) end
     cellSquares[x .. ",0," .. z] = s
     return s
 end
@@ -81,6 +82,7 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     function object:getObjectIndex() return 0 end
     function object:isOutside() return outside end
     function object.square:isOutside() return outside end
+    function object.square:isInARoom() return not outside end
     function object:hasOverlaySprite() return self.overlay end
     function object:setOverlaySprite(sprite) self.overlay = sprite ~= nil end
     function object:clearAttachedAnimSprite() self.sprites = {} self.clears = self.clears + 1 end
@@ -183,7 +185,7 @@ local shown = {}
 for _, item in ipairs(lines) do table.insert(shown, item.label .. " " .. item.value) end
 -- 10 hours at 40% is 4 of 120; 116 left at 40% is 290 hours.
 check("the popup's lines", table.concat(shown, " | ") ==
-    "Progress: 3% | Time Remaining: 12d 2h, if the temperature holds | Temperature: 10 C outdoors | Working Rate: 40%")
+    "Progress: 3% | Time Remaining: 12d 2h, if the temperature holds | Temperature: 10 C (Open air) | Working Rate: 40%")
 check("a slow rate is coloured", lines[4].colour[2] == 0.7 and lines[1].colour[2] == 1)
 check("and no translator warnings", #H.textWarnings == 0)
 check("the popup is wide enough", tooltip.width == 150)

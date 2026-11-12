@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.7)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.4.8)
 
 ## Install (Arch Linux / Steam)
 
@@ -31,30 +31,31 @@ No vanilla recipes or loot distribution are changed. No hunger, calorie or yeast
 
 A culture works by the temperature where the shelf stands, like the stations in the other Traditional Preservation mods. It's best from **18 to 30 C**, at 40% speed at 10 C, 20% at 5 C, and only crawls near freezing, without ever dying. Real heat slows it too (60% at 35 C).
 
-- **Outdoors** (a shelf on an outside wall): the day's weather.
-- **Under a roof**: a building evens out the weather, so it follows the average outdoor temperature of the last 10 days or so, plus 10 C, and never goes above 28 C. A warm afternoon or a cold night makes no difference.
-- **In a basement** (any level below ground): **15 C all year**, so a culture takes about 6 days in any month.
+- **Open air** (a shelf on an outside wall): the day's weather.
+- **Under an open roof** (a porch, an open shed) or **indoors** (a room): an unheated building follows the average outdoor temperature of the last 10 days or so. A warm afternoon or a cold night makes no difference. A room is **22 C while the power grid is on**, as vanilla's are.
+- **In a basement** (any level below ground): the earth takes the edge off the seasons, about 5 C in January and 14 C in July.
+- **By a fire**: any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds the shelf at **28 C**, banked embers at 24 C: **5 days in any month**. While you're away, the fire counts for as long as its fuel would last.
 
 Time keeps counting while you're away, from the weather recorded every 10 in-game minutes. Hover a fermenting culture in the shelf's window for its progress, real time left at today's temperature, the temperature and place, and its working rate. **Temperature sensitivity** in the sandbox options sets how much this matters, and **Off** makes every culture take the same time whatever the weather, as before 0.4.0.
 
 Days a culture takes by the month it's started, on the game's forecasts for default weather:
 
-| Month | Outdoors | Under a roof | Basement |
-|---|---|---|---|
-| Jan | 42–62 | 14–30 | 6 |
-| Feb | 31–52 | 7–26 | 6 |
-| Mar | 16–34 | 5–21 | 6 |
-| Apr | 9–20 | 5–10 | 6 |
-| May | 5–13 | 5–6 | 6 |
-| Jun | 5–8 | 5 | 6 |
-| Jul | 5–6 | 5 | 6 |
-| Aug | 5–8 | 5 | 6 |
-| Sep | 5–10 | 5 | 6 |
-| Oct | 8–18 | 5–9 | 6 |
-| Nov | 18–61 | 5–23 | 6 |
-| Dec | 59–62 | 11–27 | 6 |
+| Month | Open air | Indoors, or under an open roof | Basement | By a fire |
+|---|---|---|---|---|
+| Jan | 42–62 | 57–82 | 21–28 | 5 |
+| Feb | 31–52 | 40–68 | 17–26 | 5 |
+| Mar | 16–34 | 17–46 | 14–24 | 5 |
+| Apr | 9–20 | 6–27 | 9–17 | 5 |
+| May | 5–13 | 5–16 | 7–14 | 5 |
+| Jun | 5–8 | 5–10 | 6–11 | 5 |
+| Jul | 5–6 | 5–7 | 6–9 | 5 |
+| Aug | 5–8 | 5–9 | 6–11 | 5 |
+| Sep | 5–10 | 5–13 | 7–13 | 5 |
+| Oct | 8–18 | 5–27 | 9–16 | 5 |
+| Nov | 18–61 | 14–84 | 13–25 | 5 |
+| Dec | 59–62 | 67–86 | 20–27 | 5 |
 
-So a kitchen shelf is enough from spring to autumn, and in winter a basement shelf keeps the yeast coming.
+So a kitchen shelf is enough from May to September. In winter, set it by the fire, or wait three to four weeks in a basement.
 
 ## Changing the timer
 

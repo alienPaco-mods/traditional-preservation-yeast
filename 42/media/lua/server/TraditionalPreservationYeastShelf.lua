@@ -50,10 +50,11 @@ local function countFinished(resources, logic)
 end
 
 -- Also tells each running culture where its shelf stands, for its temperature.
-local function readBatches(logic, uiLogic, place)
+local function readBatches(logic, uiLogic, shelf)
     local batches = {}
+    local now = getGameTime():getWorldAgeHours()
     for craftData, items in pairs(uiLogic:getItemsInProgress()) do
-        craftData:getModData().place = place
+        TraditionalPreservationYeast.notePlace(craftData:getModData(), shelf, now)
         local count = 0
         for _, amount in pairs(items) do
             count = count + tonumber(tostring(amount))
@@ -78,7 +79,7 @@ local function refresh(shelf, entry)
     if not uiLogic then return end
 
     local waiting = Station.countItems(resources, logic:getInputsGroupName(), ResourceIO.Input)
-    local states = TraditionalPreservationYeastShelf.jarStates(waiting, readBatches(logic, uiLogic, Weather.placeOf(shelf)), countFinished(resources, logic))
+    local states = TraditionalPreservationYeastShelf.jarStates(waiting, readBatches(logic, uiLogic, shelf), countFinished(resources, logic))
     -- Shelves from before 0.3.0 show their jars as a single overlay.
     if shelf:hasOverlaySprite() then shelf:setOverlaySprite(nil) end
     local names = {}

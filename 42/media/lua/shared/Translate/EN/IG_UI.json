@@ -5,8 +5,5 @@
   "IGUI_TraditionalPreservationYeast_TimeLeft": "Time Remaining",
   "IGUI_TraditionalPreservationYeast_Time": "%1d %2h, if the temperature holds",
   "IGUI_TraditionalPreservationYeast_Temperature": "Temperature",
-  "IGUI_TraditionalPreservationYeast_Open": "%1 C outdoors",
-  "IGUI_TraditionalPreservationYeast_Roof": "%1 C under a roof",
-  "IGUI_TraditionalPreservationYeast_Basement": "%1 C in a basement",
   "IGUI_TraditionalPreservationYeast_Rate": "Working Rate"
 }

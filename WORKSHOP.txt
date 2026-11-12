@@ -11,7 +11,7 @@ Traditional Preservation (Yeast) requires [b]Traditional Preservation (Core)[/b]
 [*]A buildable Fermenting Shelf that mounts on a wall, with its own art
 [*]Each jar on the shelf shows its own progress, from pale to amber to dark brown
 [*]Makes real vanilla Yeast, for bread, baking and every mod that uses it
-[*]Temperature matters: a warm kitchen in summer, a basement shelf in winter
+[*]Temperature matters: a warm kitchen in summer, a shelf by the fire in winter
 [*]Keeps working while you are away
 [/list]
 
@@ -36,12 +36,13 @@ One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves
 [h2]Temperature[/h2]
 A culture works best from 18 to 30 C. It's at 40% speed at 10 C and 20% at 5 C, and only crawls near freezing without ever dying. Real heat slows it too.
 [list]
-[*][b]Outdoors[/b] (a shelf on an outside wall): the day's weather.
-[*][b]Under a roof[/b]: a building evens out the weather. It follows the last 10 days' average outdoors plus 10 C, never over 28 C.
-[*][b]In a basement[/b]: 15 C all year, so a culture takes about 6 days in any month.
+[*][b]Open air[/b] (a shelf on an outside wall): the day's weather.
+[*][b]Under an open roof[/b] or [b]indoors[/b]: an unheated building follows the last 10 days' average outdoors. A room is 22 C while the power grid is on.
+[*][b]In a basement[/b]: the season, a third as far: about 5 C in January, 14 C in July. Three to four weeks a culture in winter.
+[*][b]By a fire[/b]: any lit fire within 2 tiles holds 28 C (banked embers 24 C): 5 days in any month.
 [/list]
 
-A kitchen shelf is enough from spring to autumn, taking 5 days a culture in summer and up to a month in a cold winter. In winter, a basement shelf keeps the yeast coming.
+A kitchen shelf is enough from May to September, taking 5 days a culture in summer and up to two months in a cold winter. In winter, set the shelf by the fire.
 
 [h2]Good to know[/h2]
 [list]

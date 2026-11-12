@@ -1,5 +1,12 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.8
+- **By a fire** (2026-11-12, consistency sweep step C): a shelf within 2 tiles of a lit fire works at 28 C, by banked
+  embers 24 C (5 days a culture in any month); while you're away the fire counts for as long as its fuel lasts
+  (TP Core's `Hearth.catchUp`, `Y.notePlace`). TP Core's new places: an unheated room follows the season (22 C while
+  the grid is on), a basement swings a third as far. The popup's place words are Core's. Season report (by a fire),
+  README, guide almanac, Workshop text, DEVHELP.
+
 ## 0.4.7
 - Debug console by the series' convention (2026-11-12, consistency sweep): `TPY.give(name, n)` for `"culture"` and
   `"flour"` (`cultures` and `flour` are gone). Tests, DEVHELP, guide.
