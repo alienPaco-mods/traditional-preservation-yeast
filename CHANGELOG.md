@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.15
+- **A frozen culture pauses** (realism pass L6, user 2026-11-13): at 0 C and below the culture stops (TP Core's `Weather.frozen`) and goes on once thawed, on Forgiving, Normal and Harsh alike; Off still ignores the weather. The 0.02 floor holds above freezing only. A January culture in an unheated room (about -1.6 C) now waits there: about 91 days started on the first (was 59), carried by the warmer days; the basement is unchanged. The popup and the shelf's info block say *Paused here (frozen)* instead of a time left. `tools/season_report.lua` prints a paused popup as such; golden re-recorded. Tests in `test_ferment.lua`. In-game step 118 of `TESTING_GUIDE.md`.
+
 ## 0.4.14
 - **The realism pass's Core part reaches the shelf** (TP Core, 2026-11-13): an unheated room or loft is 2 C warmer in the cold months (a January culture indoors about 59 days, was 72); a fire under an open roof or in the open warms the air it stands in instead of holding 28 C (indoors unchanged: 5 days). `tools/season_report.lua` gains *By a fire, under a roof* and *in the open* columns (January: about 11 and 20 days). Test `test_ferment.lua` follows the warmer room. The guide's tables wait for the culture's frozen stop (ROADMAP, the curve edits), to be regenerated once.
 

@@ -124,7 +124,8 @@ for month = 1, 12 do
     for _, place in ipairs({ "Open", "Sheltered", "Loft", "Basement", "Moved" }) do
         local s = statuses[month .. place]
         if s then
-            print(string.format("%s %-9s %.6f %.6f %.6f %.6f %s", MONTHS[month], place, s.progress, s.hoursLeft, s.temperature, s.rate, s.place))
+            local left = s.hoursLeft and string.format("%.6f", s.hoursLeft) or "paused"
+            print(string.format("%s %-9s %.6f %s %.6f %.6f %s", MONTHS[month], place, s.progress, left, s.temperature, s.rate, s.place))
         end
     end
 end

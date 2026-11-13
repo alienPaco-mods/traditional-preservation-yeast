@@ -37,12 +37,14 @@ end
 -- Temperature
 check("best from 18 to 30 C", Y.cultureRate(18) == 1 and Y.cultureRate(30) == 1)
 check("slower in a cool room", math.abs(Y.cultureRate(10) - 0.4) < 1e-9)
-check("and crawls near freezing without stopping", math.abs(Y.cultureRate(-20) - 0.05) < 1e-9)
+check("and crawls near freezing without stopping", math.abs(Y.cultureRate(1) - 0.12) < 1e-9)
+check("frozen it pauses", Y.cultureRate(0) == 0 and Y.cultureRate(-20) == 0)
 check("heat hurts it too", Y.cultureRate(38) < 0.4)
 Y.SENSITIVITY = 0
 check("sensitivity off runs at full speed in any weather", Y.cultureRate(-20) == 1 and Y.cultureRate(40) == 1)
 Y.SENSITIVITY = 1.5
-check("harsh never stops it", Y.cultureRate(-20) >= Y.MIN_RATE)
+check("harsh never stops it above freezing", Y.cultureRate(1) >= Y.MIN_RATE and Y.cultureRate(45) >= Y.MIN_RATE)
+check("but frozen is frozen on harsh too", Y.cultureRate(-1) == 0)
 Y.SENSITIVITY = 1
 check("a basement swings two fifths as far as the ground", Y.placeTemperature({ temperature = -15, seasonTemperature = -5, groundTemperature = -10 }, "Basement") == 2)
 check("a room is the season's mean, 2 C warmer in a cold one", Y.placeTemperature({ temperature = 0, seasonTemperature = 5 }, "Sheltered") == 7 and Y.placeTemperature({ temperature = 0, seasonTemperature = 25 }, "Sheltered") == 25)

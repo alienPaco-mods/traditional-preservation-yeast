@@ -1,7 +1,7 @@
 name=Traditional Preservation (Yeast)
 id=TraditionalPreservationYeast
 author=alienPaco
-modversion=0.4.14
+modversion=0.4.15
 versionMin=42.22
 description=Build a Fermenting Shelf and ferment flour and 0.3 L water in a glass jar into vanilla yeast, in about five in-game days at a good temperature. B42 prototype.
 icon=icon.png
