@@ -57,10 +57,12 @@ Y.getLedger().seasonTemperature, Y.getLedger().groundTemperature = settle(days)(
 local seconds = Y.FERMENT_HOURS * SECONDS_PER_HOUR
 
 -- One culture per place, started on the first day of each month, plus one that goes down to the basement
--- halfway through its first day. Updated every in-game hour, as an open window would.
+-- halfway through its first day, and two by a fire that never goes out: under an open roof and in the open.
+-- Updated every in-game hour, as an open window would.
+local FIRES = { "HearthCovered", "HearthOpen" }
 local runs = {}
 local function startRuns(index)
-    for _, place in ipairs({ "Open", "Sheltered", "Loft", "Basement", "Moved" }) do
+    for _, place in ipairs({ "Open", "Sheltered", "Loft", "Basement", "Moved", FIRES[1], FIRES[2] }) do
         local data = recipeData(seconds)
         Y.onFermentStart(data)
         data.modData.place = place == "Moved" and "Sheltered" or place
@@ -102,16 +104,17 @@ local Weather = require "TraditionalPreservationCore/Weather"
 local gridDays = string.format("%.2f", Y.FERMENT_HOURS / Y.cultureRate(Weather.GRID_ROOM_C) / 24)
 
 print(string.format("Days for one culture (%d hours at full speed), started on the first of the month", Y.FERMENT_HOURS))
-print("| Month | Outdoors | Indoors | Indoors, grid on | Loft | Basement | Indoors, then basement |")
-print("|---|---|---|---|---|---|---|")
+print("| Month | Outdoors | Indoors | Indoors, grid on | Loft | Basement | Indoors, then basement | By a fire, under a roof | By a fire, in the open |")
+print("|---|---|---|---|---|---|---|---|---|")
 for month = 1, 12 do
-    print(string.format("| %s | %s | %s | %s | %s | %s | %s |", MONTHS[month],
-        cell(month, "Open"), cell(month, "Sheltered"), gridDays, cell(month, "Loft"), cell(month, "Basement"), cell(month, "Moved")))
+    print(string.format("| %s | %s | %s | %s | %s | %s | %s | %s | %s |", MONTHS[month],
+        cell(month, "Open"), cell(month, "Sheltered"), gridDays, cell(month, "Loft"), cell(month, "Basement"), cell(month, "Moved"),
+        cell(month, FIRES[1]), cell(month, FIRES[2])))
 end
--- By a fire the temperature holds while the fuel lasts, whatever the month.
+-- By a fire indoors the temperature holds while the fuel lasts, whatever the month.
 local Hearth = require "TraditionalPreservationCore/Hearth"
 for _, place in ipairs({ Hearth.PLACE, Hearth.EMBERS }) do
-    print(string.format("%s (%d C), any month: %.2f days", place, Hearth.fireC(place),
+    print(string.format("%s indoors (%d C), any month: %.2f days", place, Hearth.fireC(place),
         Y.FERMENT_HOURS / Y.cultureRate(Hearth.fireC(place)) / 24))
 end
 

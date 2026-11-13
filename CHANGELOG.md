@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.14
+- **The realism pass's Core part reaches the shelf** (TP Core, 2026-11-13): an unheated room or loft is 2 C warmer in the cold months (a January culture indoors about 59 days, was 72); a fire under an open roof or in the open warms the air it stands in instead of holding 28 C (indoors unchanged: 5 days). `tools/season_report.lua` gains *By a fire, under a roof* and *in the open* columns (January: about 11 and 20 days). Test `test_ferment.lua` follows the warmer room. The guide's tables wait for the culture's frozen stop (ROADMAP, the curve edits), to be regenerated once.
+
 ## 0.4.13
 - **The Yearly Plan** (guide chapter 11, user 2026-11-13): culturing by place, as the game's planting seasons: season, best and poor months, out of season, and the days at best, from the Baker's Almanac. The Tester's Toolkit is now chapter 12.
 - **Docs pass, sweep step G** (2026-11-12): the Baker's Almanac and the README's table regenerated from `tools/season_report.lua` (both sampled years; they were narrower than the old ranges), with a Loft column and the grid's 5 days; the days quoted in the text follow it; `TPY.weather()` lists the loft and *In a shed*.
