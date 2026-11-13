@@ -66,8 +66,8 @@ That's it. One culture gives one full Yeast packet (10 uses).
 ## 5. Secrets & Hidden Features
 
 - **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
-- **Warmth matters.** Best at 18–30 C. An unheated room follows the season, so a winter kitchen can stretch 5 days to two and a half months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, 8 or 9 days from July to October.
-- **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds it at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Rain doesn't matter. Hover a fermenting culture for its real time left.
+- **Warmth matters.** Best at 18–30 C. An unheated room follows the season, and at 0 C and below a culture stops and waits (*Paused here (frozen)*), so a culture started in a winter kitchen on the first of January takes about three months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, 8 or 9 days from July to October.
+- **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds an indoor shelf at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Outside, the air carries the heat off (TP Core's guide, chapter 7): in January a culture takes about 11 days by a porch fire and 20 by a campfire in the open. Hover a fermenting culture for its real time left.
 - **While the grid is on**, a room is 22 C, as vanilla's are: 5 days.
 - **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
 - **It's real vanilla Yeast**, so it works in bread, baking and other mods' recipes (including the Vinegar mod's fermentation vessel).
@@ -77,28 +77,30 @@ That's it. One culture gives one full Yeast packet (10 uses).
 
 ## 6. The Baker's Almanac
 
-Days a culture takes, by the month it's started (the grid off; the game's sampled weather, two years where it has them):
+Days a culture takes, started on the first of the month (the grid off; the game's sampled weather):
 
-| Month | Open air | Indoors, or under an open roof | Loft | Basement | By a fire, or banked embers |
-|---|---|---|---|---|---|
-| Jan | 51–58 | 67–72 | 67–72 | 23–24 | 5 |
-| Feb | 40–44 | 51–56 | 51–56 | 25 | 5 |
-| Mar | 27 | 36–37 | 36–37 | 23–24 | 5 |
-| Apr | 15 | 22–23 | 22–23 | 19 | 5 |
-| May | 8 | 10–11 | 10–11 | 15 | 5 |
-| Jun | 5–6 | 5–6 | 5 | 11 | 5 |
-| Jul | 6 | 5 | 5 | 9 | 5 |
-| Aug | 5–7 | 5 | 5 | 8 | 5 |
-| Sep | 6–7 | 6 | 5 | 8 | 5 |
-| Oct | 13 | 10 | 9 | 9 | 5 |
-| Nov | 42 | 32 | 32 | 12 | 5 |
-| Dec | 62 | 78 | 78 | 17 | 5 |
+| Month | Open air | Indoors | Loft | Basement | By a fire, under a roof | By a fire, in the open |
+|---|---|---|---|---|---|---|
+| Jan | 77 | 91 | 91 | 24 | 11 | 20 |
+| Feb | 54 | 61 | 61 | 25 | 8 | 13 |
+| Mar | 29 | 32 | 32 | 24 | 8 | 10 |
+| Apr | 16 | 17 | 17 | 19 | 5 | 6 |
+| May | 9 | 9 | 9 | 16 | 5 | 5 |
+| Jun | 5 | 5 | 5 | 11 | 5 | 5 |
+| Jul | 6 | 5 | 5 | 9 | 5 | 5 |
+| Aug | 7 | 5 | 5 | 8 | 5 | 5 |
+| Sep | 7 | 6 | 5 | 8 | 5 | 5 |
+| Oct | 13 | 8 | 7 | 9 | 5 | 6 |
+| Nov | 96 | 21 | 21 | 12 | 5 | 8 |
+| Dec | 92 | 106 | 106 | 17 | 8 | 21 |
 
-**While the grid is on**, a room or a loft is 22 C: **5 days in any month**.
+**By a fire or banked embers indoors**, or in a room or loft **while the grid is on** (22 C): **5 days in any month**. Under an open roof a shelf has no room's 2 C: as slow as indoors, or slower, from October to April.
 
-> *Margin note:* indoors is slower than open air in winter. An unheated house holds the cold average, while a sunny afternoon outside still warms the jar for a few hours.
+> *Margin note:* most of a winter culture's three months are spent waiting. An unheated room in January sits a little below freezing, and the jar is *Paused here (frozen)* until a thaw. It starts again where it stopped, none the worse.
 
-> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) reads as indoors, plus three tenths of whatever the 10-day average is above 10 C: the sun on the roof (about 24 C in a 21 C July, no warmer than a room from October to April); 22 C while the power grid is on. A shelf up there keeps the Indoors column from October to April and saves up to a day in May, September and October.
+> *Margin note:* indoors is slower than open air from December to March. An unheated house holds the cold average, below freezing, while a sunny afternoon outside still thaws the jar for a few hours. In November it's the other way round: the house still holds October's warmth while the nights outside already freeze.
+
+> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) reads as indoors, plus three tenths of whatever the 10-day average is above 10 C: the sun on the roof (about 24 C in a 21 C July, no warmer than a room from October to April); 22 C while the power grid is on. A shelf up there keeps the Indoors column from October to April and saves up to a day in September and October.
 
 > *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
@@ -123,7 +125,7 @@ Days a culture takes, by the month it's started (the grid off; the game's sample
 | 5 C | 20% | about 25 days |
 | 35 C | 60% | about 8 days |
 
-> *Margin note:* a culture never dies of cold here, it just waits. A shelf in an unheated winter kitchen will get there in the end. It just takes two months or more.
+> *Margin note:* a culture never dies of cold here, it just waits. At 0 C and below it stops altogether (*Paused here (frozen)*) and starts again when it thaws. A shelf in an unheated winter kitchen will get there in the end. It just takes three months or more.
 
 ### Why it works the way it does
 
@@ -176,11 +178,12 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 
 | Process | Season | Best months | Poor months | Out of season | Where, at its best | Takes, at its best |
 |---|---|---|---|---|---|---|
-| **Culturing in the open air** | April to October | May, June, July, August, September | April (15 days), October (13) | November to March: 40 to 62 days | A shelf outdoors | 5 to 8 days |
-| **Culturing indoors**, or under an open roof | May to October | June, July, August, September | May, October (10 to 11 days) | November to April: 51 to 78 days | A shelf in a room or porch | 5 to 6 days |
-| **Culturing in a loft** | May to October | June, July, August, September, October | May (10 to 11 days) | November to April, as indoors | A shelf on the top storey | 5 days; 9 in October |
-| **Culturing in a basement** | All year | July, August, September, October | November to June (12 to 25 days): yet from November to March still the quickest place without a fire | None | A shelf below ground | 8 to 9 days |
-| **Culturing by a fire or banked embers**, or in a powered room (22 C) | All year | Any | None | None | Within 2 tiles of a lit fire, a banked Hearth or Firebox | 5 days |
+| **Culturing in the open air** | April to October | May, June, July, August, September | April (16 days), October (13) | November to March: 29 to 96 days | A shelf outdoors | 5 to 8 days |
+| **Culturing indoors**, or under an open roof | May to October | June, July, August, September | May (9 days), October (8) | November to April: 17 to 106 days | A shelf in a room or porch | 5 to 6 days |
+| **Culturing in a loft** | May to October | June, July, August, September, October | May (9 days) | November to April, as indoors | A shelf on the top storey | 5 days; 7 in October |
+| **Culturing in a basement** | All year | July, August, September, October | November to June (11 to 25 days): yet from December to March still the quickest place without a fire | None | A shelf below ground | 8 to 9 days |
+| **Culturing by a fire or banked embers indoors**, or in a powered room (22 C) | All year | Any | None | None | Within 2 tiles of a lit fire, a banked Hearth or Firebox | 5 days |
+| **Culturing by a fire outside** (a porch or a campfire) | All year | April to November | December to March (8 to 21 days) | None | Within 2 tiles of a lit fire, under a roof | 5 days |
 
 > *Margin note:* the baker's year in one line: the open air in spring, anywhere in summer, the cellar in autumn, the hearth in winter. A full summer shelf gives 5 packets, 50 uses, every 5 days: stock up for the winter's bread and the vinegar vessel.
 
