@@ -222,7 +222,7 @@ check("anything else gets no block", shelfInfo({ getSprite = function() return {
 
 -- Slots: five cultures, each needing two output slots
 local function shelfSlot(stored, freeOutputs, sprite)
-    local logic = { getFreeOutputSlotCount = function() return freeOutputs end }
+    local logic = { getFreeOutputSlotCount = function() return freeOutputs end, getCurrentRecipe = function() return nil end }
     local entity = {
         getSprite = function() return { getName = function() return sprite or "traditionalpreservationyeast_01_0" end } end,
         getComponent = function() return logic end,
