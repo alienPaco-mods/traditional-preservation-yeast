@@ -50,6 +50,9 @@ end
 
 UI.progressTooltips({ FermentCulture = drawCultureTooltip })
 
+-- The shelf is not put down in front of a door (TP Core's Doors).
+UI.keepDoorsFree(Tiles.STATIONS)
+
 -- The shelf's block: where it stands, the temperature and rate there, a bar for each running batch and what waits.
 -- A finished culture is one Yeast and one Empty Jar, so the larger count is the cultures not yet taken.
 local function shelfInfo(entity)

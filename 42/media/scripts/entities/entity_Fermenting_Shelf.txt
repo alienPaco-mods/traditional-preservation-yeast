@@ -30,6 +30,7 @@ module TraditionalPreservationYeast
         }
         component SpriteConfig
         {
+            OnIsValid = TraditionalPreservationCore.doorFits,
             health = 100,
             skillBaseHealth = 20,
             needToBeAgainstWall = true,

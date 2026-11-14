@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.18
+**No station in front of a door** (user's pick, 2026-11-14, after TP Core's in-game step 146b): the Fermenting Shelf can't be built or put down on the tile in front of a door (TP Core's `Doors`): its build recipe asks `TraditionalPreservationCore.doorFits`, and `UI.keepDoorsFree(Tiles.STATIONS)`. In-game step 147 of TP Core's `TESTING_GUIDE.md` passed (INGAME_PASS 146).
+
 ## 0.4.17
 Refactor with TP Core's Hearth.lua split (2026-11-14): `Y.placeTemperature` is `Weather.placeTemperature` (TP Core dropped the `Hearth.placeTemperature` alias). Nothing changes in game; tests and golden results unchanged.
 
