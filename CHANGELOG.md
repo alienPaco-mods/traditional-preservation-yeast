@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.17
+Refactor with TP Core's Hearth.lua split (2026-11-14): `Y.placeTemperature` is `Weather.placeTemperature` (TP Core dropped the `Hearth.placeTemperature` alias). Nothing changes in game; tests and golden results unchanged.
+
 ## 0.4.16
 Guide and README: TP Core's Hearth and Firebox are the Stone Hearth (2026-11-14).
 

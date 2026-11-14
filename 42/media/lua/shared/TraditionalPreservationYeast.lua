@@ -25,7 +25,7 @@ Y.MIN_RATE = 0.02
 -- fire (or by banked embers), as Dairy's stations are (TP Core's Hearth); PLACES are the weather's, which the
 -- ledger keeps totals for.
 Y.PLACES = Weather.PLACES
-Y.placeTemperature = Hearth.placeTemperature
+Y.placeTemperature = Weather.placeTemperature
 Y.placeOf = Hearth.placeOf
 
 -- How fast a culture works at a temperature, 0 to 1, after the sandbox's sensitivity. Frozen it pauses (TP Core's
