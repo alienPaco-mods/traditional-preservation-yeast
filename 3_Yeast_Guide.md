@@ -67,7 +67,7 @@ That's it. One culture gives one full Yeast packet (10 uses).
 
 - **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
 - **Warmth matters.** Best at 18–30 C. An unheated room follows the season, and at 0 C and below a culture stops and waits (*Paused here (frozen)*), so a culture started in a winter kitchen on the first of January takes about three months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, 8 or 9 days from July to October.
-- **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Hearth) holds an indoor shelf at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Outside, the air carries the heat off (TP Core's guide, chapter 7): in January a culture takes about 11 days by a porch fire and 20 by a campfire in the open. Hover a fermenting culture for its real time left.
+- **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Stone Hearth) holds an indoor shelf at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Outside, the air carries the heat off (TP Core's guide, chapter 7): in January a culture takes about 11 days by a porch fire and 20 by a campfire in the open. Hover a fermenting culture for its real time left.
 - **While the grid is on**, a room is 22 C, as vanilla's are: 5 days.
 - **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
 - **It's real vanilla Yeast**, so it works in bread, baking and other mods' recipes (including the Vinegar mod's fermentation vessel).
@@ -182,7 +182,7 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 | **Culturing indoors**, or under an open roof | May to October | June, July, August, September | May (9 days), October (8) | November to April: 17 to 106 days | A shelf in a room or porch | 5 to 6 days |
 | **Culturing in a loft** | May to October | June, July, August, September, October | May (9 days) | November to April, as indoors | A shelf on the top storey | 5 days; 7 in October |
 | **Culturing in a basement** | All year | July, August, September, October | November to June (11 to 25 days): yet from December to March still the quickest place without a fire | None | A shelf below ground | 8 to 9 days |
-| **Culturing by a fire or banked embers indoors**, or in a powered room (22 C) | All year | Any | None | None | Within 2 tiles of a lit fire, a banked Hearth or Firebox | 5 days |
+| **Culturing by a fire or banked embers indoors**, or in a powered room (22 C) | All year | Any | None | None | Within 2 tiles of a lit fire, a banked Stone Hearth | 5 days |
 | **Culturing by a fire outside** (a porch or a campfire) | All year | April to November | December to March (8 to 21 days) | None | Within 2 tiles of a lit fire, under a roof | 5 days |
 
 > *Margin note:* the baker's year in one line: the open air in spring, anywhere in summer, the cellar in autumn, the hearth in winter. A full summer shelf gives 5 packets, 50 uses, every 5 days: stock up for the winter's bread and the vinegar vessel.

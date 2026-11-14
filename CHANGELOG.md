@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.16
+Guide and README: TP Core's Hearth and Firebox are the Stone Hearth (2026-11-14).
+
 ## 0.4.15
 - **Docs regenerated** (2026-11-13): the README's table, the Baker's Almanac and the Yearly Plan from `tools/season_report.lua` (the settled year: January indoors about 91 days, porch fire 11, campfire 20); the fire's 28 C is indoors only, outside the air's plus a lift; *Paused here (frozen)* in the README, guide and Workshop text.
 - **A frozen culture pauses** (realism pass L6, user 2026-11-13): at 0 C and below the culture stops (TP Core's `Weather.frozen`) and goes on once thawed, on Forgiving, Normal and Harsh alike; Off still ignores the weather. The 0.02 floor holds above freezing only. A January culture in an unheated room (about -1.6 C) now waits there: about 91 days started on the first (was 59), carried by the warmer days; the basement is unchanged. The popup and the shelf's info block say *Paused here (frozen)* instead of a time left. `tools/season_report.lua` prints a paused popup as such; golden re-recorded. Tests in `test_ferment.lua`. In-game step 118 of `TESTING_GUIDE.md`.
