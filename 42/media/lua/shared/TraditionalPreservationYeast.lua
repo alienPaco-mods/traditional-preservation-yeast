@@ -31,8 +31,7 @@ Y.placeOf = Hearth.placeOf
 -- How fast a culture works at a temperature, 0 to 1, after the sandbox's sensitivity. Frozen it pauses (TP Core's
 -- Weather.frozen); the floor holds above freezing only.
 function Y.cultureRate(celsius)
-    if Weather.frozen(celsius, Y.SENSITIVITY) then return 0 end
-    return Weather.scaled(Weather.curve(CULTURE_CURVE, celsius), Y.SENSITIVITY, Y.MIN_RATE)
+    return Weather.rate(CULTURE_CURVE, celsius, Y.SENSITIVITY, Y.MIN_RATE)
 end
 
 local KINDS = { [KIND] = function(celsius) return Y.cultureRate(celsius) end }
