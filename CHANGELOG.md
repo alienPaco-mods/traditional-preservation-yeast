@@ -1,6 +1,7 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.21
+- **Guide shortened** (2026-11-15): the warmth secrets point to the Almanac, the loft to TP Core's guide; repeated notes and a tip cut. Nothing changes in game.
 - **README says what is** (2026-11-15): no version tags or dev-machine paths; the tests line no longer lists older-save cultures (no such test). Nothing changes in game.
 - **Docs** (2026-11-15): decisions in this CHANGELOG are stated plainly, without attributions. Nothing changes in game.
 - **README** (2026-11-15): an opening paragraph and a status line.

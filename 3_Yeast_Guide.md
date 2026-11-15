@@ -66,12 +66,9 @@ That's it. One culture gives one full Yeast packet (10 uses).
 ## 5. Secrets & Hidden Features
 
 - **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
-- **Warmth matters.** Best at 18–30 C. An unheated room follows the season, and at 0 C and below a culture stops and waits (*Paused here (frozen)*), so a culture started in a winter kitchen on the first of January takes about three months. A **basement** swings less and runs a month behind (about 5 C from January to March, 13 C from July to September): 3 to 4 weeks in winter and early spring, 8 or 9 days from July to October.
-- **Set the shelf by a fire in winter.** Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Stone Hearth) holds an indoor shelf at 28 C, banked embers at 24 C: **5 days in any month**, for as long as the fuel lasts. Outside, the air carries the heat off (TP Core's guide, chapter 7): in January a culture takes about 11 days by a porch fire and 20 by a campfire in the open. Hover a fermenting culture for its real time left.
-- **While the grid is on**, a room is 22 C, as vanilla's are: 5 days.
+- **Warmth matters.** Best at 18–30 C; at 0 C and below a culture stops and waits (*Paused here (frozen)*). Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Stone Hearth) holds an indoor shelf at 28 C, banked embers at 24 C, for as long as the fuel lasts. The Almanac (chapter 6) has every place by month; hover a fermenting culture for its real time left.
 - **Your jar comes back**, always as a plain Empty Jar, even if you used a crafted one.
-- **It's real vanilla Yeast**, so it works in bread, baking and other mods' recipes (including the Vinegar mod's fermentation vessel).
-- **One packet is 10 uses.** Vanilla bread dough takes 1 use, so one culture is about 10 loaves.
+- **The Vinegar mod's fermentation vessel** takes it too: one full packet a run.
 
 ---
 
@@ -100,7 +97,7 @@ Days a culture takes, started on the first of the month (the grid off; the game'
 
 > *Margin note:* indoors is slower than open air from December to March. An unheated house holds the cold average, below freezing, while a sunny afternoon outside still thaws the jar for a few hours. In November it's the other way round: the house still holds October's warmth while the nights outside already freeze.
 
-> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) reads as indoors, plus three tenths of whatever the 10-day average is above 10 C: the sun on the roof (about 24 C in a 21 C July, no warmer than a room from October to April); 22 C while the power grid is on. A shelf up there keeps the Indoors column from October to April and saves up to a day in September and October.
+> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) has the sun on the roof (TP Core's guide, chapter 8). A shelf up there keeps the Indoors column from October to April and saves up to a day in September and October.
 
 > *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
@@ -125,8 +122,6 @@ Days a culture takes, started on the first of the month (the grid off; the game'
 | 5 C | 20% | about 25 days |
 | 35 C | 60% | about 8 days |
 
-> *Margin note:* a culture never dies of cold here, it just waits. At 0 C and below it stops altogether (*Paused here (frozen)*) and starts again when it thaws. A shelf in an unheated winter kitchen will get there in the end. It just takes three months or more.
-
 ### Why it works the way it does
 
 - **Where does the yeast come from?** It's already there. Wild yeasts live on the grain and in the air, and flour and water give them food and a home. Feed them and wait, and they take over the jar.
@@ -144,7 +139,6 @@ Days a culture takes, started on the first of the month (the grid off; the game'
 
 ## 8. Tips
 
-- **Keep the shelf full.** 5 cultures every 5 days is 50 yeast uses a cycle, plenty for a household.
 - **Stagger your batches** (press Craft at different times) to always have fresh yeast coming.
 - **Put a shelf in the basement for autumn and winter.** About 9 days a culture in October, 12 in November, 17 in December and 3 to 4 weeks from January to March: steadier than any unheated room.
 - **Flour is the real cost.** 5 flour uses per culture. Plan your wheat harvest with yeast in mind.
@@ -185,7 +179,7 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 | **Culturing by a fire or banked embers indoors**, or in a powered room (22 C) | All year | Any | None | None | Within 2 tiles of a lit fire, a banked Stone Hearth | 5 days |
 | **Culturing by a fire outside** (a porch or a campfire) | All year | April to November | December to March (8 to 21 days) | None | Within 2 tiles of a lit fire, under a roof | 5 days |
 
-> *Margin note:* the baker's year in one line: the open air in spring, anywhere in summer, the cellar in autumn, the hearth in winter. A full summer shelf gives 5 packets, 50 uses, every 5 days: stock up for the winter's bread and the vinegar vessel.
+> *Margin note:* the baker's year in one line: the open air in spring, anywhere in summer, the cellar in autumn, the hearth in winter. Stock up in summer for the winter's bread and the vinegar vessel.
 
 ---
 
