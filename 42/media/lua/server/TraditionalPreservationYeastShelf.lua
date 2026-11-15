@@ -32,21 +32,15 @@ function TraditionalPreservationYeastShelf.jarStates(waiting, batches, finished)
     return states
 end
 
--- A finished culture is on the shelf until both its yeast and its jar are taken.
+-- The finished cultures still on the shelf (TraditionalPreservationYeast.finishedCultures).
 local function countFinished(resources, logic)
-    local yeast, jars = 0, 0
+    local fullTypes = {}
     local outputs = Station.itemSlots(resources, logic:getOutputsGroupName(), ResourceIO.Output)
     for i = 0, outputs:size() - 1 do
         local stored = outputs:get(i):getStoredItems()
-        for j = 0, stored:size() - 1 do
-            if stored:get(j):getFullType() == "Base.Yeast" then
-                yeast = yeast + 1
-            else
-                jars = jars + 1
-            end
-        end
+        for j = 0, stored:size() - 1 do table.insert(fullTypes, stored:get(j):getFullType()) end
     end
-    return math.max(yeast, jars)
+    return TraditionalPreservationYeast.finishedCultures(fullTypes)
 end
 
 -- Also tells each running culture where its shelf stands, for its temperature.
@@ -80,8 +74,6 @@ local function refresh(shelf, entry)
 
     local waiting = Station.countItems(resources, logic:getInputsGroupName(), ResourceIO.Input)
     local states = TraditionalPreservationYeastShelf.jarStates(waiting, readBatches(logic, uiLogic, shelf), countFinished(resources, logic))
-    -- Shelves from before 0.3.0 show their jars as a single overlay.
-    if shelf:hasOverlaySprite() then shelf:setOverlaySprite(nil) end
     local names = {}
     for slot, state in ipairs(states) do names[slot] = jarSprite(faceIndex, slot - 1, state) end
     Station.showSprites(shelf, entry, faceIndex .. ":" .. table.concat(states, ","), names)

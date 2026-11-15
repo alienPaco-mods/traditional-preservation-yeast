@@ -16,10 +16,9 @@ dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 
 local check = H.check
 
-local function recipeData(time, elapsed)
-    local data = { modData = {}, elapsed = elapsed or 0 }
+local function recipeData(time)
+    local data = { modData = {}, elapsed = 0 }
     function data:getModData() return self.modData end
-    function data:getElapsedTime() return self.elapsed end
     function data:setElapsedTime(value) self.elapsed = value end
     function data:getRecipe() return { getTime = function() return time end } end
     return data
@@ -97,18 +96,14 @@ Y.advance(Y.getLedger(), hours, 22)
 Y.onFermentUpdate(away)
 check("time away from the shelf still counts", math.abs(away.elapsed - 30 * 3600) < 1)
 
-local old = recipeData(TIME, 3600)
-old.modData.fermentStartHour = hours - 20
-Y.onFermentUpdate(old)
-check("a culture from before temperature keeps its hours", math.abs(old.modData.done - 20) < 1e-6)
-local olderStill = recipeData(TIME, 7200)
-Y.onFermentUpdate(olderStill)
-check("even one with no start hour carries on from its progress", math.abs(olderStill.modData.done - 2) < 1e-6)
+local unstarted = recipeData(TIME)
+Y.onFermentUpdate(unstarted)
+check("a run its start hook never saw is left alone", unstarted.modData.done == nil and unstarted.elapsed == 0)
 
 local pooled = recipeData(TIME)
-pooled.modData = { done = 50, place = "Basement", fermentStartHour = 3 }
+pooled.modData = { done = 50, place = "Basement" }
 Y.onFermentStart(pooled)
-check("a reused recipe object starts clean", pooled.modData.done == 0 and pooled.modData.place == nil and pooled.modData.fermentStartHour == nil)
+check("a reused recipe object starts clean", pooled.modData.done == 0 and pooled.modData.place == nil)
 
 local status = Y.batchStatus({ done = 60, place = "Open" }, 120, { temperature = 10 })
 check("the popup shows progress and the real time left", status.progress == 0.5 and math.abs(status.hoursLeft - 150) < 1e-6 and math.abs(status.rate - 0.4) < 1e-9)

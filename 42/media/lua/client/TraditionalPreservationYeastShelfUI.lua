@@ -39,7 +39,7 @@ UI.slotRules{
 local function drawCultureTooltip(slot, tooltip)
     local data = slot.craftRecipeData
     local Y = TraditionalPreservationYeast
-    local status = Y.batchStatus(data:getModData(), data:getRecipe():getTime() / 3600, Y.getLedger())
+    local status = Y.batchStatus(data:getModData(), Weather.recipeHours(data), Y.getLedger())
     UI.drawTooltip(tooltip, function(layout)
         UI.addLine(layout, "IGUI_TraditionalPreservationYeast_Progress", UI.percent(status.progress))
         UI.addLine(layout, "IGUI_TraditionalPreservationYeast_TimeLeft", UI.timeText(status.hoursLeft, "IGUI_TraditionalPreservationYeast_Time"))
@@ -54,7 +54,6 @@ UI.progressTooltips({ FermentCulture = drawCultureTooltip })
 UI.keepDoorsFree(Tiles.STATIONS)
 
 -- The shelf's block: where it stands, the temperature and rate there, a bar for each running batch and what waits.
--- A finished culture is one Yeast and one Empty Jar, so the larger count is the cultures not yet taken.
 local function shelfInfo(entity)
     if not isShelf(entity) then return nil end
     local contents = StationInfo.contents(entity)
@@ -65,16 +64,14 @@ local function shelfInfo(entity)
     local temperature = Weather.placeTemperature(ledger, place)
     local batches = {}
     for _, batch in ipairs(contents.batches) do
-        local status = Y.batchStatus(batch.data:getModData(), batch.data:getRecipe():getTime() / 3600, ledger)
+        local status = Y.batchStatus(batch.data:getModData(), Weather.recipeHours(batch.data), ledger)
         table.insert(batches, { name = UI.say("IGUI_TraditionalPreservationYeast_InfoCultures", tostring(batch.count)),
             progress = status.progress, hoursLeft = status.hoursLeft })
     end
-    local yeast, jars = 0, 0
-    for _, item in ipairs(contents.finished) do
-        if item:getFullType() == "Base.Yeast" then yeast = yeast + 1 else jars = jars + 1 end
-    end
+    local fullTypes = {}
+    for _, item in ipairs(contents.finished) do table.insert(fullTypes, item:getFullType()) end
     return StationInfo.block({ place = place, temperature = temperature, rate = Y.cultureRate(temperature),
-        batches = batches, numbered = true, waiting = #contents.waiting, finished = math.max(yeast, jars) })
+        batches = batches, numbered = true, waiting = #contents.waiting, finished = Y.finishedCultures(fullTypes) })
 end
 
 StationInfo.add(shelfInfo)

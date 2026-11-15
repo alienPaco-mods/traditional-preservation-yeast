@@ -9,10 +9,12 @@ local Hearth = require "TraditionalPreservationCore/Hearth"
 
 Y.FERMENT_HOURS = 120  -- five 24-hour in-game days at the best temperature
 Y.MOD_DATA_KEY = "TraditionalPreservationYeast"
-local RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
-local SECONDS_PER_HOUR = 3600
--- One kind of work, so the ledger's totals are plain "Open", "OpenRate" and so on, as in saves from 0.3.
-local KIND = ""
+Y.LOG_TAG = "TraditionalPreservationYeast"   -- names the mod in Core's log lines
+Y.RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
+Y.YEAST = "Base.Yeast"
+-- One kind of work: the ledger's totals are "cultureOpen", "cultureOpenRate" and so on.
+Y.KIND = "culture"
+local KIND = Y.KIND
 
 -- A wild yeast culture is happiest in a warm kitchen, slows in the cold without dying, and suffers
 -- in real heat. { temperature, share of full speed } points, joined by straight lines.
@@ -34,9 +36,9 @@ function Y.cultureRate(celsius)
     return Weather.rate(CULTURE_CURVE, celsius, Y.SENSITIVITY, Y.MIN_RATE)
 end
 
-local KINDS = { [KIND] = function(celsius) return Y.cultureRate(celsius) end }
+local KINDS = { [KIND] = Y.cultureRate }
 
--- One total per place, under the plain place names ("Open", "OpenRate").
+-- One total per place ("cultureOpen", "cultureOpenRate").
 function Y.newLedger(now)
     return Weather.newLedger(now, KINDS)
 end
@@ -51,31 +53,22 @@ function Y.getLedger()
     return Weather.getLedger(Y.MOD_DATA_KEY, Y.newLedger)
 end
 
+-- A run's place, as the shelf's World last told it (Y.notePlace); the open air before then.
 local function runPlace(modData)
-    return modData.place or "Sheltered"
+    return modData.place or Weather.NEW_RUN_PLACE
 end
 
 -- The engine pools recipe data without clearing its ModData, so every run must set all of this.
 function Y.onFermentStart(craftRecipeData)
-    local modData = craftRecipeData:getModData()
-    Weather.startRun(modData, Y.getLedger(), KIND)
-    modData.fermentStartHour = nil
+    Weather.startRun(craftRecipeData:getModData(), Y.getLedger(), KIND)
 end
 
 -- Craft timers tick at a fixed speed whatever Day Length says, so this replaces their count with the
 -- work done at the shelf's temperature. It goes by where the shelf stood when last looked at (Y.notePlace).
 function Y.onFermentUpdate(craftRecipeData)
-    local ledger = Y.getLedger()
     local modData = craftRecipeData:getModData()
-    local now = getGameTime():getWorldAgeHours()
-    -- A batch from before temperature counted every hour in full: carry its hours over as done.
-    if not modData.done then
-        local started = modData.fermentStartHour or (now - craftRecipeData:getElapsedTime() / SECONDS_PER_HOUR)
-        modData.done = math.max(now - started, 0)
-        modData.last = Weather.mark({}, ledger, KIND)
-    end
-
-    Hearth.updateRun(craftRecipeData, ledger, KIND, runPlace(modData), Y.cultureRate)
+    if not modData.done then return end
+    Hearth.updateRun(craftRecipeData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
 end
 
 -- Brings a running culture up to now at the place it was last told.
@@ -94,6 +87,16 @@ function Y.batchStatus(modData, recipeHours, ledger)
     return Weather.batchStatus(modData.done or 0, recipeHours, ledger, runPlace(modData), Y.cultureRate)
 end
 
+-- A finished culture is one Yeast and one Empty Jar, and stays on the shelf until both are taken, so the larger
+-- count is the cultures not yet taken. fullTypes is a list of the finished items' full types.
+function Y.finishedCultures(fullTypes)
+    local yeast, jars = 0, 0
+    for _, fullType in ipairs(fullTypes) do
+        if fullType == Y.YEAST then yeast = yeast + 1 else jars = jars + 1 end
+    end
+    return math.max(yeast, jars)
+end
+
 -- Reads the sandbox's ferment time and sensitivity.
 function Y.applySandbox()
     local options = SandboxVars and SandboxVars.TraditionalPreservationYeast
@@ -105,7 +108,7 @@ end
 -- Sets the recipe's script time from the sandbox, so the crafting window shows the right length.
 function Y.applyFermentTime()
     Y.applySandbox()
-    Weather.setRecipeHours(RECIPE_NAME, Y.FERMENT_HOURS, "TraditionalPreservationYeast")
+    Weather.setRecipeHours(Y.RECIPE_NAME, Y.FERMENT_HOURS, Y.LOG_TAG)
 end
 
 Events.OnInitGlobalModData.Add(Y.applyFermentTime)

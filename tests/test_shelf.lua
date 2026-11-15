@@ -53,7 +53,6 @@ end
 local function recipeData(progress, count)
     local data = { modData = {}, progress = progress, count = count, elapsed = 0 }
     function data:getModData() return self.modData end
-    function data:getElapsedTime() return self.elapsed end
     function data:setElapsedTime(value) self.elapsed = value end
     function data:getRecipe()
         return { getTime = function() return 120 * 3600 end, getName = function() return "TraditionalPreservationYeast.FermentCulture" end }
@@ -79,7 +78,7 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
         end
         return list({ { getStoredItems = function() return list(items) end } })
     end
-    local object = { square = square(x, z), sprites = {}, clears = 0, overlay = true }
+    local object = { square = square(x, z), sprites = {}, clears = 0 }
     function object:getComponent(kind) return kind == "Resources" and resources or logic end
     function object:getSprite() return { getName = function() return "traditionalpreservationyeast_01_" .. faceIndex end } end
     function object:getSquare() return self.square end
@@ -87,8 +86,6 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     function object:isOutside() return outside end
     function object.square:isOutside() return outside end
     function object.square:isInARoom() return not outside end
-    function object:hasOverlaySprite() return self.overlay end
-    function object:setOverlaySprite(sprite) self.overlay = sprite ~= nil end
     function object:clearAttachedAnimSprite() self.sprites = {} self.clears = self.clears + 1 end
     function object:addAttachedAnimSpriteByName(name) table.insert(self.sprites, name) end
     return object
@@ -129,7 +126,6 @@ tick(30)
 check("each jar gets its sprite, finished first", table.concat(kitchen.sprites, " ") ==
     "traditionalpreservationyeast_01_46 traditionalpreservationyeast_01_30 traditionalpreservationyeast_01_14 "
     .. "traditionalpreservationyeast_01_18 traditionalpreservationyeast_01_22")
-check("an old shelf's single overlay goes", not kitchen.overlay)
 check("running cultures learn their place", halfway.modData.place == "Sheltered" and fresh.modData.place == "Sheltered")
 tick(30)
 check("an unchanged shelf is left alone", kitchen.clears == 1)
@@ -152,7 +148,7 @@ check("an unloaded shelf is dropped, not refreshed", #cellar.sprites == 0)
 H.setHours(110)
 H.fire("EveryTenMinutes")
 local ledger = Y.getLedger()
-check("the shelf file records the weather", ledger.temperature == 22 and near(ledger.Open, 10) and ledger.lastHour == 110)
+check("the shelf file records the weather", ledger.temperature == 22 and near(ledger.cultureOpen, 10) and ledger.lastHour == 110)
 
 -- Popup
 local running = recipeData(0, 1)
