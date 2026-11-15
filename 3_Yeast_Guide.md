@@ -201,7 +201,8 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 | `TPY.here()` | Which kind of place you're standing in. |
 | `TPY.age(hours)` | Gives every shelf this many hours of perfect fermenting weather. `TPY.age(120)` finishes a culture. |
 | `TPY.fast(hours)` | Test timer: a culture takes this many hours. `TPY.fast()` goes back to the sandbox time. |
-| `TPY.give(name, n)` | Spawns `n` of: `"culture"` (a Fermenting Culture) or `"flour"`. `TPY.give()` lists them. |
+| `TPY.give(name, n)` | Spawns `n` of: `"culture"` (a Fermenting Culture), `"flour"`, or any full type such as `"Base.Yeast"`. `TPY.give()` lists them. |
+| `TPY.kit(kind)` | The things a test needs: `"build"` (a hammer, 2 planks and 4 nails for the Fermenting Shelf), `"culture"` (5 flour, an empty jar and a bottle of water for one culture) or `"all"`. `TPY.kit()` lists them. |
 
 **Typical check:** `TPY.give("culture", 5)`, load the shelf and press Craft, then `TPY.age(60)`. The jars should turn amber at halfway, and `TPY.age(60)` again finishes them.
 
