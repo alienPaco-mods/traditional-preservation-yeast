@@ -1,5 +1,9 @@
 # Traditional Preservation (Yeast) — Build 42 prototype (v0.4.21)
 
+**Status: experimental.** Back up your save before enabling.
+
+Grow your own baker's yeast once the looted packets are gone: flour and water in a glass jar, left on a Fermenting Shelf for about five days at a good temperature, give the same vanilla Yeast you find in kitchens, and the jar back. The shelf works by its place: a warm room or a fire's side is quick, a cold one slow, and frost stops it.
+
 ## Install (Arch Linux / Steam)
 
 Copy the `TraditionalPreservationYeast` folder into `~/Zomboid/mods/`, so the metadata file is:

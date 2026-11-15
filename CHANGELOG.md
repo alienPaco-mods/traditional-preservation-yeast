@@ -1,6 +1,7 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.21
+- **README** (2026-11-15): an opening paragraph and a status line.
 - **README** (2026-11-15): its heading names 0.4.21 (was 0.4.13), as mod.info does.
 Refactor with TP Core's names (2026-11-15): TP Core's `Hearth` is `Fire`; the place by a fire is `Fireside` (the season report's line reads Fireside indoors). Nothing changes in game.
 
