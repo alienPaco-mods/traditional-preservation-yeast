@@ -59,7 +59,7 @@ local seconds = Y.FERMENT_HOURS * SECONDS_PER_HOUR
 -- One culture per place, started on the first day of each month, plus one that goes down to the basement
 -- halfway through its first day, and two by a fire that never goes out: under an open roof and in the open.
 -- Updated every in-game hour, as an open window would.
-local FIRES = { "HearthCovered", "HearthOpen" }
+local FIRES = { "FiresideCovered", "FiresideOpen" }
 local runs = {}
 local function startRuns(index)
     for _, place in ipairs({ "Open", "Sheltered", "Loft", "Basement", "Moved", FIRES[1], FIRES[2] }) do
@@ -112,10 +112,10 @@ for month = 1, 12 do
         cell(month, FIRES[1]), cell(month, FIRES[2])))
 end
 -- By a fire indoors the temperature holds while the fuel lasts, whatever the month.
-local Hearth = require "TraditionalPreservationCore/Hearth"
-for _, place in ipairs({ Hearth.PLACE, Hearth.EMBERS }) do
-    print(string.format("%s indoors (%d C), any month: %.2f days", place, Hearth.fireC(place),
-        Y.FERMENT_HOURS / Y.cultureRate(Hearth.fireC(place)) / 24))
+local Fire = require "TraditionalPreservationCore/Fire"
+for _, place in ipairs({ Fire.PLACE, Fire.EMBERS }) do
+    print(string.format("%s indoors (%d C), any month: %.2f days", place, Fire.fireC(place),
+        Y.FERMENT_HOURS / Y.cultureRate(Fire.fireC(place)) / 24))
 end
 
 print("")

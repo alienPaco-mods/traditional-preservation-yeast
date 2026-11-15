@@ -4,7 +4,7 @@ if not isDebugEnabled() then return end
 
 local Y = TraditionalPreservationYeast
 local Weather = require "TraditionalPreservationCore/Weather"
-local Hearth = require "TraditionalPreservationCore/Hearth"
+local Fire = require "TraditionalPreservationCore/Fire"
 TPY = {}
 
 local function say(text) print("[TPY] " .. text) end
@@ -27,10 +27,10 @@ function TPY.weather()
         say(string.format("%-9s %.1f C: %.0f%% speed, about %.1f days a culture", place, Y.placeTemperature(ledger, place),
             rate * 100, rate > 0 and Y.FERMENT_HOURS / rate / 24 or 0))
     end
-    for _, place in ipairs({ Hearth.PLACE, Hearth.EMBERS }) do
-        local rate = Y.cultureRate(Hearth.fireC(place))
+    for _, place in ipairs({ Fire.PLACE, Fire.EMBERS }) do
+        local rate = Y.cultureRate(Fire.fireC(place))
         say(string.format("%-9s %.1f C: %.0f%% speed, about %.1f days a culture (by the clock: TPY.age skips it)", place,
-            Hearth.fireC(place), rate * 100, Y.FERMENT_HOURS / rate / 24))
+            Fire.fireC(place), rate * 100, Y.FERMENT_HOURS / rate / 24))
     end
 end
 

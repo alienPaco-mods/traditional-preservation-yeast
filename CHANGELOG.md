@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.21
+Refactor with TP Core's names (2026-11-15): TP Core's `Hearth` is `Fire`; the place by a fire is `Fireside` (the season report's line reads Fireside indoors). Nothing changes in game.
+
 ## 0.4.20
 Refactor (user, 2026-11-15; refactor pass step c, Yeast): nothing changes in game. **Pre-release leftovers gone:** the carry-over for a culture from before temperature counted (`fermentStartHour`, hours worked out from the elapsed time; a run its start hook never saw is now left alone, as Vinegar's are) and the clearing of a pre-0.3.0 shelf's single overlay, with their tests. **The ledger's totals are named by their kind** (user's yes): `cultureOpen`, `cultureOpenRate` and so on (were the plain `Open`, `OpenRate` kept from 0.3); `Y.KIND` names it for `TPY.age` and `TPY.weather`. **A run's place before its World first sees it** is TP Core's `Weather.NEW_RUN_PLACE` (user's pick B, as Vinegar and Fish & Meat; was Sheltered): it only covers the moments before the shelf's first look, and the season report's numbers are unchanged. **Say it once:** `Y.finishedCultures` counts the cultures not yet taken (the shelf's sprites and its info block each had a copy); `Weather.recipeHours` reads a batch's recipe hours. **Named:** `Y.RECIPE_NAME` (the console had its own), `Y.YEAST`, `Y.LOG_TAG`. `KINDS` names `Y.cultureRate` directly. **New console command `TPY.kit(kind)`** (user, 2026-11-15): `build`, `culture`, or `all`; `TPY.kit()` lists them. `TPY.give` takes any full type too. test_console checks both. Tests pass; the season report's golden changes only in the ledger's key names (every number the same), recorded anew. In-game step 161 of TP Core's `TESTING_GUIDE.md` (INGAME_PASS 160).
 

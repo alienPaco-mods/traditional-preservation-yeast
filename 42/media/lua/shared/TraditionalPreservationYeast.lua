@@ -5,7 +5,7 @@
 TraditionalPreservationYeast = TraditionalPreservationYeast or {}
 local Y = TraditionalPreservationYeast
 local Weather = require "TraditionalPreservationCore/Weather"
-local Hearth = require "TraditionalPreservationCore/Hearth"
+local Fire = require "TraditionalPreservationCore/Fire"
 
 Y.FERMENT_HOURS = 120  -- five 24-hour in-game days at the best temperature
 Y.MOD_DATA_KEY = "TraditionalPreservationYeast"
@@ -24,11 +24,11 @@ Y.MIN_RATE = 0.02
 
 -- Places and their temperatures are shared with the other Traditional Preservation mods; these are the
 -- mod's public names for them, used by the Dev console and the tests. A shelf within reach of a lit fire is by a
--- fire (or by banked embers), as Dairy's stations are (TP Core's Hearth); PLACES are the weather's, which the
+-- fire (or by banked embers), as Dairy's stations are (TP Core's Fire); PLACES are the weather's, which the
 -- ledger keeps totals for.
 Y.PLACES = Weather.PLACES
 Y.placeTemperature = Weather.placeTemperature
-Y.placeOf = Hearth.placeOf
+Y.placeOf = Fire.placeOf
 
 -- How fast a culture works at a temperature, 0 to 1, after the sandbox's sensitivity. Frozen it pauses (TP Core's
 -- Weather.frozen); the floor holds above freezing only.
@@ -68,18 +68,18 @@ end
 function Y.onFermentUpdate(craftRecipeData)
     local modData = craftRecipeData:getModData()
     if not modData.done then return end
-    Hearth.updateRun(craftRecipeData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
+    Fire.updateRun(craftRecipeData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
 end
 
 -- Brings a running culture up to now at the place it was last told.
 local function catchUpRun(modData)
-    Hearth.catchUpRun(modData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
+    Fire.catchUpRun(modData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
 end
 
 -- Tells a running culture where its shelf stands (the shelf's World, at each look): the place, and the fire's
 -- fuel when it is by one. Returns the place.
 function Y.notePlace(modData, shelf, now)
-    return Hearth.notePlace(modData, shelf, now, catchUpRun)
+    return Fire.notePlace(modData, shelf, now, catchUpRun)
 end
 
 -- How a running culture is doing, for its popup. hoursLeft assumes the temperature holds.

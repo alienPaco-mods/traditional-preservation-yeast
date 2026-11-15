@@ -76,17 +76,17 @@ check("a basement shelf carries on through a frost", downstairs.elapsed >= 24 * 
     and downstairs.elapsed > 2 * 24 * Y.cultureRate(-10) * 3600)
 
 -- By a fire: 28 C, full speed, by the clock until the fire's noted fuel ran out, then the room under it.
-local Hearth = require "TraditionalPreservationCore/Hearth"
+local Fire = require "TraditionalPreservationCore/Fire"
 local hearthside = recipeData(TIME)
 Y.onFermentStart(hearthside)
-hearthside.modData.place = Hearth.PLACE
+hearthside.modData.place = Fire.PLACE
 hearthside.modData.fireUntil = hours + 10
 hearthside.modData.under = "Open"
 weather(20, -10)
 Y.onFermentUpdate(hearthside)
 check("by a fire in a frost: 10 hours at full speed, then 10 in the frost",
     math.abs(hearthside.elapsed - (10 + 10 * Y.cultureRate(-10)) * 3600) < 1)
-check("banked embers (24 C) are full speed too", Y.cultureRate(Y.placeTemperature(Y.getLedger(), Hearth.EMBERS)) == 1)
+check("banked embers (24 C) are full speed too", Y.cultureRate(Y.placeTemperature(Y.getLedger(), Fire.EMBERS)) == 1)
 
 local away = recipeData(TIME)
 Y.onFermentStart(away)
