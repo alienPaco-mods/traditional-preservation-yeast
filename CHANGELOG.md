@@ -1,6 +1,7 @@
 # Changelog: Traditional Preservation (Yeast)
 
 ## 0.4.21
+- **Guide** (2026-11-15): the loft keeps the Indoors column from November to April (was October); culturing in the open air takes 5 to 9 days at its best (May is 9). Nothing changes in game.
 - **Guide shortened** (2026-11-15): the warmth secrets point to the Almanac, the loft to TP Core's guide; repeated notes and a tip cut. Nothing changes in game.
 - **README says what is** (2026-11-15): no version tags or dev-machine paths; the tests line no longer lists older-save cultures (no such test). Nothing changes in game.
 - **Docs** (2026-11-15): decisions in this CHANGELOG are stated plainly, without attributions. Nothing changes in game.

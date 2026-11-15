@@ -97,7 +97,7 @@ Days a culture takes, started on the first of the month (the grid off; the game'
 
 > *Margin note:* indoors is slower than open air from December to March. An unheated house holds the cold average, below freezing, while a sunny afternoon outside still thaws the jar for a few hours. In November it's the other way round: the house still holds October's warmth while the nights outside already freeze.
 
-> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) has the sun on the roof (TP Core's guide, chapter 8). A shelf up there keeps the Indoors column from October to April and saves up to a day in September and October.
+> *Margin note:* a **loft** (the top storey: a room upstairs with no room over it) has the sun on the roof (TP Core's guide, chapter 8). A shelf up there keeps the Indoors column from November to April and saves up to a day in September and October.
 
 > *Margin note:* the basement is the autumn baker's friend. It holds the summer's warmth into October and November, when an upstairs room has already gone cold; in May it is still cool from the winter.
 
@@ -172,7 +172,7 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 
 | Process | Season | Best months | Poor months | Out of season | Where, at its best | Takes, at its best |
 |---|---|---|---|---|---|---|
-| **Culturing in the open air** | April to October | May, June, July, August, September | April (16 days), October (13) | November to March: 29 to 96 days | A shelf outdoors | 5 to 8 days |
+| **Culturing in the open air** | April to October | May, June, July, August, September | April (16 days), October (13) | November to March: 29 to 96 days | A shelf outdoors | 5 to 9 days |
 | **Culturing indoors**, or under an open roof | May to October | June, July, August, September | May (9 days), October (8) | November to April: 17 to 106 days | A shelf in a room or porch | 5 to 6 days |
 | **Culturing in a loft** | May to October | June, July, August, September, October | May (9 days) | November to April, as indoors | A shelf on the top storey | 5 days; 7 in October |
 | **Culturing in a basement** | All year | July, August, September, October | November to June (11 to 25 days): yet from December to March still the quickest place without a fire | None | A shelf below ground | 8 to 9 days |
