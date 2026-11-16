@@ -37,9 +37,9 @@ UI.slotRules{
 -- Vanilla's popup on a running culture goes by the recipe's time alone, so it gets the real time left at
 -- the shelf's temperature instead.
 local function drawCultureTooltip(slot, tooltip)
-    local data = slot.craftRecipeData
+    local craftRecipeData = slot.craftRecipeData
     local Y = TraditionalPreservationYeast
-    local status = Y.batchStatus(data:getModData(), Weather.recipeHours(data), Y.getLedger())
+    local status = Y.batchStatus(craftRecipeData:getModData(), Weather.recipeHours(craftRecipeData), Y.getLedger())
     UI.drawTooltip(tooltip, function(layout)
         UI.addLine(layout, "IGUI_TraditionalPreservationYeast_Progress", UI.percent(status.progress))
         UI.addLine(layout, "IGUI_TraditionalPreservationYeast_TimeLeft", UI.timeText(status.hoursLeft, "IGUI_TraditionalPreservationYeast_Time"))
@@ -64,7 +64,7 @@ local function shelfInfo(entity)
     local temperature = Weather.placeTemperature(ledger, place)
     local batches = {}
     for _, batch in ipairs(contents.batches) do
-        local status = Y.batchStatus(batch.data:getModData(), Weather.recipeHours(batch.data), ledger)
+        local status = Y.batchStatus(batch.craftRecipeData:getModData(), Weather.recipeHours(batch.craftRecipeData), ledger)
         table.insert(batches, { name = UI.say("IGUI_TraditionalPreservationYeast_InfoCultures", tostring(batch.count)),
             progress = status.progress, hoursLeft = status.hoursLeft })
     end

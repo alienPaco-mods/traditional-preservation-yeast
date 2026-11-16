@@ -13,23 +13,23 @@ local FACE_COUNT = Tiles.FACE_COUNT
 local shelfKind = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
 local MAX_JARS = Tiles.JAR_SLOTS
 
-local STATE_FRESH, STATE_HALFWAY, STATE_DONE = Tiles.JAR_STATES.fresh, Tiles.JAR_STATES.halfway, Tiles.JAR_STATES.done
+local LOOK_FRESH, LOOK_HALFWAY, LOOK_DONE = Tiles.JAR_LOOKS.fresh, Tiles.JAR_LOOKS.halfway, Tiles.JAR_LOOKS.done
 local HALFWAY_PROGRESS = 0.5
 
 -- Oldest first: finished jars, then running batches by progress, then ones not started.
-function TraditionalPreservationYeastShelf.jarStates(waiting, batches, finished)
-    local states = {}
-    for _ = 1, finished do table.insert(states, STATE_DONE) end
+function TraditionalPreservationYeastShelf.jarLooks(waiting, batches, finished)
+    local looks = {}
+    for _ = 1, finished do table.insert(looks, LOOK_DONE) end
 
     table.sort(batches, function(a, b) return a.progress > b.progress end)
     for _, batch in ipairs(batches) do
-        local state = batch.progress >= HALFWAY_PROGRESS and STATE_HALFWAY or STATE_FRESH
-        for _ = 1, batch.count do table.insert(states, state) end
+        local look = batch.progress >= HALFWAY_PROGRESS and LOOK_HALFWAY or LOOK_FRESH
+        for _ = 1, batch.count do table.insert(looks, look) end
     end
 
-    for _ = 1, waiting do table.insert(states, STATE_FRESH) end
-    while #states > MAX_JARS do table.remove(states) end
-    return states
+    for _ = 1, waiting do table.insert(looks, LOOK_FRESH) end
+    while #looks > MAX_JARS do table.remove(looks) end
+    return looks
 end
 
 -- The finished cultures still on the shelf (TraditionalPreservationYeast.finishedCultures).
@@ -59,31 +59,31 @@ local function readBatches(logic, uiLogic, shelf)
 end
 
 -- The same numbering as jar_index in tools/build_shelf_tileset.py.
-local function jarSprite(faceIndex, slot, state)
-    return SPRITE_PREFIX .. (Tiles.FIRST_JAR + (state * MAX_JARS + slot) * FACE_COUNT + faceIndex)
+local function jarSprite(faceIndex, slot, look)
+    return SPRITE_PREFIX .. (Tiles.FIRST_JAR + (look * MAX_JARS + slot) * FACE_COUNT + faceIndex)
 end
 
-local function refresh(shelf, entry)
+local function refresh(shelf, sessionState)
     local resources = shelf:getComponent(ComponentType.Resources)
     local logic = shelf:getComponent(ComponentType.CraftLogic)
     local _, faceIndex = shelfKind(shelf)
     if not resources or not logic or not faceIndex then return end
 
-    local uiLogic = Station.uiLogic(shelf, entry, logic)
+    local uiLogic = Station.uiLogic(shelf, sessionState, logic)
     if not uiLogic then return end
 
     local waiting = Station.countItems(resources, logic:getInputsGroupName(), ResourceIO.Input)
-    local states = TraditionalPreservationYeastShelf.jarStates(waiting, readBatches(logic, uiLogic, shelf), countFinished(resources, logic))
+    local looks = TraditionalPreservationYeastShelf.jarLooks(waiting, readBatches(logic, uiLogic, shelf), countFinished(resources, logic))
     local names = {}
-    for slot, state in ipairs(states) do names[slot] = jarSprite(faceIndex, slot - 1, state) end
-    Station.showSprites(shelf, entry, faceIndex .. ":" .. table.concat(states, ","), names)
+    for slot, look in ipairs(looks) do names[slot] = jarSprite(faceIndex, slot - 1, look) end
+    Station.showSprites(shelf, sessionState, faceIndex .. ":" .. table.concat(looks, ","), names)
 end
 
 local tracker = Station.tracker({ sprites = Tiles.STATIONS, refresh = refresh })
 
 TraditionalPreservationYeastShelf.track = tracker.track
 
-Weather.record(function(now, climate)
+Weather.onReading(function(now, climate)
     local Y = TraditionalPreservationYeast
     Y.advance(Y.getLedger(), now, climate:getTemperature())
 end)

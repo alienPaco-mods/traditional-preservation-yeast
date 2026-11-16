@@ -17,11 +17,11 @@ dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 local check = H.check
 
 local function recipeData(time)
-    local data = { modData = {}, elapsed = 0 }
-    function data:getModData() return self.modData end
-    function data:setElapsedTime(value) self.elapsed = value end
-    function data:getRecipe() return { getTime = function() return time end } end
-    return data
+    local craftRecipeData = { modData = {}, elapsed = 0 }
+    function craftRecipeData:getModData() return self.modData end
+    function craftRecipeData:setElapsedTime(elapsedTime) self.elapsed = elapsedTime end
+    function craftRecipeData:getRecipe() return { getTime = function() return time end } end
+    return craftRecipeData
 end
 
 local Y = TraditionalPreservationYeast
@@ -81,7 +81,7 @@ local hearthside = recipeData(TIME)
 Y.onFermentStart(hearthside)
 hearthside.modData.place = Fire.PLACE
 hearthside.modData.fireUntil = hours + 10
-hearthside.modData.under = "Open"
+hearthside.modData.placeWithoutFire = "Open"
 weather(20, -10)
 Y.onFermentUpdate(hearthside)
 check("by a fire in a frost: 10 hours at full speed, then 10 in the frost",
@@ -98,14 +98,14 @@ check("time away from the shelf still counts", math.abs(away.elapsed - 30 * 3600
 
 local unstarted = recipeData(TIME)
 Y.onFermentUpdate(unstarted)
-check("a run its start hook never saw is left alone", unstarted.modData.done == nil and unstarted.elapsed == 0)
+check("a run its start hook never saw is left alone", unstarted.modData.workHours == nil and unstarted.elapsed == 0)
 
 local pooled = recipeData(TIME)
-pooled.modData = { done = 50, place = "Basement" }
+pooled.modData = { workHours = 50, place = "Basement" }
 Y.onFermentStart(pooled)
-check("a reused recipe object starts clean", pooled.modData.done == 0 and pooled.modData.place == nil)
+check("a reused recipe object starts clean", pooled.modData.workHours == 0 and pooled.modData.place == nil)
 
-local status = Y.batchStatus({ done = 60, place = "Open" }, 120, { temperature = 10 })
+local status = Y.batchStatus({ workHours = 60, place = "Open" }, 120, { temperature = 10 })
 check("the popup shows progress and the real time left", status.progress == 0.5 and math.abs(status.hoursLeft - 150) < 1e-6 and math.abs(status.rate - 0.4) < 1e-9)
 
 onInit()

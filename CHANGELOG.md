@@ -1,5 +1,8 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.22
+- **Naming sweep** (2026-11-16, TP Core's DEVGUIDE "How code is named"): the ledger's `Y.PROCESS` (was `KIND`), the shelf's jar `looks` (`jarLooks`, `Tiles.JAR_LOOKS`; the tile builder's `JAR_COLOURS`, rerun byte-identical). Tests and golden results unchanged; nothing changes in game. Saved keys follow TP Core's renames (`workHours`, `marks`, the Smokehouse stack's hours): pre-release, an old test save's stations read as new, so test on a fresh save.
+
 ## 0.4.21
 - **Guide** (2026-11-15): the loft keeps the Indoors column from November to April (was October); culturing in the open air takes 5 to 9 days at its best (May is 9). Nothing changes in game.
 - **Guide shortened** (2026-11-15): the warmth secrets point to the Almanac, the loft to TP Core's guide; repeated notes and a tip cut. Nothing changes in game.

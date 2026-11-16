@@ -2,7 +2,7 @@
 """Builds the Fermenting Shelf tileset (42/media/*.tiles and texturepacks/*.pack).
 
 The shelf itself is painted by shelf_art.py. This draws one jar per shelf slot in each
-fermentation state, which TraditionalPreservationYeastShelf.lua layers on top, then packs them all.
+fermentation look, which TraditionalPreservationYeastShelf.lua layers on top, then packs them all.
 
 Usage: python3 tools/build_shelf_tileset.py
 Needs Pillow. Rerun after editing the tables or colours here or in shelf_art.py.
@@ -32,9 +32,9 @@ CULTURE_LEVEL = 0.68
 
 GLASS_EDGE = (120, 120, 112, 130)
 GLASS = (205, 222, 226, 80)
-# Fresh, halfway, done, named in JAR_STATE_NAMES for the generated Tiles.lua.
-JAR_STATE_NAMES = ["fresh", "halfway", "done"]
-JAR_STATES = [
+# Fresh, halfway, done, named in JAR_LOOK_NAMES for the generated Tiles.lua.
+JAR_LOOK_NAMES = ["fresh", "halfway", "done"]
+JAR_COLOURS = [
     dict(culture=(206, 202, 182, 245), shade=(170, 166, 148, 245), top=(226, 222, 204, 255), bubble=(236, 232, 216, 200)),
     dict(culture=(196, 158, 88, 245), shade=(160, 124, 66, 245), top=(222, 190, 124, 255), bubble=(238, 214, 158, 220)),
     dict(culture=(140, 88, 42, 245), shade=(108, 66, 32, 245), top=(214, 182, 122, 255), bubble=(226, 196, 138, 230)),
@@ -69,17 +69,17 @@ def jar_props(facing):
     return [("Facing", facing)]
 
 
-def jar_index(face_index, slot, state):
+def jar_index(face_index, slot, look):
     """jarSprite in TraditionalPreservationYeastShelf.lua reads these numbers from the generated Tiles.lua."""
-    return len(FACES) + (state * len(JAR_POSITIONS) + slot) * len(FACES) + face_index
+    return len(FACES) + (look * len(JAR_POSITIONS) + slot) * len(FACES) + face_index
 
 
 TILE_PROPS = {}
 for face_index, face in enumerate(FACES):
     TILE_PROPS[face_index] = shelf_props(face)
     for slot in range(len(JAR_POSITIONS)):
-        for state in range(len(JAR_STATES)):
-            TILE_PROPS[jar_index(face_index, slot, state)] = jar_props(face)
+        for look in range(len(JAR_COLOURS)):
+            TILE_PROPS[jar_index(face_index, slot, look)] = jar_props(face)
 
 
 def draw_jar(layer, cx, base_y, colours):
@@ -138,10 +138,10 @@ def jar_spots(face):
     return sorted(spots, key=lambda spot: spot[1])
 
 
-def draw_jar_tile(face, slot, state):
+def draw_jar_tile(face, slot, look):
     layer = pzart.new_layer(SUPERSAMPLE)
     cx, base_y = jar_spots(face)[slot]
-    draw_jar(layer, cx, base_y, JAR_STATES[state])
+    draw_jar(layer, cx, base_y, JAR_COLOURS[look])
     return pzart.shrink(layer)
 
 
@@ -154,7 +154,7 @@ def lua_tiles():
         "STATIONS": [prefix + str(index) for index in range(len(FACES))],
         "FIRST_JAR": jar_index(0, 0, 0),
         "JAR_SLOTS": len(JAR_POSITIONS),
-        "JAR_STATES": {name: state for state, name in enumerate(JAR_STATE_NAMES)},
+        "JAR_LOOKS": {name: look for look, name in enumerate(JAR_LOOK_NAMES)},
     }
 
 
@@ -167,15 +167,15 @@ def main():
     for index, face in enumerate(FACES):
         tiles[index] = paint_shelf(face)
         for slot in range(len(JAR_POSITIONS)):
-            for state in range(len(JAR_STATES)):
-                tiles[jar_index(index, slot, state)] = draw_jar_tile(face, slot, state)
+            for look in range(len(JAR_COLOURS)):
+                tiles[jar_index(index, slot, look)] = draw_jar_tile(face, slot, look)
     pzart.write_pack(media / "texturepacks" / f"{NAME}.pack", tiles, NAME, TILESET, PAGE_SIZE)
     pzart.write_tiles(media / f"{NAME}.tiles", [(TILESET, COLUMNS, ROWS)], TILE_PROPS)
     pzart.write_build_icon(tiles[0], media / "textures" / "Item_FermentingShelf.png")
     # The mod list shows a full shelf at every stage, from fresh to done.
     shelf = tiles[0].copy()
     for slot in range(len(JAR_POSITIONS)):
-        shelf.alpha_composite(tiles[jar_index(0, slot, slot * (len(JAR_STATES) - 1) // (len(JAR_POSITIONS) - 1))])
+        shelf.alpha_composite(tiles[jar_index(0, slot, slot * (len(JAR_COLOURS) - 1) // (len(JAR_POSITIONS) - 1))])
     pzart.write_mod_icon(shelf, media.parent / "icon.png")
     print(f"wrote {NAME}.pack and {NAME}.tiles to {media}")
 

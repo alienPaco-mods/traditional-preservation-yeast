@@ -23,7 +23,7 @@ function TPY.weather()
     say(string.format("Temperature now %.1f C, season (10-day average) %.1f C. A culture takes %.1f hours at full speed.",
         ledger.temperature or 0, ledger.seasonTemperature or 0, Y.FERMENT_HOURS))
     for _, place in ipairs(Y.PLACES) do
-        local rate = ledger[Y.KIND .. place .. "Rate"] or 0
+        local rate = ledger[Y.PROCESS .. place .. "Rate"] or 0
         say(string.format("%-9s %.1f C: %.0f%% speed, about %.1f days a culture", place, Y.placeTemperature(ledger, place),
             rate * 100, rate > 0 and Y.FERMENT_HOURS / rate / 24 or 0))
     end
@@ -41,7 +41,7 @@ end
 function TPY.age(hours)
     hours = hours or 24
     local ledger = Y.getLedger()
-    for _, place in ipairs(Y.PLACES) do ledger[Y.KIND .. place] = (ledger[Y.KIND .. place] or 0) + hours end
+    for _, place in ipairs(Y.PLACES) do ledger[Y.PROCESS .. place] = (ledger[Y.PROCESS .. place] or 0) + hours end
     say(string.format("Added %.0f hours of perfect weather. Shelves update within a few seconds.", hours))
 end
 

@@ -12,7 +12,7 @@ return {
     STATIONS = { "traditionalpreservationyeast_01_0", "traditionalpreservationyeast_01_1", "traditionalpreservationyeast_01_2", "traditionalpreservationyeast_01_3" },
     FIRST_JAR = 4,
     JAR_SLOTS = 5,
-    JAR_STATES = {
+    JAR_LOOKS = {
         fresh = 0,
         halfway = 1,
         done = 2,

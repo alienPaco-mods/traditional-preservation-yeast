@@ -51,13 +51,13 @@ local function square(x, z)
 end
 
 local function recipeData(progress, count)
-    local data = { modData = {}, progress = progress, count = count, elapsed = 0 }
-    function data:getModData() return self.modData end
-    function data:setElapsedTime(value) self.elapsed = value end
-    function data:getRecipe()
+    local craftRecipeData = { modData = {}, progress = progress, count = count, elapsed = 0 }
+    function craftRecipeData:getModData() return self.modData end
+    function craftRecipeData:setElapsedTime(elapsedTime) self.elapsed = elapsedTime end
+    function craftRecipeData:getRecipe()
         return { getTime = function() return 120 * 3600 end, getName = function() return "TraditionalPreservationYeast.FermentCulture" end }
     end
-    return data
+    return craftRecipeData
 end
 
 -- A shelf facing faceIndex, with waiting jars, running batches and finished output items.
@@ -66,7 +66,7 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     for _, batch in ipairs(batches) do logic.inProgress[batch] = { jar = batch.count } end
     function logic:getInputsGroupName() return "in" end
     function logic:getOutputsGroupName() return "out" end
-    function logic:getProgress(data) return data.progress end
+    function logic:getProgress(craftRecipeData) return craftRecipeData.progress end
     local items = {}
     for _, fullType in ipairs(outputs) do table.insert(items, { getFullType = function() return fullType end }) end
     local resources = {}
@@ -78,17 +78,17 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
         end
         return list({ { getStoredItems = function() return list(items) end } })
     end
-    local object = { square = square(x, z), sprites = {}, clears = 0 }
-    function object:getComponent(kind) return kind == "Resources" and resources or logic end
-    function object:getSprite() return { getName = function() return "traditionalpreservationyeast_01_" .. faceIndex end } end
-    function object:getSquare() return self.square end
-    function object:getObjectIndex() return 0 end
-    function object:isOutside() return outside end
-    function object.square:isOutside() return outside end
-    function object.square:isInARoom() return not outside end
-    function object:clearAttachedAnimSprite() self.sprites = {} self.clears = self.clears + 1 end
-    function object:addAttachedAnimSpriteByName(name) table.insert(self.sprites, name) end
-    return object
+    local shelf = { square = square(x, z), sprites = {}, clears = 0 }
+    function shelf:getComponent(componentType) return componentType == "Resources" and resources or logic end
+    function shelf:getSprite() return { getName = function() return "traditionalpreservationyeast_01_" .. faceIndex end } end
+    function shelf:getSquare() return self.square end
+    function shelf:getObjectIndex() return 0 end
+    function shelf:isOutside() return outside end
+    function shelf.square:isOutside() return outside end
+    function shelf.square:isInARoom() return not outside end
+    function shelf:clearAttachedAnimSprite() self.sprites = {} self.clears = self.clears + 1 end
+    function shelf:addAttachedAnimSpriteByName(name) table.insert(self.sprites, name) end
+    return shelf
 end
 
 local function tick(times)
@@ -122,7 +122,7 @@ local halfway, fresh = recipeData(0.6, 1), recipeData(0.1, 2)
 local kitchen = shelf(2, 1, 0, false, 1, { fresh, halfway }, { "Base.Yeast", "Base.EmptyJar" })
 loaders.traditionalpreservationyeast_01_2(kitchen)
 tick(30)
--- One done, one halfway, two fresh running, one fresh waiting: states 2,1,0,0,0 in slots 0-4 of face 2.
+-- One done, one halfway, two fresh running, one fresh waiting: looks 2,1,0,0,0 in slots 0-4 of face 2.
 check("each jar gets its sprite, finished first", table.concat(kitchen.sprites, " ") ==
     "traditionalpreservationyeast_01_46 traditionalpreservationyeast_01_30 traditionalpreservationyeast_01_14 "
     .. "traditionalpreservationyeast_01_18 traditionalpreservationyeast_01_22")
@@ -203,14 +203,14 @@ check("a culture that has just finished draws nothing", #lines == 0)
 
 -- The info block in the shelf's window: the kitchen shelf (indoors: the season's 22 C) with two batches, a culture
 -- waiting and one finished.
-halfway.modData.done, fresh.modData.done = 72, 12
+halfway.modData.workHours, fresh.modData.workHours = 72, 12
 local block = shelfInfo(kitchen)
 local rows = {}
 for _, row in ipairs(block.rows) do table.insert(rows, getText(row[1]) .. " " .. row[2]) end
 check("the block's rows", table.concat(rows, " | ") == "Place Indoors | Temperature 22 C | Working rate 100%")
 check("a numbered bar a batch, furthest along first", #block.bars == 2 and near(block.bars[1].share, 0.6)
     and block.bars[1].text == "1. Cultures: 1" and block.bars[2].text == "2. Cultures: 2")
-check("with its time left", block.bars[1].value == "60%, 2 d 0 h left")
+check("with its time left", block.bars[1].progressText == "60%, 2 d 0 h left")
 check("full speed is green", block.bars[1].colour[1] == 0.35)
 check("waiting, finished and the weather note", table.concat(block.notes, " | ") == "Loaded and not started: 1 (press Craft) | "
     .. "Finished and waiting to be taken: 1 | Times left assume the temperature holds as it is now.")

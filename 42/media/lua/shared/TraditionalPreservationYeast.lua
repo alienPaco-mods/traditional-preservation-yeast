@@ -13,8 +13,8 @@ Y.LOG_TAG = "TraditionalPreservationYeast"   -- names the mod in Core's log line
 Y.RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
 Y.YEAST = "Base.Yeast"
 -- One kind of work: the ledger's totals are "cultureOpen", "cultureOpenRate" and so on.
-Y.KIND = "culture"
-local KIND = Y.KIND
+Y.PROCESS = "culture"
+local PROCESS = Y.PROCESS
 
 -- A wild yeast culture is happiest in a warm kitchen, slows in the cold without dying, and suffers
 -- in real heat. { temperature, share of full speed } points, joined by straight lines.
@@ -36,16 +36,16 @@ function Y.cultureRate(celsius)
     return Weather.rate(CULTURE_CURVE, celsius, Y.SENSITIVITY, Y.MIN_RATE)
 end
 
-local KINDS = { [KIND] = Y.cultureRate }
+local PROCESSES = { [PROCESS] = Y.cultureRate }
 
 -- One total per place ("cultureOpen", "cultureOpenRate").
 function Y.newLedger(now)
-    return Weather.newLedger(now, KINDS)
+    return Weather.newLedger(now, PROCESSES)
 end
 
 -- Adds one stretch of weather to the totals.
 function Y.advance(ledger, now, temperature)
-    Weather.advance(ledger, now, temperature, KINDS)
+    Weather.advance(ledger, now, temperature, PROCESSES)
 end
 
 -- The ledger in global ModData, made on first use.
@@ -60,20 +60,20 @@ end
 
 -- The engine pools recipe data without clearing its ModData, so every run must set all of this.
 function Y.onFermentStart(craftRecipeData)
-    Weather.startRun(craftRecipeData:getModData(), Y.getLedger(), KIND)
+    Weather.startRun(craftRecipeData:getModData(), Y.getLedger(), PROCESS)
 end
 
 -- Craft timers tick at a fixed speed whatever Day Length says, so this replaces their count with the
 -- work done at the shelf's temperature. It goes by where the shelf stood when last looked at (Y.notePlace).
 function Y.onFermentUpdate(craftRecipeData)
     local modData = craftRecipeData:getModData()
-    if not modData.done then return end
-    Fire.updateRun(craftRecipeData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
+    if not modData.workHours then return end
+    Fire.updateRun(craftRecipeData, Y.getLedger(), PROCESS, runPlace(modData), Y.cultureRate)
 end
 
 -- Brings a running culture up to now at the place it was last told.
 local function catchUpRun(modData)
-    Fire.catchUpRun(modData, Y.getLedger(), KIND, runPlace(modData), Y.cultureRate)
+    Fire.catchUpRun(modData, Y.getLedger(), PROCESS, runPlace(modData), Y.cultureRate)
 end
 
 -- Tells a running culture where its shelf stands (the shelf's World, at each look): the place, and the fire's
@@ -84,7 +84,7 @@ end
 
 -- How a running culture is doing, for its popup. hoursLeft assumes the temperature holds.
 function Y.batchStatus(modData, recipeHours, ledger)
-    return Weather.batchStatus(modData.done or 0, recipeHours, ledger, runPlace(modData), Y.cultureRate)
+    return Weather.batchStatus(modData.workHours or 0, recipeHours, ledger, runPlace(modData), Y.cultureRate)
 end
 
 -- A finished culture is one Yeast and one Empty Jar, and stays on the shelf until both are taken, so the larger

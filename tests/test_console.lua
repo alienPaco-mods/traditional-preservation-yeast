@@ -33,7 +33,7 @@ check("weather names every place", (function()
 end)())
 check("here says where the player stands, not where nobody does", run("here"):find("Basement", 1, true) ~= nil)
 
-local key = Y.KIND .. Y.PLACES[1]
+local key = Y.PROCESS .. Y.PLACES[1]
 local before = Y.getLedger()[key] or 0
 run("age", 12)
 check("age adds its hours to every place", Y.getLedger()[key] == before + 12)
