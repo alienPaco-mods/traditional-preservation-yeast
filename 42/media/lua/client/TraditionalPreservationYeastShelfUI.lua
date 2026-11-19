@@ -31,6 +31,12 @@ ShelfUI.isShelf = isShelf
 
 local function say(key, ...) return UI.say(KEY .. key, ...) end
 
+-- The icon of an item by its full type, for the drop square (nil if the item is gone).
+local function itemIcon(fullType)
+    local script = getScriptManager():FindItem(fullType)
+    return script and script:getNormalTexture()
+end
+
 local function shelfNow(station)
     if TraditionalPreservationYeastWorld then TraditionalPreservationYeastWorld.refresh(station) end
     return Y.shelfNow(station)
@@ -212,7 +218,7 @@ function ShelfWindow:render()
           tooltip = #all > #done and say("TakeAllHelp") or nil, onClick = function() ShelfUI.take(playerObj, station, all) end },
     })
     y = self:dropZone(y, say("DropIdle"), function(items) return ShelfUI.dropJudge(Y.shelfOf(station), items) end,
-        function(take) ShelfUI.put(playerObj, station, take) end)
+        function(take) ShelfUI.put(playerObj, station, take) end, itemIcon(Y.FERMENTING))
     local notes = { say("NoteRefresh", tostring(Y.HUNGRY_HOURS), tostring(Y.OFF_HOURS)) }
     if view.hungry > 0 then table.insert(notes, 1, say("NoteHungry", tostring(view.hungry))) end
     if view.count == 0 then table.insert(notes, 1, say("NoteEmpty")) end

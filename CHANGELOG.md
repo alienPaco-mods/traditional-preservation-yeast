@@ -1,6 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.4
+- Fermenting Shelf Info's drop square shows a Fermenting Culture jar.
+
 ## 0.6.3
 - The window rows read the station's full name and Info (Fermenting Shelf Info), as vanilla's Fireplace Info and
   Generator Info; the window's title is the bare name. The short "Vessel Info", "Tub Info" and the like are gone.
