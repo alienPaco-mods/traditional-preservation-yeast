@@ -93,19 +93,19 @@ check("the culture kit has the recipe's flour and the refreshes', a jar of each 
     and counted("Base.EmptyJar") == 1 and counted("Base.ClayJar") == 1 and counted("Base.ClayJarGlazed") == 1 and filled.Water == 1)
 player.given = {}
 run("kit", "starters")
-check("the starters kit has an apple, a potato, a saucepan of a litre, two jars, flour and water", counted("Base.Apple") == 1
-    and counted("Base.Potato") == 1 and counted("Base.Saucepan") == 1 and counted("Base.EmptyJar") == 2
-    and counted("Base.Flour2") == 10 and filled.Water == 3)
+check("the starters kit has an apple, a potato, a pot of a litre, four jars, flour and water", counted("Base.Apple") == 1
+    and counted("Base.Potato") == 1 and counted("Base.Pot") == 1 and counted("Base.EmptyJar") == 4
+    and counted("Base.Flour2") == 20 and filled.Water == 3)
 player.given = {}
 run("kit", "cakes")
 check("the cakes kit has culture, cornmeal and a cloth's Sheet and Stones", counted("TraditionalPreservationYeast.ActiveCulture") == 2
     and counted("Base.Cornmeal2") == 6 and counted("Base.Sheet") == 1 and counted("Base.Stone2") == 2)
 player.given = {}
 run("kit", "hops")
-check("the hops kit has hops, a saucepan of a litre of water, a jar and flour", counted("Base.HopsDried") == 2
-    and counted("Base.Saucepan") == 1 and counted("Base.EmptyJar") == 1 and filled.Water == 4)
+check("the hops kit has hops, a pot of a litre of water, a jar and flour", counted("Base.HopsDried") == 2
+    and counted("Base.Pot") == 1 and counted("Base.EmptyJar") == 1 and filled.Water == 4)
 player.given = {}
 run("kit", "all")
-check("all gives every kit", counted("Base.Plank") == 2 and counted("Base.Flour2") == 45 and filled.Water == 8)
+check("all gives every kit", counted("Base.Plank") == 2 and counted("Base.Flour2") == 55 and filled.Water == 8)
 
 H.done()

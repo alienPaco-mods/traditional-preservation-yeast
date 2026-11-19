@@ -116,14 +116,14 @@ KITS.cakes = {
     items = { [Y.ACTIVE] = 2, ["Base.Cornmeal2"] = 6, ["Base.Sheet"] = 1, ["Base.Stone2"] = 2 },
 }
 KITS.hops = {
-    about = "an Active Culture, 2 Hops (Dried), a Saucepan of 1 L water, an empty Jar and 5 flour, for Steep Hops and Feed Culture",
+    about = "an Active Culture, 2 Hops (Dried), a Cooking Pot of 1 L water, an empty Jar and 5 flour, for Steep Hops and Feed Culture",
     items = { [Y.ACTIVE] = 1, ["Base.HopsDried"] = 2, ["Base.EmptyJar"] = 1, ["Base.Flour2"] = 5 },
-    litre = { ["Base.Saucepan"] = "Water" },
+    litre = { ["Base.Pot"] = "Water" },
 }
 KITS.starters = {
-    about = "an Apple, a Potato, a Saucepan of 1 L water, 2 Jars, 10 flour and a bottle of water, for Mash Potato in Water and Make Fermenting Culture with Fruit and with Potato Water",
-    items = { ["Base.Apple"] = 1, ["Base.Potato"] = 1, ["Base.EmptyJar"] = 2, ["Base.Flour2"] = 10 },
-    litre = { ["Base.Saucepan"] = "Water" },
+    about = "an Apple, a Potato, a Cooking Pot of 1 L water, 4 Jars, 20 flour and a bottle of water, for Mash Potato in Water, three Make Fermenting Culture with Potato Water (the pot's litre) and one with Fruit",
+    items = { ["Base.Apple"] = 1, ["Base.Potato"] = 1, ["Base.EmptyJar"] = 4, ["Base.Flour2"] = 20 },
+    litre = { ["Base.Pot"] = "Water" },
     filled = { ["Base.WaterBottle"] = "Water" },
 }
 local KIT_NAMES = { "build", "culture", "starters", "cakes", "hops" }

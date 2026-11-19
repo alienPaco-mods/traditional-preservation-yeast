@@ -109,7 +109,8 @@ Y.HOP_WATER, Y.HOP_TEA = "YeastHopWater", "YeastHopTea"
 Y.STEEP_LITRES = 1.0
 Y.BREW_HOURS = 0.25
 ItemFluid.turnsHot(Y.HOP_WATER, Y.HOP_TEA, Y.BREW_HOURS)
-local POTS = { ["Base.Pot"] = true, ["Base.PotForged"] = true, ["Base.Saucepan"] = true, ["Base.SaucepanCopper"] = true }
+-- The Cooking Pots (1.5 L); a saucepan holds 0.6 L, short of the litre.
+local POTS = { ["Base.Pot"] = true, ["Base.PotForged"] = true }
 
 -- Potato water: a Potato mashed into a pot of cold water (Mash Potato in Water) is Potato in Water, and kept steaming
 -- half an hour it is Potato Water, whose starch starts a culture quicker (Y.STARTS). One Potato to 1 L, as the hops.

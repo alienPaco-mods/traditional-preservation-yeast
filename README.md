@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.0)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.1)
 
 **Status: experimental.** Back up your save before enabling.
 
@@ -17,7 +17,7 @@ Enable **Traditional Preservation (Yeast)** for your existing save from
 ## How it works
 
 1. **Build a Fermenting Shelf** against a wall (Build menu, Furniture): 2 planks + 4 nails + any hammer (kept), Carpentry 2. Gives 10 Carpentry XP.
-2. **Make Fermenting Culture** (Cooking): 5 uses of flour + a jar holding at least 0.3 L water → 1 Fermenting Culture. Any of vanilla's jars: a **Jar** (found or crafted), a **Ceramic Jar** or a **Glazed Ceramic Jar**. Gives 3 Cooking XP. Two quicker starts (below): **with Fruit** and **with Potato Water**.
+2. **Make Fermenting Culture** (Cooking): 5 uses of flour + a jar holding at least a third of a litre of water → 1 Fermenting Culture. Any of vanilla's jars: a **Jar** (found or crafted), a **Ceramic Jar** or a **Glazed Ceramic Jar**. Gives 3 Cooking XP. Two quicker starts (below): **with Fruit** and **with Potato Water**.
 3. Right-click the shelf, *Put Fermenting Culture on the Shelf* (One or All), or drop cultures on the square in **Shelf Info**. It holds 5 jars, each on its own clock.
 4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar, all the shelf's at once (below).
 5. After five in-game days at a good temperature, *Take Done*: an **Active Culture** per jar, in the jar it went on in.
@@ -44,11 +44,11 @@ No vanilla recipes or loot distribution are changed. No hunger, calorie or yeast
 
 | Start | What goes in | Hours of work (plain 120) | Refreshes |
 |---|---|---|---|
-| Plain | 5 flour + 0.3 L water | 120 (5 days at a good temperature) | 4 |
+| Plain | 5 flour + a third of a litre of water | 120 (5 days at a good temperature) | 4 |
 | **Make Fermenting Culture with Fruit** | the same + an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots | 96 (4 days) | 3 |
-| **Make Fermenting Culture with Potato Water** | 5 flour + 0.3 L Potato Water | 84 (3.5 days) | 3 |
+| **Make Fermenting Culture with Potato Water** | 5 flour + a third of a litre of Potato Water | 84 (3.5 days) | 3 |
 
-The yeast on a fruit's skin gets it going; potato water's starch feeds it. **Mash Potato in Water** (Cooking): a Cooking Pot or Saucepan holding exactly 1 L of water and nothing else + 1 Potato → **Potato in Water**, which kept steaming on a stove or a fire for half an hour becomes **Potato Water**. 1 L starts three jars. The sandbox's Ferment Days sets the plain time; the starts keep their share (80% and 70%).
+The yeast on a fruit's skin gets it going; potato water's starch feeds it. **Mash Potato in Water** (Cooking): a Cooking Pot (or Forged Pot) holding exactly 1 L of water and nothing else + 1 Potato (a saucepan holds only 0.6 L) → **Potato in Water**, which kept steaming on a stove or a fire for half an hour becomes **Potato Water**. 1 L starts three jars, none left over. The sandbox's Ferment Days sets the plain time; the starts keep their share (80% and 70%).
 
 ### Keeping a culture
 
@@ -67,9 +67,9 @@ Days to Spent, made on the first of the month (`tools/season_report.lua`):
 
 ### Hops: keeping a culture going
 
-1. **Steep Hops** (Cooking): a Cooking Pot or Saucepan holding exactly 1 L of water and nothing else + 1 **Hops (Dried)** (vanilla's: hops dried on the Herb Drying Rack) → the water becomes **Hop Water**, in the same pot.
+1. **Steep Hops** (Cooking): a Cooking Pot (or Forged Pot) holding exactly 1 L of water and nothing else + 1 **Hops (Dried)** (vanilla's: hops dried on the Herb Drying Rack) → the water becomes **Hop Water**, in the same pot.
 2. Kept steaming on a stove or a fire for a quarter of an hour it becomes **Hop Tea**. 1 L feeds three cultures.
-3. **Feed Culture** (Cooking): an Active or Hopped Culture + an empty jar + 0.3 L of Hop Tea (in a pot, saucepan, jar, bottle or mug, kept) + 5 uses of flour → 2 **Fed Culture**, in the culture's own jar and the new one. Gives 3 Cooking XP.
+3. **Feed Culture** (Cooking): an Active or Hopped Culture + an empty jar + a third of a litre of Hop Tea (in a pot, saucepan, jar, bottle or mug, kept) + 5 uses of flour → 2 **Fed Culture**, in the culture's own jar and the new one. Gives 3 Cooking XP.
 4. Put them on the shelf: a Fed Culture rises in a day at the best temperature (by the shelf's own curve) → **Hopped Culture**, one a jar. It needs no refresh.
 
 A Hopped Culture keeps twice as long (7 fresh, 10 to Spent in a cellar: about 6 days at 20 C) and does everything an Active Culture does, feeding included. One carries the line on, the other goes to cakes, so a culture never has to be started from flour again while it is fed in time.

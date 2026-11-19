@@ -1,6 +1,16 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.1
+- **Fix:** Steep Hops and Mash Potato in Water take a Cooking Pot or Forged Pot only. Both need exactly 1 L of water,
+  and vanilla's Saucepan and Copper Saucepan hold 0.6 L, so they were listed but could never be used (user, session
+  56). The hops and starters kits give a Cooking Pot of 1 L (their saucepan was filled to 0.6 L only).
+- **A third of a litre** (0.33333, was 0.3; user) for Make Fermenting Culture (plain, with Fruit and with Potato
+  Water) and Feed Culture's Hop Tea: a litre makes three with none left in the container (the engine drops a fluid
+  under 0.0001 L; the third take still finds 0.33334 L, where 0.333 would leave a millilitre). One potato's Potato
+  Water starts three jars. The starters kit has
+  4 jars and 20 flour for it.
+
 ## 0.6.0
 - **The Fermenting Shelf off CraftLogic, and its second look** (2026-11-19, session 56; ROADMAP section 12; needs TP
   Core 0.1.31). No crafting window: the jars are the shelf's own record in its movableData (`tpyShelf`), one a culture,
