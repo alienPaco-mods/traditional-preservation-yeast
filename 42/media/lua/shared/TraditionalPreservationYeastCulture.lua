@@ -104,29 +104,29 @@ function Y.onCreateCakes(craftRecipeData, character)
 end
 
 -- Hops: a pot of cold water steeped with Hops (Dried) is Hop Water, and kept steaming a quarter of an hour it is Hop
--- Tea (TP Core's ItemFluid). One Hops to 1 L: all the pot's water steeps, so a pot holding more is refused.
+-- Tea (TP Core's ItemFluid). One Hops to a full pot (1.5 L) of clean water.
 Y.HOP_WATER, Y.HOP_TEA = "YeastHopWater", "YeastHopTea"
-Y.STEEP_LITRES = 1.0
+Y.STEEP_LITRES = 1.5
 Y.BREW_HOURS = 0.25
 ItemFluid.turnsHot(Y.HOP_WATER, Y.HOP_TEA, Y.BREW_HOURS)
--- The Cooking Pots (1.5 L); a saucepan holds 0.6 L, short of the litre.
+-- The Cooking Pots (1.5 L); a saucepan holds 0.6 L.
 local POTS = { ["Base.Pot"] = true, ["Base.PotForged"] = true }
 
 -- Potato water: a Potato mashed into a pot of cold water (Mash Potato in Water) is Potato in Water, and kept steaming
--- half an hour it is Potato Water, whose starch starts a culture quicker (Y.STARTS). One Potato to 1 L, as the hops.
+-- half an hour it is Potato Water, whose starch starts a culture quicker (Y.STARTS). One Potato to a pot, as the hops.
 Y.POTATO_SOAK, Y.POTATO_WATER = "YeastPotatoSoak", "YeastPotatoWater"
 Y.POTATO_BOIL_HOURS = 0.5
 ItemFluid.turnsHot(Y.POTATO_SOAK, Y.POTATO_WATER, Y.POTATO_BOIL_HOURS)
 
--- OnTest of Steep Hops and Mash Potato in Water: a pot holding nothing but water, 1 L of it at most (a hair over for
--- float error).
+-- OnTest of Steep Hops and Mash Potato in Water: a pot holding nothing but water (the recipe asks a full pot).
 function Y.canSteep(item)
     if not POTS[item:getFullType()] then return true end
-    local name, amount = ItemFluid.oneFluid(item:getFluidContainer())
-    return name == "Water" and amount <= Y.STEEP_LITRES + ItemFluid.AMOUNT_TOLERANCE_L
+    local name = ItemFluid.oneFluid(item:getFluidContainer())
+    return name == "Water"
 end
 
--- OnCreate of Steep Hops: the litre the recipe took comes back as Hop Water (or fluid), in the same pot.
+-- OnCreate of Steep Hops: the pot's water the recipe took (inputs are used before OnCreate) comes back as Hop Water
+-- (or fluid), in the same pot.
 function Y.onSteeped(craftRecipeData, character, fluid)
     local kept = craftRecipeData:getAllKeepInputItems()
     for i = 0, kept:size() - 1 do
@@ -140,7 +140,7 @@ function Y.onSteeped(craftRecipeData, character, fluid)
     end
 end
 
--- OnCreate of Mash Potato in Water: the litre comes back as Potato in Water.
+-- OnCreate of Mash Potato in Water: the pot's water comes back as Potato in Water.
 function Y.onPotatoMashed(craftRecipeData)
     Y.onSteeped(craftRecipeData, nil, Y.POTATO_SOAK)
 end

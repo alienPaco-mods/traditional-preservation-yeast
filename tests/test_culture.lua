@@ -104,20 +104,19 @@ local function pot(fluid, litres)
     function self:getFluidContainer() return container end
     return self, container
 end
-check("a litre of water steeps", Y.canSteep((pot("Water", 1.0))))
-check("more than a litre doesn't", not Y.canSteep((pot("Water", 1.5))))
+check("a full pot of water steeps", Y.canSteep((pot("Water", 1.5))))
 check("nor anything but water", not Y.canSteep((pot("Milk", 0.5))))
 check("other inputs pass", Y.canSteep(item("Base.HopsDried")))
 local steeped, steepedFluid = pot("Water", 0.0)
 local steep = recipeData({}, {})
 steep.getAllKeepInputItems = function() return list({ steeped }) end
 Y.onSteeped(steep)
-check("the litre comes back as Hop Water", steepedFluid.fluid == Y.HOP_WATER and steepedFluid.litres == 1.0)
+check("the pot's 1.5 L comes back as Hop Water", steepedFluid.fluid == Y.HOP_WATER and steepedFluid.litres == 1.5)
 local mashed, mashedFluid = pot("Water", 0.0)
 local mash = recipeData({}, {})
 mash.getAllKeepInputItems = function() return list({ mashed }) end
 Y.onPotatoMashed(mash)
-check("a mashed potato's litre is Potato in Water", mashedFluid.fluid == Y.POTATO_SOAK and mashedFluid.litres == 1.0)
+check("a mashed potato's pot is Potato in Water", mashedFluid.fluid == Y.POTATO_SOAK and mashedFluid.litres == 1.5)
 
 -- Cakes on the cloth: a week at full speed, dead past 35 C; dry gives a packet of Yeast.
 local DryingCloth = require "TraditionalPreservationCore/DryingCloth"

@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.1)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.2)
 
 **Status: experimental.** Back up your save before enabling.
 
@@ -17,7 +17,7 @@ Enable **Traditional Preservation (Yeast)** for your existing save from
 ## How it works
 
 1. **Build a Fermenting Shelf** against a wall (Build menu, Furniture): 2 planks + 4 nails + any hammer (kept), Carpentry 2. Gives 10 Carpentry XP.
-2. **Make Fermenting Culture** (Cooking): 5 uses of flour + a jar holding at least a third of a litre of water → 1 Fermenting Culture. Any of vanilla's jars: a **Jar** (found or crafted), a **Ceramic Jar** or a **Glazed Ceramic Jar**. Gives 3 Cooking XP. Two quicker starts (below): **with Fruit** and **with Potato Water**.
+2. **Make Fermenting Culture** (Cooking): an empty jar + 5 uses of flour + half a litre of water from any container (bottle, pot, the tap's jar: it is kept) → 1 Fermenting Culture, in the empty jar. Any of vanilla's jars: a **Jar** (found or crafted), a **Ceramic Jar** or a **Glazed Ceramic Jar**. Gives 3 Cooking XP. Two quicker starts (below): **with Fruit** and **with Potato Water**.
 3. Right-click the shelf, *Put Fermenting Culture on the Shelf* (One or All), or drop cultures on the square in **Shelf Info**. It holds 5 jars, each on its own clock.
 4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar, all the shelf's at once (below).
 5. After five in-game days at a good temperature, *Take Done*: an **Active Culture** per jar, in the jar it went on in.
@@ -38,17 +38,17 @@ No vanilla recipes or loot distribution are changed. No hunger, calorie or yeast
 - A Fed Culture needs no refresh (the hop tea and flour are its feed).
 - A shelf with anything on it can't be picked up.
 - Fermentation continues while the area is unloaded. It goes by the temperature where the shelf stands (see below), and rain doesn't matter.
-- The shelf shows each culture in its own jar, glass, ceramic or glazed: pale when fresh (with bits of fruit or potato through a glass jar), amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off or Spent, and dark brown when done. A clay jar shows it by the cloth over its mouth. A fed culture carries a hop sprig.
+- The shelf shows each culture in its own jar, glass, ceramic or glazed: pale when fresh (with bits of fruit or potato through a glass jar), amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off or Spent, and dark brown when done. A ceramic jar shows it by the cloth over its mouth. A fed culture carries a hop sprig.
 
 ### Quicker starts
 
 | Start | What goes in | Hours of work (plain 120) | Refreshes |
 |---|---|---|---|
-| Plain | 5 flour + a third of a litre of water | 120 (5 days at a good temperature) | 4 |
+| Plain | an empty jar + 5 flour + half a litre of water (from any container, kept) | 120 (5 days at a good temperature) | 4 |
 | **Make Fermenting Culture with Fruit** | the same + an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots | 96 (4 days) | 3 |
-| **Make Fermenting Culture with Potato Water** | 5 flour + a third of a litre of Potato Water | 84 (3.5 days) | 3 |
+| **Make Fermenting Culture with Potato Water** | an empty jar + 5 flour + half a litre of Potato Water (from the pot, kept) | 84 (3.5 days) | 3 |
 
-The yeast on a fruit's skin gets it going; potato water's starch feeds it. **Mash Potato in Water** (Cooking): a Cooking Pot (or Forged Pot) holding exactly 1 L of water and nothing else + 1 Potato (a saucepan holds only 0.6 L) → **Potato in Water**, which kept steaming on a stove or a fire for half an hour becomes **Potato Water**. 1 L starts three jars, none left over. The sandbox's Ferment Days sets the plain time; the starts keep their share (80% and 70%).
+The yeast on a fruit's skin gets it going; potato water's starch feeds it. **Mash Potato in Water** (Cooking): a full Cooking Pot (or Forged Pot), 1.5 L of clean water and nothing else, + 1 Potato (a saucepan holds only 0.6 L) → **Potato in Water**, which kept steaming on a stove or a fire for half an hour becomes **Potato Water**. The pot (1.5 L) starts three jars, none left over. Right-click the pot: the row opens **One** or **All** (one culture a half litre, as many as the jars and flour carried allow). The sandbox's Ferment Days sets the plain time; the starts keep their share (80% and 70%).
 
 ### Keeping a culture
 
@@ -67,9 +67,9 @@ Days to Spent, made on the first of the month (`tools/season_report.lua`):
 
 ### Hops: keeping a culture going
 
-1. **Steep Hops** (Cooking): a Cooking Pot (or Forged Pot) holding exactly 1 L of water and nothing else + 1 **Hops (Dried)** (vanilla's: hops dried on the Herb Drying Rack) → the water becomes **Hop Water**, in the same pot.
-2. Kept steaming on a stove or a fire for a quarter of an hour it becomes **Hop Tea**. 1 L feeds three cultures.
-3. **Feed Culture** (Cooking): an Active or Hopped Culture + an empty jar + a third of a litre of Hop Tea (in a pot, saucepan, jar, bottle or mug, kept) + 5 uses of flour → 2 **Fed Culture**, in the culture's own jar and the new one. Gives 3 Cooking XP.
+1. **Steep Hops** (Cooking): a full Cooking Pot (or Forged Pot), 1.5 L of clean water and nothing else, + 1 **Hops (Dried)** (vanilla's: hops dried on the Herb Drying Rack) → the water becomes **Hop Water**, in the same pot.
+2. Kept steaming on a stove or a fire for a quarter of an hour it becomes **Hop Tea**. The pot (1.5 L) feeds three cultures; right-click the pot for Feed Culture **One** or **All**.
+3. **Feed Culture** (Cooking): an Active or Hopped Culture + an empty jar + half a litre of Hop Tea (from any container, kept) + 5 uses of flour → 2 **Fed Culture**, in the culture's own jar and the new one. Gives 3 Cooking XP.
 4. Put them on the shelf: a Fed Culture rises in a day at the best temperature (by the shelf's own curve) → **Hopped Culture**, one a jar. It needs no refresh.
 
 A Hopped Culture keeps twice as long (7 fresh, 10 to Spent in a cellar: about 6 days at 20 C) and does everything an Active Culture does, feeding included. One carries the line on, the other goes to cakes, so a culture never has to be started from flour again while it is fed in time.
@@ -134,7 +134,7 @@ Set **Fermenting time (days)** (the time at the best temperature) and **Temperat
 
 ## Rebuilding the tileset
 
-The shelf, its jars and the cakes on the cloth are painted by code, so there is no art to edit by hand. `tools/shelf_art.py` draws the shelf and `tools/build_shelf_tileset.py` draws the jars (three jar kinds by seven looks, and two start looks in glass only, which a clay jar hides: a sheet holds 512 tiles), the cakes' overlays for TP Core's cloth (`cloth_art.lot_spot`) and the culture icons; the tables and colours at the top of each control the look. To change them, edit the scripts and run `python3 tools/build_shelf_tileset.py` (needs Pillow). It rewrites `42/media/traditionalpreservationyeast.tiles` and `42/media/texturepacks/traditionalpreservationyeast.pack`. It also writes the generated `42/media/lua/shared/TraditionalPreservationYeast/Tiles.lua`, the tile numbers the Lua reads (don't edit it by hand), and `luajit tests/test_tiles.lua` checks the entity scripts against it.
+The shelf, its jars and the cakes on the cloth are painted by code, so there is no art to edit by hand. `tools/shelf_art.py` draws the shelf and `tools/build_shelf_tileset.py` draws the jars (three jar kinds by seven looks, and two start looks in glass only, which a ceramic jar hides: a sheet holds 512 tiles), the cakes' overlays for TP Core's cloth (`cloth_art.lot_spot`) and the culture icons; the tables and colours at the top of each control the look. To change them, edit the scripts and run `python3 tools/build_shelf_tileset.py` (needs Pillow). It rewrites `42/media/traditionalpreservationyeast.tiles` and `42/media/texturepacks/traditionalpreservationyeast.pack`. It also writes the generated `42/media/lua/shared/TraditionalPreservationYeast/Tiles.lua`, the tile numbers the Lua reads (don't edit it by hand), and `luajit tests/test_tiles.lua` checks the entity scripts against it.
 
 ## Debug commands
 

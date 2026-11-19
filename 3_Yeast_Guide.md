@@ -34,7 +34,7 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 | Step | You need | You get |
 |---|---|---|
 | Build a **Fermenting Shelf** | 2 planks, 4 nails, hammer (kept). Carpentry 2. Against a wall | The shelf |
-| **Make Fermenting Culture** (Cooking) | 5 uses of flour + a jar (glass or ceramic) holding at least a third of a litre of water | 1 Fermenting Culture |
+| **Make Fermenting Culture** (Cooking) | An empty jar (glass or ceramic) + 5 uses of flour + half a litre of water from any container | 1 Fermenting Culture |
 | Right-click the shelf, **Put** them on | Up to 5 jars | |
 | **Refresh the Cultures** once a day | A use of flour + 0.1 L water a jar | |
 | Wait **5 in-game days** (in warm weather) | | 1 **Active Culture** per jar, in its jar (**Take Done**) |
@@ -48,7 +48,7 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 ## 3. Walkthrough
 
 1. **Build the shelf** from the Build menu (Furniture). It mounts **against a wall**.
-2. **Make Fermenting Culture** in the crafting menu: 5 flour uses + a Jar, Ceramic Jar or Glazed Ceramic Jar with at least a third of a litre of water.
+2. **Make Fermenting Culture** in the crafting menu: an empty Jar, Ceramic Jar or Glazed Ceramic Jar + 5 flour uses + half a litre of water from a bottle, pot or any container (the container is kept).
 3. **Right-click the shelf** and put up to **5 cultures** on it (or drop them on the square in **Shelf Info**).
 4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar. Miss a day and a jar goes hungry and stops; miss three and it has gone off.
 5. Come back in **5 days**. **Take Done**: the **Active Culture (Fresh)**. It's alive and won't wait: about 3 days at 20 C before it's **Spent**.
@@ -58,8 +58,8 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 
 ### Keeping the line: hops
 
-1. **Steep Hops**: a Cooking Pot with exactly 1 L of water (a saucepan holds only 0.6 L) + 1 **Hops (Dried)**. Heat it a quarter of an hour on a stove or fire: **Hop Tea**.
-2. **Feed Culture**: an Active Culture + an empty jar + a third of a litre of Hop Tea + 5 flour uses: **2 Fed Culture**.
+1. **Steep Hops**: a full Cooking Pot, 1.5 L of clean water (a saucepan holds only 0.6 L) + 1 **Hops (Dried)**. Heat it a quarter of an hour on a stove or fire: **Hop Tea**.
+2. **Feed Culture**: an Active Culture + an empty jar + half a litre of Hop Tea + 5 flour uses: **2 Fed Culture**. Right-click the pot of tea for **One** or **All**.
 3. Back on the shelf: a day later, **2 Hopped Culture**. A fed jar needs no refresh. They keep twice as long. Shape one into cakes, feed the other.
 
 ---
@@ -68,8 +68,8 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 
 - **Each jar keeps its own clock.** One put on later finishes later. **Holds 5 jars.**
 - **Feed it like a real starter.** A Fermenting Culture is hungry after **24 hours of work** since it was made or last refreshed, and stops; after **72** it has gone off (take it off for the empty jar). Warm, that is a day and three days; in a cool basement, longer; frozen, it waits. **Refresh the Cultures** feeds every jar on the shelf at once. It goes hungry off the shelf too, so taking jars off doesn't skip a refresh.
-- **Quicker starts.** **Make Fermenting Culture with Fruit** (an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots too): 4 days. **with Potato Water**: 3.5 days. Potato Water: **Mash Potato in Water** (1 L in a Cooking Pot + a Potato), then half an hour on the heat; 1 L starts three jars, none left over.
-- **The jars show how they're doing:** pale when fresh, amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off, **dark brown when done**, in the jar you used: glass, ceramic or glazed (a clay jar shows it on its cloth). A fed jar carries a hop sprig.
+- **Quicker starts.** **Make Fermenting Culture with Fruit** (an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots too): 4 days. **with Potato Water**: 3.5 days. Potato Water: **Mash Potato in Water** (a full Cooking Pot, 1.5 L, + a Potato), then half an hour on the heat; the pot starts three jars, none left over. Right-click the pot for **One** or **All**.
+- **The jars show how they're doing:** pale when fresh, amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off, **dark brown when done**, in the jar you used: glass, ceramic or glazed (a ceramic jar shows it on its cloth). A fed jar carries a hop sprig.
 - **Shelf Info tells you the rest:** where it stands, the temperature and working rate there, and a row for each jar with its time left and when it goes hungry. A shelf with anything on it can't be picked up.
 
 ---
@@ -134,11 +134,11 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 
 | | |
 |---|---|
-| One culture | 5 uses of flour + a third of a litre of water |
+| One culture | An empty jar + 5 uses of flour + half a litre of water |
 | Shaped into cakes | + 3 uses of cornmeal or flour |
 | Makes | 1 vanilla Yeast packet, 10 uses |
 | Bakes | about 10 loaves (bread dough takes 1 use) |
-| Fed | + a third of a litre of Hop Tea (a third of a Hops (Dried)) + 5 flour: one more culture |
+| Fed | + half a litre of Hop Tea (a third of a Hops (Dried), a full pot) + 5 flour: one more culture |
 | A full cloth | 5 packets, 50 uses, about every 7 days in summer |
 
 | Temperature | Working speed | A culture takes |
@@ -186,8 +186,8 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 | Culture reads (Spent) | It kept too long or too warm: pour it out and start again, or feed it before it goes |
 | Cakes won't dry | A shut room's air doesn't move: open a window. Or it's frozen. Cloth Info says which |
 | Cakes came off as nothing | They died: above 35 C for an hour |
-| Steep Hops greyed out | The pot must hold exactly 1 L of water and nothing else |
-| Culture recipe greyed out | The jar needs at least a third of a litre of water, and you need 5 flour uses |
+| Steep Hops greyed out | It takes a full Cooking Pot (not a saucepan): 1.5 L of clean water and nothing else |
+| Culture recipe greyed out | It needs an empty jar, half a litre of clean water in any container, and 5 flour uses |
 | Shelf or recipes missing | TP Core must be enabled. Then check `~/Zomboid/console.txt`: the tile number 5127 must be unique among your mods |
 
 ---

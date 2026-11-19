@@ -75,16 +75,17 @@ module TraditionalPreservationYeast
     {
         time = 50,
         timedAction = Making,
-        Tags = InHandCraft,
+        Tags = InHandCraft;CanBeDoneFromFloor,
         category = Cooking,
         xpAward = Cooking:3,
         needTobeLearn = false,
         OnCreate = TraditionalPreservationYeast.onCreateInJar,
         inputs
         {
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] flags[IsEmpty] mode:destroy,
+            item 1 [*],
+            -fluid 0.5 [Water],
             item 5 [Base.Flour2],
-            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] mode:destroy,
-            -fluid 0.33333 [Water],
         }
         outputs
         {
@@ -98,16 +99,17 @@ module TraditionalPreservationYeast
     {
         time = 60,
         timedAction = Making,
-        Tags = InHandCraft,
+        Tags = InHandCraft;CanBeDoneFromFloor,
         category = Cooking,
         xpAward = Cooking:3,
         needTobeLearn = false,
         OnCreate = TraditionalPreservationYeast.onCreateFruitStart,
         inputs
         {
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] flags[IsEmpty] mode:destroy,
+            item 1 [*],
+            -fluid 0.5 [Water],
             item 5 [Base.Flour2],
-            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] mode:destroy,
-            -fluid 0.33333 [Water],
             item 1 [Base.Apple;Base.Pear;Base.Peach;Base.Cherry;Base.Grapes;Base.DriedApricots] mode:destroy,
         }
         outputs
@@ -116,23 +118,24 @@ module TraditionalPreservationYeast
         }
     }
 
-    /* Started with Potato Water instead of water: the starch feeds it, the quickest start. A third of a litre, so a
-       litre of it (one potato) starts three jars with none left over: the engine drops a fluid under 0.0001 L, and the
-       third take still finds 0.33334 L (0.333 would leave a millilitre). */
+    /* Started with Potato Water instead of water: the starch feeds it, the quickest start. Half a litre, taken from
+       whatever holds it (item [*], the container kept), so a pot of it (one potato) starts three jars, none left over.
+       The empty jar comes first: the culture is in the first jar used up. */
     craftRecipe MakeFermentingCulturePotato
     {
         time = 50,
         timedAction = Making,
-        Tags = InHandCraft,
+        Tags = InHandCraft;CanBeDoneFromFloor,
         category = Cooking,
         xpAward = Cooking:3,
         needTobeLearn = false,
         OnCreate = TraditionalPreservationYeast.onCreatePotatoStart,
         inputs
         {
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] flags[IsEmpty] mode:destroy,
+            item 1 [*],
+            -fluid 0.5 [YeastPotatoWater],
             item 5 [Base.Flour2],
-            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] mode:destroy,
-            -fluid 0.33333 [YeastPotatoWater],
         }
         outputs
         {
@@ -141,12 +144,12 @@ module TraditionalPreservationYeast
     }
 
     /* A raw potato mashed into a pot of cold water; on the heat half an hour it becomes Potato Water. As Steep Hops,
-       all the pot's water takes it, so it holds 1 L at most. */
+       a full pot (1.5 L) of clean water. */
     craftRecipe MashPotatoInWater
     {
         time = 60,
         timedAction = Making,
-        Tags = InHandCraft;Cooking,
+        Tags = InHandCraft;CanBeDoneFromFloor;Cooking,
         category = Cooking,
         needTobeLearn = false,
         OnTest = TraditionalPreservationYeast.canSteep,
@@ -154,7 +157,7 @@ module TraditionalPreservationYeast
         inputs
         {
             item 1 [Base.Pot;Base.PotForged] mode:keep,
-            -fluid 1.0 [Water],
+            -fluid 1.5 [Water],
             item 1 [Base.Potato] mode:destroy,
         }
         outputs
@@ -162,13 +165,13 @@ module TraditionalPreservationYeast
         }
     }
 
-    /* Cold water and dried hops in a Cooking Pot (a saucepan holds 0.6 L); on the heat it becomes Hop Tea. All the pot's
-       water steeps, so it holds 1 L at most. */
+    /* Cold water and dried hops in a Cooking Pot (a saucepan holds 0.6 L); on the heat it becomes Hop Tea. A full pot
+       (1.5 L) of clean water. */
     craftRecipe SteepHops
     {
         time = 40,
         timedAction = Making,
-        Tags = InHandCraft;Cooking,
+        Tags = InHandCraft;CanBeDoneFromFloor;Cooking,
         category = Cooking,
         needTobeLearn = false,
         OnTest = TraditionalPreservationYeast.canSteep,
@@ -176,7 +179,7 @@ module TraditionalPreservationYeast
         inputs
         {
             item 1 [Base.Pot;Base.PotForged] mode:keep,
-            -fluid 1.0 [Water],
+            -fluid 1.5 [Water],
             item 1 [Base.HopsDried] mode:destroy,
         }
         outputs
@@ -184,12 +187,13 @@ module TraditionalPreservationYeast
         }
     }
 
-    /* One culture, fed, fills its own jar and one more (one carries the line on, one goes to cakes). */
+    /* One culture, fed, fills its own jar and one more (one carries the line on, one goes to cakes). The tea comes
+       from whatever holds it (item [*], kept). */
     craftRecipe FeedCulture
     {
         time = 60,
         timedAction = Making,
-        Tags = InHandCraft;Cooking,
+        Tags = InHandCraft;CanBeDoneFromFloor;Cooking,
         category = Cooking,
         xpAward = Cooking:3,
         needTobeLearn = false,
@@ -198,8 +202,8 @@ module TraditionalPreservationYeast
         {
             item 1 [TraditionalPreservationYeast.ActiveCulture;TraditionalPreservationYeast.ActiveCultureHopped] mode:destroy,
             item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] flags[IsEmpty] mode:destroy,
-            item 1 [Base.Pot;Base.PotForged;Base.Saucepan;Base.SaucepanCopper;Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed;Base.WaterBottle;Base.Mugl] mode:keep,
-            -fluid 0.33333 [YeastHopTea],
+            item 1 [*],
+            -fluid 0.5 [YeastHopTea],
             item 5 [Base.Flour2],
         }
         outputs
@@ -213,7 +217,7 @@ module TraditionalPreservationYeast
     {
         time = 80,
         timedAction = Making,
-        Tags = InHandCraft;Cooking,
+        Tags = InHandCraft;CanBeDoneFromFloor;Cooking,
         category = Cooking,
         xpAward = Cooking:3,
         needTobeLearn = false,
@@ -233,7 +237,7 @@ module TraditionalPreservationYeast
     {
         time = 30,
         timedAction = Making,
-        Tags = InHandCraft;Cooking,
+        Tags = InHandCraft;CanBeDoneFromFloor;Cooking,
         category = Cooking,
         needTobeLearn = false,
         inputs
@@ -251,7 +255,7 @@ module TraditionalPreservationYeast
     {
         time = 30,
         timedAction = Making,
-        Tags = InHandCraft,
+        Tags = InHandCraft;CanBeDoneFromFloor,
         category = Cooking,
         needTobeLearn = false,
         OnCreate = TraditionalPreservationYeast.onCreateJarBack,

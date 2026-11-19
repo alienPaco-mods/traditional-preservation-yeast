@@ -1,6 +1,26 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.2
+- **A full pot** (user): Steep Hops and Mash Potato in Water take a full Cooking Pot or Forged Pot, 1.5 L of clean
+  water (tainted refused), and all of it turns (1.5 L of Hop Water or Potato in Water), so nothing is poured off;
+  one Hops or Potato a pot. The hops and starters kits give a full pot.
+- **Half a litre a culture, every liquid** (user; 0.6.1's third): water for the plain and fruit starts, Potato Water,
+  and Hop Tea for a feed. A full pot makes three, a 1 L bottle or jar two, a Ceramic Jar five, none left over. The
+  culture kit gives a full Cooking Pot for its three jars (and its bottle for the refreshes).
+- **Every culture's liquid from whatever holds it** (user; the series' `item 1 [*]` + fluid line, as Strain Lard):
+  Make Fermenting Culture (plain, with Fruit, with Potato Water) takes an **empty jar**, the culture's jar, and its
+  water or Potato Water from any container, which is kept; Feed Culture takes its Hop Tea the same way (its list of
+  containers is gone). Before, the starts' water had to be in the culture's jar, so a pot of Potato Water didn't
+  offer its recipe.
+- **Hand recipes work from the floor** (series recipe audit, 2026-11-19): every hand recipe but Packing has
+  `CanBeDoneFromFloor`, so its inputs aren't carried into the inventory first (vanilla moves them otherwise): all nine.
+- **The game's names** in the README and guide: ceramic jar (was "clay jar").
+- **One or All from the pot** (user; needs TP Core 0.1.32): right-click a pot of Potato Water or Hop Tea, and its
+  Make Fermenting Culture with Potato Water or Feed Culture row opens **One** and **All (n)**, n what the pot's half
+  litres and the jars and flour in reach allow (TP Core's `RecipeUI`, `TraditionalPreservationYeastCultureUI.lua`).
+  The crafting window's own count works as before.
+
 ## 0.6.1
 - **Fix:** Steep Hops and Mash Potato in Water take a Cooking Pot or Forged Pot only. Both need exactly 1 L of water,
   and vanilla's Saucepan and Copper Saucepan hold 0.6 L, so they were listed but could never be used (user, session

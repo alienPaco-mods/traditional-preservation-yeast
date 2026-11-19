@@ -20,7 +20,7 @@ Traditional Preservation (Yeast) requires [b]Traditional Preservation (Core)[/b]
 [h2]How it works[/h2]
 [olist]
 [*][b]Build a Fermenting Shelf[/b] against a wall (Build menu, Furniture): 2 planks, 4 nails and a hammer (kept). Carpentry 2.
-[*][b]Make Fermenting Culture[/b] (crafting menu, Cooking): 5 uses of flour and a jar (glass or ceramic) holding at least a third of a litre of water. With a fruit it takes 4 days; with potato water (a potato mashed into a pot of water and boiled), 3 and a half.
+[*][b]Make Fermenting Culture[/b] (crafting menu, Cooking): an empty jar (glass or ceramic), 5 uses of flour and half a litre of water from any container. With a fruit it takes 4 days; with potato water (a potato mashed into a pot of water and boiled), 3 and a half.
 [*][b]Right-click the shelf[/b] and put up to 5 cultures on it.
 [*][b]Refresh the Cultures[/b] about once a day: a use of flour and a little water a jar. Unfed for a day a jar stops; for three, it goes off.
 [*]After [b]5 in-game days[/b] at a good temperature, take off an Active Culture for each, in its jar. It's alive: about 3 days at 20 C before it's spent.
@@ -29,7 +29,7 @@ Traditional Preservation (Yeast) requires [b]Traditional Preservation (Core)[/b]
 [*][b]Crumble Yeast Cakes[/b]: one full packet of vanilla Yeast.
 [/olist]
 
-One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves of bread. [b]Steep Hops[/b] (Hops (Dried) in 1 L of water, heated) makes Hop Tea, and [b]Feed Culture[/b] turns one culture, an empty jar, hop tea and 5 flour into two, which rise on the shelf in a day and keep twice as long.
+One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves of bread. [b]Steep Hops[/b] (Hops (Dried) in a pot of water, heated) makes Hop Tea, and [b]Feed Culture[/b] turns one culture, an empty jar, hop tea and 5 flour into two, which rise on the shelf in a day and keep twice as long.
 
 [h2]The shelf[/h2]
 [list]

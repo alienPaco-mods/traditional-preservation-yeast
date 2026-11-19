@@ -105,10 +105,10 @@ local KITS = {
         items = { ["Base.Hammer"] = 1, ["Base.Plank"] = 2, ["Base.Nails"] = 4 },
     },
     culture = {
-        about = "30 flour, a Jar, a Ceramic Jar, a Glazed Ceramic Jar and a bottle of water, for three Make Fermenting Culture, one in each jar, and their daily refreshes",
+        about = "30 flour, a Jar, a Ceramic Jar, a Glazed Ceramic Jar, a full Cooking Pot of water and a bottle of water, for three Make Fermenting Culture, one in each jar (the pot's 1.5 L), and their daily refreshes",
         items = { ["Base.Flour2"] = 30, ["Base.EmptyJar"] = 1, ["Base.ClayJar"] = 1, ["Base.ClayJarGlazed"] = 1 },
         -- Vanilla's bottle may spawn with carbonated water.
-        filled = { ["Base.WaterBottle"] = "Water" },
+        filled = { ["Base.Pot"] = "Water", ["Base.WaterBottle"] = "Water" },
     },
 }
 KITS.cakes = {
@@ -116,15 +116,14 @@ KITS.cakes = {
     items = { [Y.ACTIVE] = 2, ["Base.Cornmeal2"] = 6, ["Base.Sheet"] = 1, ["Base.Stone2"] = 2 },
 }
 KITS.hops = {
-    about = "an Active Culture, 2 Hops (Dried), a Cooking Pot of 1 L water, an empty Jar and 5 flour, for Steep Hops and Feed Culture",
+    about = "an Active Culture, 2 Hops (Dried), a full Cooking Pot of water, an empty Jar and 5 flour, for Steep Hops and Feed Culture",
     items = { [Y.ACTIVE] = 1, ["Base.HopsDried"] = 2, ["Base.EmptyJar"] = 1, ["Base.Flour2"] = 5 },
-    litre = { ["Base.Pot"] = "Water" },
+    filled = { ["Base.Pot"] = "Water" },
 }
 KITS.starters = {
-    about = "an Apple, a Potato, a Cooking Pot of 1 L water, 4 Jars, 20 flour and a bottle of water, for Mash Potato in Water, three Make Fermenting Culture with Potato Water (the pot's litre) and one with Fruit",
+    about = "an Apple, a Potato, a full Cooking Pot of water, 4 Jars, 20 flour and a bottle of water, for Mash Potato in Water, three Make Fermenting Culture with Potato Water (the pot's 1.5 L) and one with Fruit",
     items = { ["Base.Apple"] = 1, ["Base.Potato"] = 1, ["Base.EmptyJar"] = 4, ["Base.Flour2"] = 20 },
-    litre = { ["Base.Pot"] = "Water" },
-    filled = { ["Base.WaterBottle"] = "Water" },
+    filled = { ["Base.Pot"] = "Water", ["Base.WaterBottle"] = "Water" },
 }
 local KIT_NAMES = { "build", "culture", "starters", "cakes", "hops" }
 
@@ -139,11 +138,6 @@ function TPY.kit(kind)
         local kit = KITS[name]
         for fullType, count in pairs(kit.items) do
             for _ = 1, count do inventory:AddItem(fullType) end
-        end
-        for fullType, fluid in pairs(kit.litre or {}) do
-            local container = inventory:AddItem(fullType):getFluidContainer()
-            container:Empty()
-            container:addFluid(fluid, 1.0)
         end
         for fullType, fluid in pairs(kit.filled or {}) do
             local container = inventory:AddItem(fullType):getFluidContainer()
