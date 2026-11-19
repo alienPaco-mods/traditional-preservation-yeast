@@ -86,6 +86,7 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     function shelf:isOutside() return outside end
     function shelf.square:isOutside() return outside end
     function shelf.square:isInARoom() return not outside end
+    H.shutRoom(shelf.square)
     function shelf:clearAttachedAnimSprite() self.sprites = {} self.clears = self.clears + 1 end
     function shelf:addAttachedAnimSpriteByName(name) table.insert(self.sprites, name) end
     return shelf

@@ -1,5 +1,10 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.24
+- **Aired rooms** (2026-11-19, TP Core 0.1.15): the shelf reads TP Core's new place temperatures (a shut room
+  follows the last three days and is stuffy in summer, so autumn indoors is slower: a November culture about 67 days
+  where it was 21; by a fire still 5). `tools/season_report.lua`: an aired room column (was loft). Needs TP Core 0.1.15.
+
 ## 0.4.23
 - **Five places** (2026-11-19, TP Core 0.1.14): TP Core has no Enclosed place any more, so `TPY.weather()` and the
   ledger have no shed; the guide's console table follows. Nothing else changes in game.

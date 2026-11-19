@@ -35,32 +35,32 @@ No vanilla recipes or loot distribution are changed. No hunger, calorie or yeast
 
 A culture works by the temperature where the shelf stands, like the stations in the other Traditional Preservation mods. It's best from **18 to 30 C**, at 40% speed at 10 C, 20% at 5 C, and only crawls just above freezing. At 0 C and below it stops and waits, without ever dying: the shelf's window says *Paused here (frozen)*. Real heat slows it too (60% at 35 C).
 
-- **Open air** (a shelf on an outside wall): the day's weather.
-- **Under an open roof** (a porch, an open shed) or **indoors** (a room): an unheated building follows the average outdoor temperature of the last 10 days or so. A warm afternoon or a cold night makes no difference. A room is **22 C while the power grid is on**, as vanilla's are.
-- **In a loft** (the top storey: a room upstairs with no room over it): as indoors, plus three tenths of whatever the 10-day average is above 10 C: the sun on the roof (about 24 C in a 21 C July, no warmer than a room from October to April); 22 C while the power grid is on.
+- **Open air** (a shelf on an outside wall) and **under an open roof** (a porch, an open shed): the weather, hour by hour.
+- **Indoors** (a shut room: every window to the outside shut or boarded): an unheated room follows the average of the last 3 days, 2 C warmer in the cold months and up to 2 C warmer in summer (stuffy). A room is **22 C while the power grid is on**, as vanilla's are.
+- **Aired room** (a room with a window to the outside open, smashed, without its glass or an empty frame): the day's average, at most 1 C warmer in winter; 22 C while the power grid is on.
 - **In a basement** (any level below ground): the earth takes the edge off the seasons and holds them back a month, about 5 C from January to March and 13 C from July to September.
-- **By a fire**: any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Stone Hearth) holds an indoor shelf at **28 C**, banked embers at 24 C: **5 days in any month**. Outside, the air carries the heat off: under an open roof the fire gives the 10-day average +15 C, in the open the day's weather +10 C, never past 28 C (banked embers +10 and +5, up to 24 C), so a winter culture by a porch fire or a campfire is quicker, not quick. While you're away, the fire counts for as long as its fuel would last.
+- **By a fire**: any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Stone Hearth) holds a shelf in a shut room at **28 C**, banked embers at 24 C: **5 days in any month**. With a window open or outside, the air carries the heat off: in an aired room or under an open roof the fire gives the air +15 C, in the open +10 C, never past 28 C (banked embers +10 and +5, up to 24 C), so a winter culture by a porch fire or a campfire is quicker, not quick. While you're away, the fire counts for as long as its fuel would last.
 
 Time keeps counting while you're away, from the weather recorded every 10 in-game minutes. Hover a fermenting culture in the shelf's window for its progress, real time left at today's temperature, the temperature and place, and its working rate. **Temperature sensitivity** in the sandbox options sets how much this matters, and **Off** makes every culture take the same time whatever the weather, as before 0.4.0.
 
 Days a culture takes, started on the first of the month, on the game's sampled weather for default settings, the grid off (`tools/season_report.lua`):
 
-| Month | Open air | Indoors | Loft | Basement | By a fire, under a roof | By a fire, in the open |
+| Month | Open air | Indoors (shut room) | Aired room | Basement | By a fire, under a roof | By a fire, in the open |
 |---|---|---|---|---|---|---|
-| Jan | 77 | 91 | 91 | 24 | 11 | 20 |
-| Feb | 54 | 61 | 61 | 25 | 8 | 13 |
-| Mar | 29 | 32 | 32 | 24 | 8 | 10 |
-| Apr | 16 | 17 | 17 | 19 | 5 | 6 |
-| May | 9 | 9 | 9 | 16 | 5 | 5 |
+| Jan | 77 | 79 | 84 | 24 | 11 | 20 |
+| Feb | 54 | 52 | 55 | 25 | 7 | 13 |
+| Mar | 29 | 27 | 28 | 24 | 6 | 10 |
+| Apr | 16 | 15 | 15 | 19 | 5 | 6 |
+| May | 9 | 8 | 9 | 16 | 5 | 5 |
 | Jun | 5 | 5 | 5 | 11 | 5 | 5 |
 | Jul | 6 | 5 | 5 | 9 | 5 | 5 |
-| Aug | 7 | 5 | 5 | 8 | 5 | 5 |
-| Sep | 7 | 6 | 5 | 8 | 5 | 5 |
-| Oct | 13 | 8 | 7 | 9 | 5 | 6 |
-| Nov | 96 | 21 | 21 | 12 | 5 | 8 |
-| Dec | 92 | 106 | 106 | 17 | 8 | 21 |
+| Aug | 7 | 5 | 6 | 8 | 5 | 5 |
+| Sep | 7 | 6 | 6 | 8 | 5 | 5 |
+| Oct | 13 | 10 | 12 | 9 | 5 | 6 |
+| Nov | 96 | 67 | 106 | 12 | 6 | 8 |
+| Dec | 92 | 97 | 102 | 17 | 10 | 21 |
 
-By a fire or banked embers indoors, or in a room or loft while the grid is on (22 C): 5 days in any month. Under an open roof (no room's 2 C) a shelf is as slow as indoors or slower from October to April.
+By a fire or banked embers in a shut room, or in any room while the grid is on (22 C): 5 days in any month. From October a shut room no longer keeps the summer's warmth: a November culture there takes about 67 days, by a fire 5.
 
 A winter culture started in an unheated room spends weeks paused below freezing: about 91 days from the first of January, and more than 100 from December. Open air does a little better in January, because a sunny afternoon still thaws the jar for a few hours.
 
