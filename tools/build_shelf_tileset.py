@@ -37,11 +37,16 @@ CULTURE_LEVEL = 0.68
 
 GLASS_EDGE = (120, 120, 112, 130)
 GLASS = (205, 222, 226, 80)
-# Ferment Culture fresh, halfway, done, then Raise Fed Culture rising and done (hop tea turns it greener gold).
-# Named in JAR_LOOK_NAMES for the generated Tiles.lua.
-JAR_LOOK_NAMES = ["fresh", "halfway", "done", "fedRising", "fedDone"]
+# A Fermenting Culture fresh, halfway, done, then a Fed Culture rising and done (hop tea turns it greener gold), then
+# hungry (a day unfed: sunk, a grey liquid on top, a dried ring where it stood, no bubbles), gone off (or Spent: dull,
+# mould on top), and fresh started with fruit or potato water (bits in the culture; a clay jar looks as fresh). Named in
+# JAR_LOOK_NAMES for the generated Tiles.lua.
+JAR_LOOK_NAMES = ["fresh", "halfway", "done", "fedRising", "fedDone", "hungry", "off", "fruit", "potato"]
 HOPPED_LOOKS = {3, 4}
 DONE_LOOKS = {2, 4}
+HUNGRY, OFF, FRUIT, POTATO = 5, 6, 7, 8
+# The culture's colours a new look is drawn in: hungry as halfway, the starts as fresh.
+BASE_LOOK = {HUNGRY: 1, FRUIT: 0, POTATO: 0}
 JAR_COLOURS = [
     dict(culture=(206, 202, 182, 245), shade=(170, 166, 148, 245), top=(226, 222, 204, 255), bubble=(236, 232, 216, 200)),
     dict(culture=(196, 158, 88, 245), shade=(160, 124, 66, 245), top=(222, 190, 124, 255), bubble=(238, 214, 158, 220)),
@@ -49,6 +54,15 @@ JAR_COLOURS = [
     dict(culture=(192, 178, 112, 245), shade=(156, 144, 88, 245), top=(214, 204, 146, 255), bubble=(230, 224, 180, 210)),
     dict(culture=(150, 118, 54, 245), shade=(118, 92, 40, 245), top=(222, 206, 150, 255), bubble=(236, 222, 170, 235)),
 ]
+OFF_COLOURS = dict(culture=(150, 136, 108, 245), shade=(118, 106, 84, 245), top=(168, 158, 132, 255))
+HOOCH = (150, 140, 112, 170)
+RING = (170, 140, 92, 200)
+MOULD_GREY = (176, 190, 160, 255)
+MOULD_WHITE = (230, 232, 220, 255)
+MOULD_PINK = (214, 140, 140, 255)
+PEEL = (176, 52, 40, 255)
+POTATO_BITS = (226, 214, 168, 255)
+HUNGRY_LEVEL = 0.72  # of CULTURE_LEVEL
 HIGHLIGHT = (255, 255, 255, 80)
 LID = (120, 114, 104, 255)
 LID_TOP = (156, 150, 138, 255)
@@ -64,7 +78,10 @@ CLAYS = {
     "glazed": dict(body=(130, 145, 158, 255), shade=(92, 104, 118, 255), light=(170, 186, 198, 255)),
 }
 # The cloth over a clay jar's mouth, by look: linen, stained, dark and wet, then the same for a fed jar.
-CLOTHS = [(236, 232, 218, 255), (196, 172, 124, 255), (122, 92, 56, 255), (196, 172, 124, 255), (122, 92, 56, 255)]
+# Hungry: grey, sagging in the middle; gone off: mould through it; the starts as fresh.
+CLOTHS = [(236, 232, 218, 255), (196, 172, 124, 255), (122, 92, 56, 255), (196, 172, 124, 255), (122, 92, 56, 255),
+          (128, 124, 116, 255), (150, 132, 100, 255), (236, 232, 218, 255), (236, 232, 218, 255)]
+CLOTH_DIP = (96, 92, 86, 255)
 FROTH = (248, 242, 222, 255)
 TWINE = (150, 120, 76, 255)
 HOP = (122, 150, 70, 255)
@@ -97,9 +114,19 @@ def jar_props(facing):
     return [("Facing", facing)]
 
 
+# Every look but the starts is drawn in each kind of jar (the grid); the starts only in glass, as a clay jar hides them
+# (it shows fresh), after the grid: a sheet holds MAX_SHEET_TILES.
+GRID_LOOKS = FRUIT
+FIRST_START_JAR = len(FACES) + len(JAR_KIND_NAMES) * GRID_LOOKS * len(JAR_POSITIONS) * len(FACES)
+
+
 def jar_index(face_index, slot, look, kind=0):
-    """jarSprite in TraditionalPreservationYeastShelf.lua reads these numbers from the generated Tiles.lua."""
-    return len(FACES) + ((kind * len(JAR_LOOK_NAMES) + look) * len(JAR_POSITIONS) + slot) * len(FACES) + face_index
+    """World.jarSprite in TraditionalPreservationYeastWorld.lua reads these numbers from the generated Tiles.lua."""
+    if look >= GRID_LOOKS:
+        if kind == 0:
+            return FIRST_START_JAR + ((look - GRID_LOOKS) * len(JAR_POSITIONS) + slot) * len(FACES) + face_index
+        look = 0
+    return len(FACES) + ((kind * GRID_LOOKS + look) * len(JAR_POSITIONS) + slot) * len(FACES) + face_index
 
 
 # Yeast cakes on TP Core's Drying Cloth: three cakes a lot, at each of its five lots, wet, dry or dead (killed by
@@ -111,7 +138,7 @@ CAKES = {
     "dead": dict(top=(120, 92, 60), side=(86, 64, 42), mark=(70, 52, 34)),
 }
 CAKE_SPOTS = [(-0.06, 0.0), (0.0, -0.06), (0.04, 0.04)]
-FIRST_CAKE = jar_index(0, 0, 0, len(JAR_KIND_NAMES))
+FIRST_CAKE = FIRST_START_JAR + (len(JAR_LOOK_NAMES) - GRID_LOOKS) * len(JAR_POSITIONS) * len(FACES)
 
 
 def cake_index(lot, state):
@@ -126,7 +153,7 @@ for face_index, face in enumerate(FACES):
     TILE_PROPS[face_index] = shelf_props(face)
     for kind in range(len(JAR_KIND_NAMES)):
         for slot in range(len(JAR_POSITIONS)):
-            for look in range(len(JAR_LOOK_NAMES)):
+            for look in range(len(JAR_LOOK_NAMES) if kind == 0 else GRID_LOOKS):
                 TILE_PROPS[jar_index(face_index, slot, look, kind)] = jar_props(face)
 
 
@@ -152,7 +179,7 @@ def draw_hop(d, x, y, scale):
 
 def draw_glass(layer, cx, base_y, look, scale=1.0):
     """Composites one glass jar onto layer, its base centred on (cx, base_y) in tile pixels."""
-    colours = JAR_COLOURS[look]
+    colours = OFF_COLOURS if look == OFF else JAR_COLOURS[BASE_LOOK.get(look, look)]
     jar = Image.new("RGBA", layer.size, (0, 0, 0, 0))
     d = ImageDraw.Draw(jar)
     ellipse, rect = shapes(d, scale)
@@ -174,14 +201,34 @@ def draw_glass(layer, cx, base_y, look, scale=1.0):
     ellipse(cx, base_y - 0.3 * scale, inner, rim - 0.4 * scale, GLASS)
     rect(cx - inner, shoulder_y, cx + inner, base_y - 0.3 * scale, GLASS)
 
-    culture_y = base_y - (height - lid_h) * CULTURE_LEVEL
+    level = CULTURE_LEVEL * (HUNGRY_LEVEL if look == HUNGRY else 1.0)
+    culture_y = base_y - (height - lid_h) * level
+    if look == HUNGRY:
+        # The old level, a dried ring on the glass; the grey liquid between it and the sunken culture.
+        old_y = base_y - (height - lid_h) * CULTURE_LEVEL
+        rect(cx - inner, old_y - 0.4 * scale, cx + inner, old_y + 0.4 * scale, RING)
+        rect(cx - inner, culture_y - 2.0 * scale, cx + inner, culture_y, HOOCH)
+        ellipse(cx, culture_y - 2.0 * scale, inner, rim - 0.6 * scale, HOOCH)
     ellipse(cx, base_y - 0.4 * scale, inner, rim - 0.4 * scale, colours["culture"])
     rect(cx - inner, culture_y, cx + inner, base_y - 0.4 * scale, colours["culture"])
     rect(cx + inner * 0.35, culture_y, cx + inner, base_y - 0.4 * scale, colours["shade"])
     ellipse(cx, culture_y, inner, rim - 0.6 * scale, colours["top"])
 
-    for dx, rise in BUBBLE_SPOTS:
+    if look == FRUIT:
+        for dx, rise in ((-0.18, 0.22), (0.12, 0.40), (-0.02, 0.55)):
+            x, y = cx + dx * width, base_y - height * rise
+            rect(x - 0.7 * scale, y, x + 0.7 * scale, y + 0.6 * scale, PEEL)
+    if look == POTATO:
+        for dx, rise in ((-0.2, 0.25), (0.15, 0.33), (0.0, 0.48), (-0.12, 0.58)):
+            ellipse(cx + dx * width, base_y - height * rise, 0.8 * scale, 0.6 * scale, POTATO_BITS)
+    # Bubbles while it works: none hungry or gone off, fewer just started with fruit or potato.
+    bubbles = [] if look in (HUNGRY, OFF) else BUBBLE_SPOTS[:2] if look in (FRUIT, POTATO) else BUBBLE_SPOTS
+    for dx, rise in bubbles:
         ellipse(cx + dx * width, base_y - height * rise * 0.8, 0.6 * scale, 0.6 * scale, colours["bubble"])
+    if look == OFF:
+        ellipse(cx - 1.2 * scale, culture_y, 2.0 * scale, 0.9 * scale, MOULD_GREY)
+        ellipse(cx + 1.6 * scale, culture_y + 0.2 * scale, 1.3 * scale, 0.7 * scale, MOULD_PINK)
+        ellipse(cx - 0.4 * scale, culture_y - 0.3 * scale, 0.9 * scale, 0.5 * scale, MOULD_WHITE)
 
     rect(cx - inner + 0.7 * scale, shoulder_y + scale, cx - inner + 1.7 * scale, base_y - 2.0 * scale, HIGHLIGHT)
 
@@ -230,6 +277,12 @@ def draw_clay(layer, cx, base_y, look, clay, scale=1.0):
     rect(cx - neck_w - 0.5 * scale, neck_top + 0.6 * scale, cx + neck_w + 0.5 * scale, neck_bottom - 0.6 * scale, cloth)
     ellipse(cx, neck_top + 0.6 * scale, neck_w + 0.7 * scale, rim * 0.55, cloth)
     rect(cx - neck_w - 0.5 * scale, neck_bottom - 1.6 * scale, cx + neck_w + 0.5 * scale, neck_bottom - 0.9 * scale, TWINE)
+    if look == HUNGRY:
+        ellipse(cx, neck_top + scale, neck_w * 0.6, rim * 0.35, CLOTH_DIP)
+    if look == OFF:
+        ellipse(cx - 1.0 * scale, neck_top + 0.6 * scale, 1.1 * scale, 0.6 * scale, MOULD_GREY)
+        ellipse(cx + 1.3 * scale, neck_top + 1.6 * scale, 0.8 * scale, 0.5 * scale, MOULD_PINK)
+        ellipse(cx + 0.4 * scale, neck_top + 0.3 * scale, 0.6 * scale, 0.4 * scale, MOULD_WHITE)
     if look in HOPPED_LOOKS:
         draw_hop(d, cx + neck_w + 0.6 * scale, neck_bottom - 1.0 * scale, scale)
 
@@ -299,6 +352,8 @@ def lua_tiles():
         "FIRST_JAR": jar_index(0, 0, 0),
         "JAR_SLOTS": len(JAR_POSITIONS),
         "JAR_LOOKS": {name: look for look, name in enumerate(JAR_LOOK_NAMES)},
+        "GRID_LOOKS": GRID_LOOKS,
+        "FIRST_START_JAR": FIRST_START_JAR,
         "JAR_KINDS": {name: kind for kind, name in enumerate(JAR_KIND_NAMES)},
         "FIRST_CAKE": FIRST_CAKE,
         "CAKE_STATES": {name: index for index, name in enumerate(CAKE_STATES)},
@@ -315,7 +370,7 @@ def main():
         tiles[index] = paint_shelf(face)
         for kind in range(len(JAR_KIND_NAMES)):
             for slot in range(len(JAR_POSITIONS)):
-                for look in range(len(JAR_LOOK_NAMES)):
+                for look in range(len(JAR_LOOK_NAMES) if kind == 0 else GRID_LOOKS):
                     tiles[jar_index(index, slot, look, kind)] = draw_jar_tile(face, slot, look, kind)
     for state in CAKE_STATES:
         for lot in range(len(cloth_art.LOTS)):

@@ -6,28 +6,10 @@ module TraditionalPreservationYeast
         {
             xuiSkin = default,
             entityStyle = ES_FermentingShelf,
-            uiEnabled = true,
+            uiEnabled = false,
         }
-        component Resources
-        {
-            group craft_inputs
-            {
-                Item@Input@5,
-            }
-            group craft_outputs
-            {
-                Item@Output@5@StackAny,
-            }
-        }
-        /* CraftLogic, not DryingCraftLogic: drying scales with temperature and stalls in rain, which would break the fixed timer. */
-        component CraftLogic
-        {
-            Recipes = FermentingShelf,
-            StartMode = Manual,
-            inputGroup = craft_inputs,
-            outputGroup = craft_outputs,
-            actionAnim = Untie_High,
-        }
+        /* No window: the jars are the shelf's own record in its movableData (TraditionalPreservationYeastShelf.lua), put
+           on and taken off from the right-click menu and Shelf Info. */
         component SpriteConfig
         {
             OnIsValid = TraditionalPreservationCore.doorFits,
@@ -78,12 +60,6 @@ module TraditionalPreservationYeast
                 item 2 [Base.Plank],
                 item 4 [Base.Nails],
             }
-        }
-        component CraftBenchSounds
-        {
-            AddInput = ShelfWoodTransferItem,
-            RemoveInput = ShelfWoodTransferItem,
-            StartCraft = ShelfWoodTransferItem,
         }
     }
 }

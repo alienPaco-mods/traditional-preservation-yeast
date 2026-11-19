@@ -92,42 +92,71 @@ module TraditionalPreservationYeast
         }
     }
 
-    /* time is overwritten from FERMENT_HOURS in TraditionalPreservationYeast.lua. Each culture comes off in the jar it
-       went on in (OnStart notes them, OnCreate gives them back). */
-    craftRecipe FermentCulture
+    /* The same culture started with a fruit: the yeast on its skin gets it going sooner (TraditionalPreservationYeast
+       STARTS). Fresh tree and vine fruit, and dried apricots; canned fruit is cooked clean of it. */
+    craftRecipe MakeFermentingCultureFruit
     {
-        time = 432000,
-        Tags = FermentingShelf,
+        time = 60,
+        timedAction = Making,
+        Tags = InHandCraft,
         category = Cooking,
-        OnStart = TraditionalPreservationYeast.onFermentStart,
-        OnUpdate = TraditionalPreservationYeast.onFermentUpdate,
-        OnCreate = TraditionalPreservationYeast.onCreateOffShelf,
+        xpAward = Cooking:3,
+        needTobeLearn = false,
+        OnCreate = TraditionalPreservationYeast.onCreateFruitStart,
         inputs
         {
-            item variable[1:5] [TraditionalPreservationYeast.FermentingYeastJar] flags[ItemCount] mode:destroy,
+            item 5 [Base.Flour2],
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] mode:destroy,
+            -fluid 0.3 [Water],
+            item 1 [Base.Apple;Base.Pear;Base.Peach;Base.Cherry;Base.Grapes;Base.DriedApricots] mode:destroy,
         }
         outputs
         {
-            item variable[1:5] TraditionalPreservationYeast.ActiveCulture,
+            item 1 TraditionalPreservationYeast.FermentingYeastJar,
         }
     }
 
-    /* time is set to RAISE_HOURS in TraditionalPreservationYeast.lua. */
-    craftRecipe RaiseFedCulture
+    /* Started with Potato Water instead of water: the starch feeds it, the quickest start. */
+    craftRecipe MakeFermentingCulturePotato
     {
-        time = 86400,
-        Tags = FermentingShelf,
+        time = 50,
+        timedAction = Making,
+        Tags = InHandCraft,
         category = Cooking,
-        OnStart = TraditionalPreservationYeast.onFermentStart,
-        OnUpdate = TraditionalPreservationYeast.onFermentUpdate,
-        OnCreate = TraditionalPreservationYeast.onCreateOffShelf,
+        xpAward = Cooking:3,
+        needTobeLearn = false,
+        OnCreate = TraditionalPreservationYeast.onCreatePotatoStart,
         inputs
         {
-            item variable[1:5] [TraditionalPreservationYeast.FedCulture] flags[ItemCount] mode:destroy,
+            item 5 [Base.Flour2],
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] mode:destroy,
+            -fluid 0.3 [YeastPotatoWater],
         }
         outputs
         {
-            item variable[1:5] TraditionalPreservationYeast.ActiveCultureHopped,
+            item 1 TraditionalPreservationYeast.FermentingYeastJar,
+        }
+    }
+
+    /* A raw potato mashed into a pot of cold water; on the heat half an hour it becomes Potato Water. As Steep Hops,
+       all the pot's water takes it, so it holds 1 L at most. */
+    craftRecipe MashPotatoInWater
+    {
+        time = 60,
+        timedAction = Making,
+        Tags = InHandCraft;Cooking,
+        category = Cooking,
+        needTobeLearn = false,
+        OnTest = TraditionalPreservationYeast.canSteep,
+        OnCreate = TraditionalPreservationYeast.onPotatoMashed,
+        inputs
+        {
+            item 1 [Base.Pot;Base.PotForged;Base.Saucepan;Base.SaucepanCopper] mode:keep,
+            -fluid 1.0 [Water],
+            item 1 [Base.Potato] mode:destroy,
+        }
+        outputs
+        {
         }
     }
 

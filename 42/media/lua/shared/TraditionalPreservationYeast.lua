@@ -1,7 +1,6 @@
--- Traditional Preservation (Yeast) B42: how a Fermenting Culture works on the Fermenting Shelf.
--- Each press of Craft runs its own timer, so cultures added later finish later. A culture works by the
--- temperature where the shelf stands, like the other Traditional Preservation stations: running totals
--- of the weather in global ModData say how much each one has done, even while its area was unloaded.
+-- Traditional Preservation (Yeast) B42: how a culture works. It works by the temperature where it stands, like the
+-- other Traditional Preservation stations: running totals of the weather in global ModData say how much each jar on
+-- the Fermenting Shelf has done, even while its area was unloaded (the shelf's record: TraditionalPreservationYeastShelf.lua).
 TraditionalPreservationYeast = TraditionalPreservationYeast or {}
 local Y = TraditionalPreservationYeast
 local Weather = require "TraditionalPreservationCore/Weather"
@@ -10,8 +9,6 @@ local Fire = require "TraditionalPreservationCore/Fire"
 Y.FERMENT_HOURS = 120  -- five 24-hour in-game days at the best temperature
 Y.MOD_DATA_KEY = "TraditionalPreservationYeast"
 Y.LOG_TAG = "TraditionalPreservationYeast"   -- names the mod in Core's log lines
-Y.RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
-Y.RAISE_RECIPE = "TraditionalPreservationYeast.RaiseFedCulture"
 Y.RAISE_HOURS = 24  -- a fed culture rises in a day at the best temperature
 -- One kind of work: the ledger's totals are "cultureOpen", "cultureOpenRate" and so on.
 Y.PROCESS = "culture"
@@ -54,47 +51,6 @@ function Y.getLedger()
     return Weather.getLedger(Y.MOD_DATA_KEY, Y.newLedger)
 end
 
--- A run's place, as the shelf's World last told it (Y.notePlace); the open air before then.
-local function runPlace(modData)
-    return modData.place or Weather.NEW_RUN_PLACE
-end
-
--- The engine pools recipe data without clearing its ModData, so every run must set all of this.
-function Y.onFermentStart(craftRecipeData)
-    Weather.startRun(craftRecipeData:getModData(), Y.getLedger(), PROCESS)
-    Y.noteJars(craftRecipeData)
-end
-
--- Craft timers tick at a fixed speed whatever Day Length says, so this replaces their count with the
--- work done at the shelf's temperature. It goes by where the shelf stood when last looked at (Y.notePlace).
-function Y.onFermentUpdate(craftRecipeData)
-    local modData = craftRecipeData:getModData()
-    if not modData.workHours then return end
-    Fire.updateRun(craftRecipeData, Y.getLedger(), PROCESS, runPlace(modData), Y.cultureRate)
-end
-
--- Brings a running culture up to now at the place it was last told.
-local function catchUpRun(modData)
-    Fire.catchUpRun(modData, Y.getLedger(), PROCESS, runPlace(modData), Y.cultureRate)
-end
-
--- Tells a running culture where its shelf stands (the shelf's World, at each look): the place, and the fire's
--- fuel when it is by one. Returns the place.
-function Y.notePlace(modData, shelf, now)
-    return Fire.notePlace(modData, shelf, now, catchUpRun)
-end
-
--- How a running culture is doing, for its popup. hoursLeft assumes the temperature holds.
-function Y.batchStatus(modData, recipeHours, ledger)
-    return Weather.batchStatus(modData.workHours or 0, recipeHours, ledger, runPlace(modData), Y.cultureRate)
-end
-
--- A finished culture is one Active Culture, in its jar, and stays on the shelf until taken. fullTypes is a list of
--- the finished items' full types.
-function Y.finishedCultures(fullTypes)
-    return #fullTypes
-end
-
 -- Reads the sandbox's ferment time and sensitivity.
 function Y.applySandbox()
     local options = SandboxVars and SandboxVars.TraditionalPreservationYeast
@@ -103,13 +59,7 @@ function Y.applySandbox()
     if options.TemperatureSensitivity then Y.SENSITIVITY = Weather.sensitivity(options.TemperatureSensitivity) end
 end
 
--- Sets the recipe's script time from the sandbox, so the crafting window shows the right length.
-function Y.applyFermentTime()
-    Y.applySandbox()
-    Weather.setRecipeHours(Y.RECIPE_NAME, Y.FERMENT_HOURS, Y.LOG_TAG)
-    Weather.setRecipeHours(Y.RAISE_RECIPE, Y.RAISE_HOURS, Y.LOG_TAG)
-end
-
-Events.OnInitGlobalModData.Add(Y.applyFermentTime)
+Events.OnInitGlobalModData.Add(Y.applySandbox)
 
 require "TraditionalPreservationYeastCulture"
+require "TraditionalPreservationYeastShelf"

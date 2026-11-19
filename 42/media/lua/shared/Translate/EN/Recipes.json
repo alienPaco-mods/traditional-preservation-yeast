@@ -1,15 +1,11 @@
 {
   "MakeFermentingCulture": "Make Fermenting Culture",
   "TraditionalPreservationYeast.MakeFermentingCulture": "Make Fermenting Culture",
-  "FermentCulture": "Ferment Culture",
-  "TraditionalPreservationYeast.FermentCulture": "Ferment Culture",
   "Fermenting_Shelf": "Fermenting Shelf",
   "TraditionalPreservationYeast.Fermenting_Shelf": "Fermenting Shelf",
   "FermentingShelf": "Fermenting Shelf",
   "PourOutCulture": "Pour Out Culture",
   "TraditionalPreservationYeast.PourOutCulture": "Pour Out Culture",
-  "RaiseFedCulture": "Raise Fed Culture",
-  "TraditionalPreservationYeast.RaiseFedCulture": "Raise Fed Culture",
   "SteepHops": "Steep Hops",
   "TraditionalPreservationYeast.SteepHops": "Steep Hops",
   "FeedCulture": "Feed Culture",
@@ -17,5 +13,11 @@
   "ShapeYeastCakes": "Shape Yeast Cakes",
   "TraditionalPreservationYeast.ShapeYeastCakes": "Shape Yeast Cakes",
   "CrumbleYeastCakes": "Crumble Yeast Cakes",
-  "TraditionalPreservationYeast.CrumbleYeastCakes": "Crumble Yeast Cakes"
+  "TraditionalPreservationYeast.CrumbleYeastCakes": "Crumble Yeast Cakes",
+  "MakeFermentingCultureFruit": "Make Fermenting Culture with Fruit",
+  "TraditionalPreservationYeast.MakeFermentingCultureFruit": "Make Fermenting Culture with Fruit",
+  "MakeFermentingCulturePotato": "Make Fermenting Culture with Potato Water",
+  "TraditionalPreservationYeast.MakeFermentingCulturePotato": "Make Fermenting Culture with Potato Water",
+  "MashPotatoInWater": "Mash Potato in Water",
+  "TraditionalPreservationYeast.MashPotatoInWater": "Mash Potato in Water"
 }

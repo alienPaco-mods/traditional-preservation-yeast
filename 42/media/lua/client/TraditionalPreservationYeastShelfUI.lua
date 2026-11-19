@@ -1,81 +1,303 @@
--- Traditional Preservation (Yeast) B42: keeps the Fermenting Shelf at five cultures, counting the finished ones not
--- yet taken (vanilla counts only free output slots). Also the shelf's popups, the info block in its crafting window
--- (TP Core's StationInfo), and the look that keeps Active Culture by place (TP Core's PlaceKeepingUI).
-require "Entity/ISUI/Components/Crafting/ISCraftLogicPanel"
+-- Traditional Preservation (Yeast) B42: the Fermenting Shelf's right-click menu (what it holds, Info, Put rows for the
+-- cultures carried, Refresh the Cultures, Take Done, Take Everything Off; TPYShelf does the hand jobs) and Shelf Info,
+-- its info window (TP Core's InfoWindow, a row a jar in TP Core's scrolling list, a tab for Fermenting and one for Fed
+-- cultures when both are on it, the buttons and the drop square). Also the look that keeps Active Culture by place
+-- (TP Core's PlaceKeepingUI). A shelf holding anything stays where it is; none is put down in front of a door.
+require "TimedActions/TPYShelf"
+local InfoWindow = require "TraditionalPreservationCore/InfoWindow"
+local PiecesUI = require "TraditionalPreservationCore/PiecesUI"
 local UI = require "TraditionalPreservationCore/UI"
 local Station = require "TraditionalPreservationCore/Station"
-local StationInfo = require "TraditionalPreservationCore/StationInfo"
 local Weather = require "TraditionalPreservationCore/Weather"
 local PlaceKeepingUI = require "TraditionalPreservationCore/PlaceKeepingUI"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
-local ITEMS_PER_CULTURE = 1
+TraditionalPreservationYeastShelfUI = TraditionalPreservationYeastShelfUI or {}
+local ShelfUI = TraditionalPreservationYeastShelfUI
+local Y = TraditionalPreservationYeast
+
+local KEY = "IGUI_TraditionalPreservationYeast_"
+local MENU = "ContextMenu_TraditionalPreservationYeast_"
+local SHELF_ICON = "media/textures/Item_FermentingShelf.png"
+local COLOURS = { working = { 0.35, 0.7, 0.35 }, hungry = { 0.8, 0.6, 0.2 }, off = { 0.6, 0.3, 0.25 },
+    done = { 0.35, 0.7, 0.35 }, spent = { 0.6, 0.3, 0.25 } }
+-- The icon a jar's row shows, by what it is now (tools/build_shelf_tileset.py, ICON_ITEMS).
+local ICONS = { working = "FermentingCulture", hungry = "FermentingCulture", off = "FermentingCulture",
+    done = "ActiveCulture", spent = "ActiveCulture" }
+local FED_ICONS = { working = "FedCulture", done = "ActiveCultureHopped", spent = "ActiveCultureHopped" }
 
 local isShelf = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
+ShelfUI.isShelf = isShelf
 
-local function cultureRoom(component, resource)
-    return math.floor(component:getFreeOutputSlotCount() / ITEMS_PER_CULTURE) - resource:storedSize()
+local function say(key, ...) return UI.say(KEY .. key, ...) end
+
+local function shelfNow(station)
+    if TraditionalPreservationYeastWorld then TraditionalPreservationYeastWorld.refresh(station) end
+    return Y.shelfNow(station)
 end
 
--- queued lists the cultures already on their way in.
-local function refusal(slot, item, queued)
-    if cultureRoom(slot.component, slot.resource) <= #queued or slot.resource:getFreeItemCapacity() <= #queued then
-        return "IGUI_TraditionalPreservationYeast_Full"
+local function iconOf(jar, state)
+    local name = (jar.kind == "fed" and FED_ICONS or ICONS)[state] or "FedCulture"
+    return getTexture("media/textures/Item_" .. name .. "_" .. Y.jarKind(jar.jar) .. ".png")
+end
+
+-- A jar's name as its item has it: Fermenting Culture (Fruit), Fed Culture.
+function ShelfUI.jarName(jar)
+    if jar.kind == "fed" then return getItemNameFromFullType(Y.FED) end
+    local name = getItemNameFromFullType(Y.FERMENTING)
+    if jar.start == "plain" then return name end
+    return getText(KEY .. "Start_" .. jar.start, name)
+end
+
+-- What the bar says.
+function ShelfUI.barText(status)
+    if status.state == "working" then
+        if not status.hoursLeft then return say("JarWaits", UI.percent(status.progress)) end
+        return say("JarLeft", UI.percent(status.progress), UI.durationText(status.hoursLeft))
     end
+    return say("Jar_" .. status.state)
+end
+
+-- The line under the bar: when it goes hungry, off or Spent.
+function ShelfUI.noteText(status)
+    if status.hungryIn then return say("JarHungryIn", UI.durationText(status.hungryIn)) end
+    if status.offIn then return say("JarOffIn", UI.durationText(status.offIn)) end
+    if status.state == "done" and status.spentIn then return say("JarSpentIn", UI.durationText(status.spentIn * 24)) end
     return nil
 end
 
-UI.slotRules{
-    station = function(entity)
-        return isShelf(entity) and entity:getComponent(ComponentType.CraftLogic) or nil
-    end,
-    refusal = refusal,
-    added = function(entity)
-        if TraditionalPreservationYeastShelf then TraditionalPreservationYeastShelf.track(entity) end
-    end,
-}
-
--- Vanilla's popup on a running culture goes by the recipe's time alone, so it gets the real time left at
--- the shelf's temperature instead.
-local function drawCultureTooltip(slot, tooltip)
-    local craftRecipeData = slot.craftRecipeData
-    local Y = TraditionalPreservationYeast
-    local status = Y.batchStatus(craftRecipeData:getModData(), Weather.recipeHours(craftRecipeData), Y.getLedger())
+local function drawPopup(tooltip, jar, status, place, placeC)
     UI.drawTooltip(tooltip, function(layout)
-        UI.addLine(layout, "IGUI_TraditionalPreservationYeast_Progress", UI.percent(status.progress))
-        UI.addLine(layout, "IGUI_TraditionalPreservationYeast_TimeLeft", UI.timeText(status.hoursLeft, "IGUI_TraditionalPreservationYeast_Time"))
-        UI.addLine(layout, "IGUI_TraditionalPreservationYeast_Temperature", UI.placeText(status.place, status.temperature))
-        UI.addRateLine(layout, "IGUI_TraditionalPreservationYeast_Rate", status.rate)
+        if jar.kind == "culture" then UI.addLine(layout, KEY .. "StartedWith", say("StartName_" .. jar.start)) end
+        UI.addLine(layout, KEY .. "Progress", UI.percent(status.progress))
+        if status.hoursLeft and status.state == "working" then
+            UI.addLine(layout, KEY .. "TimeLeft", UI.durationText(status.hoursLeft))
+        end
+        local note = ShelfUI.noteText(status)
+        if note then UI.addLine(layout, KEY .. "Watch", note) end
+        UI.addLine(layout, KEY .. "Temperature", UI.placeText(place, placeC))
+        UI.addRateLine(layout, KEY .. "Rate", status.rate)
     end)
 end
 
-UI.progressTooltips({ FermentCulture = drawCultureTooltip })
+-- One list row a jar (TP Core's PieceList). Its tab is Fermenting Culture or Fed Culture.
+function ShelfUI.jarRow(jar, place, placeC)
+    local status = Y.jarStatus(jar, placeC, place)
+    local fed = jar.kind == "fed"
+    return {
+        icon = iconOf(jar, status.state), name = ShelfUI.jarName(jar), share = status.progress,
+        colour = COLOURS[status.state], text = ShelfUI.barText(status), note = ShelfUI.noteText(status),
+        tab = getItemNameFromFullType(fed and Y.FED or Y.FERMENTING), tabOrder = fed and 2 or 1,
+        popup = function(tooltip) drawPopup(tooltip, jar, status, place, placeC) end,
+        status = status,
+    }
+end
+
+-- Everything the menu and Shelf Info show: { place, placeC, rows, doneIds, allIds, hungry, refreshable, waitText }.
+function ShelfUI.view(record, place)
+    local placeC = Weather.placeTemperature(Y.getLedger(), place)
+    local rows, doneIds, allIds, hungry, soonest = {}, {}, {}, 0, nil
+    for _, jar in ipairs(record.jars) do
+        local row = ShelfUI.jarRow(jar, place, placeC)
+        table.insert(rows, row)
+        table.insert(allIds, jar.id)
+        local state = row.status.state
+        if state ~= "working" and state ~= "hungry" then table.insert(doneIds, jar.id) end
+        if state == "hungry" then hungry = hungry + 1 end
+        if state == "working" and row.status.hoursLeft then soonest = math.min(soonest or math.huge, row.status.hoursLeft) end
+    end
+    local waitText
+    if #record.jars == 0 then
+        waitText = say("ShelfEmpty")
+    elseif soonest then
+        waitText = say("NoneDone", UI.durationText(soonest))
+    else
+        waitText = say("NoneDoneStopped")
+    end
+    return { place = place, placeC = placeC, rows = rows, doneIds = doneIds, allIds = allIds, hungry = hungry,
+        refreshable = #Y.refreshable(record), waitText = waitText, count = #record.jars }
+end
+
+local function viewOf(station)
+    local record, place = shelfNow(station)
+    return ShelfUI.view(record, place)
+end
+
+-- Why Refresh the Cultures can't be done now, or nil.
+function ShelfUI.refreshRefusal(view, playerObj)
+    if view.refreshable == 0 then return say("NothingToRefresh") end
+    local can, short = Y.refreshesCarried(playerObj, view.refreshable)
+    if can == 0 then return say("RefreshNeeds_" .. short, tostring(Y.REFRESH_FLOUR), UI.litres(Y.REFRESH_WATER_L * 1000)) end
+    return nil
+end
+
+function ShelfUI.refreshHelp(view)
+    return say("RefreshHelp", tostring(Y.REFRESH_FLOUR), UI.litres(Y.REFRESH_WATER_L * 1000), tostring(view.hungry))
+end
+
+-- The jobs, queued: the cultures into the inventory first, then the walk, then the hand jobs (vanilla's order).
+function ShelfUI.put(playerObj, station, items)
+    if #items == 0 then return end
+    for _, item in ipairs(items) do ISInventoryPaneContextMenu.transferIfNeeded(playerObj, item) end
+    if not UI.walkTo(playerObj, station) then return end
+    for _, item in ipairs(items) do ISTimedActionQueue.add(TPYShelf:new(playerObj, station, "put", item)) end
+end
+
+function ShelfUI.take(playerObj, station, ids)
+    if #ids == 0 or not UI.walkTo(playerObj, station) then return end
+    for _, id in ipairs(ids) do ISTimedActionQueue.add(TPYShelf:new(playerObj, station, "take", nil, id)) end
+end
+
+function ShelfUI.refresh(playerObj, station)
+    if not UI.walkTo(playerObj, station) then return end
+    ISTimedActionQueue.add(TPYShelf:new(playerObj, station, "refresh"))
+end
+
+-- The carried cultures the shelf takes, by type (Fermenting first, then Fed).
+local PUT_TYPES = { Y.FERMENTING, Y.FED }
+local function carriedCultures(playerObj, fullType)
+    return UI.findItems(playerObj, function(item) return item:getFullType() == fullType end)
+end
+
+-- What Shelf Info's drop square makes of a dragged selection: the cultures it would put on, as many as fit.
+function ShelfUI.dropJudge(record, items)
+    local take, refused = {}, nil
+    local room = Y.shelfRoom(record)
+    for _, item in ipairs(items) do
+        if not Y.SHELF_TAKES[item:getFullType()] then
+            refused = refused or say("NotACulture")
+        elseif #take >= room then
+            refused = refused or say("Full")
+        else
+            table.insert(take, item)
+        end
+    end
+    if #take == 0 then return { take = take, lines = { refused or say("Full") }, refused = refused } end
+    local lines = { say("DropPut", tostring(#take), tostring(#items)), say("DropRoom", tostring(room)) }
+    return { take = take, lines = lines, refused = #take < #items and refused or nil }
+end
+
+-- Shelf Info
+
+local ShelfWindow = InfoWindow:derive("TraditionalPreservationYeastShelfWindow")
+
+function ShelfWindow:new(playerObj, station)
+    local o = InfoWindow.new(self, playerObj, station)
+    o.title = say("ShelfInfo")
+    return o
+end
+
+function ShelfWindow:refresh()
+    self.shelfView = viewOf(self.station)
+end
+
+function ShelfWindow:render()
+    ISCollapsableWindow.render(self)
+    if self.isCollapsed or not self.shelfView then return end
+    local view = self.shelfView
+    local station, playerObj = self.station, self.playerObj
+    local y = self:top()
+    y = self:row(y, KEY .. "InfoPlace", UI.placeText(view.place, view.placeC))
+    y = self:row(y, KEY .. "InfoRate", UI.percent(Y.cultureRate(view.placeC)))
+    y = self:row(y, KEY .. "InfoHolds", say("InfoHoldsValue", tostring(view.count), tostring(Y.SHELF_JARS)))
+    y = self:pieceList(y, KEY .. "InfoJars", view.rows)
+    local refusal = ShelfUI.refreshRefusal(view, playerObj)
+    local done, all = view.doneIds, view.allIds
+    y = self:buttonRow(y, {
+        { title = UI.say(MENU .. "Refresh", tostring(view.refreshable)), enabled = refusal == nil,
+          tooltip = refusal or ShelfUI.refreshHelp(view), onClick = function() ShelfUI.refresh(playerObj, station) end },
+        { title = UI.say(MENU .. "TakeDone", tostring(#done)), enabled = #done > 0,
+          tooltip = #done == 0 and view.waitText or nil, onClick = function() ShelfUI.take(playerObj, station, done) end },
+        { title = UI.say(MENU .. "TakeAllCount", tostring(#all)), enabled = #all > 0,
+          tooltip = #all > #done and say("TakeAllHelp") or nil, onClick = function() ShelfUI.take(playerObj, station, all) end },
+    })
+    y = self:dropZone(y, say("DropIdle"), function(items) return ShelfUI.dropJudge(Y.shelfOf(station), items) end,
+        function(take) ShelfUI.put(playerObj, station, take) end)
+    local notes = { say("NoteRefresh", tostring(Y.HUNGRY_HOURS), tostring(Y.OFF_HOURS)) }
+    if view.hungry > 0 then table.insert(notes, 1, say("NoteHungry", tostring(view.hungry))) end
+    if view.count == 0 then table.insert(notes, 1, say("NoteEmpty")) end
+    self:drawNotes(y, notes)
+end
+
+function ShelfUI.open(playerObj, station)
+    InfoWindow.open(ShelfWindow, playerObj, station)
+end
+
+-- The menu
+
+local function addShelfMenu(context, playerObj, station)
+    local record, place = shelfNow(station)
+    local view = ShelfUI.view(record, place)
+    local shelfIcon = getTexture(SHELF_ICON)
+    local option = context:addOption(getText("IGUI_CraftingWindow_FermentingShelf"))
+    option.iconTexture = shelfIcon
+    local menu = context:getNew(context)
+    context:addSubMenu(option, menu)
+
+    local status = menu:addOption(say("MenuHolds", tostring(view.count), tostring(Y.SHELF_JARS)))
+    status.isDisabled = true
+    status.iconTexture = shelfIcon
+    local lines = { UI.placeText(view.place, view.placeC) }
+    for index, row in ipairs(view.rows) do table.insert(lines, index .. ". " .. row.name .. ": " .. row.text) end
+    UI.tooltip(status, table.concat(lines, " <LINE> "))
+    local info = menu:addOption(say("ShelfInfo"), playerObj, ShelfUI.open, station)
+    info.iconTexture = shelfIcon
+    UI.topInfo(context, say("ShelfInfo"), shelfIcon, playerObj, ShelfUI.open, station)
+
+    for _, fullType in ipairs(PUT_TYPES) do
+        local pieces = carriedCultures(playerObj, fullType)
+        if #pieces > 0 then
+            local row = { label = UI.say(MENU .. "Put", getItemNameFromFullType(fullType)), room = Y.shelfRoom(record),
+                pieces = pieces, help = say("PutHelp"), noRoom = say("Full") }
+            local put = PiecesUI.row(menu, row, function(chosen)
+                if row.room > 0 then ShelfUI.put(playerObj, station, chosen) end
+            end)
+            put.iconTexture = pieces[1]:getTex()
+        end
+    end
+
+    if view.refreshable > 0 then
+        local refresh = menu:addOption(UI.say(MENU .. "Refresh", tostring(view.refreshable)), playerObj, ShelfUI.refresh, station)
+        refresh.iconTexture = getTexture("media/textures/Item_FermentingCulture_glass.png")
+        local refusal = ShelfUI.refreshRefusal(view, playerObj)
+        if refusal then UI.disable(refresh, refusal) else UI.tooltip(refresh, ShelfUI.refreshHelp(view)) end
+    end
+
+    -- Take Done is always there: greyed until a jar is done, saying when the next will be.
+    local done, all = view.doneIds, view.allIds
+    local finished = menu:addOption(UI.say(MENU .. "TakeDone", tostring(#done)), playerObj, ShelfUI.take, station, done)
+    finished.iconTexture = getTexture("media/textures/Item_ActiveCulture_glass.png")
+    if #done == 0 then UI.disable(finished, view.waitText) end
+    if #all > #done then
+        local takeAll = menu:addOption(getText(MENU .. "TakeAll"), playerObj, ShelfUI.take, station, all)
+        takeAll.iconTexture = shelfIcon
+        UI.tooltip(takeAll, say("TakeAllHelp"))
+    end
+end
+
+local function onFillContextMenu(playerNum, context, worldobjects, test)
+    local seen = {}
+    for _, isoObject in ipairs(worldobjects) do
+        if isShelf(isoObject) and not seen[isoObject] then
+            if test then return ISWorldObjectContextMenu.setTest() end
+            seen[isoObject] = true
+            addShelfMenu(context, getSpecificPlayer(playerNum), isoObject)
+        end
+    end
+end
+
+Events.OnFillWorldObjectContextMenu.Add(onFillContextMenu)
+
+-- A shelf with any jar on it stays where it is (no station moves mid-process).
+UI.keepInPlace(function(isoObject)
+    if not isShelf(isoObject) or not isoObject:hasModData() then return nil end
+    local movableData = isoObject:getModData().movableData
+    local record = movableData and movableData[Y.SHELF_KEY]
+    return (record ~= nil and #record.jars > 0) or nil
+end)
 
 -- The shelf is not put down in front of a door (TP Core's Doors).
 UI.keepDoorsFree(Tiles.STATIONS)
-
--- The shelf's block: where it stands, the temperature and rate there, a bar for each running batch and what waits.
-local function shelfInfo(entity)
-    if not isShelf(entity) then return nil end
-    local contents = StationInfo.contents(entity)
-    if not contents then return nil end
-    local Y = TraditionalPreservationYeast
-    local ledger = Y.getLedger()
-    local place = Y.placeOf(entity)
-    local temperature = Weather.placeTemperature(ledger, place)
-    local batches = {}
-    for _, batch in ipairs(contents.batches) do
-        local status = Y.batchStatus(batch.craftRecipeData:getModData(), Weather.recipeHours(batch.craftRecipeData), ledger)
-        table.insert(batches, { name = UI.say("IGUI_TraditionalPreservationYeast_InfoCultures", tostring(batch.count)),
-            progress = status.progress, hoursLeft = status.hoursLeft })
-    end
-    local fullTypes = {}
-    for _, item in ipairs(contents.finished) do table.insert(fullTypes, item:getFullType()) end
-    return StationInfo.block({ place = place, temperature = temperature, rate = Y.cultureRate(temperature),
-        batches = batches, numbered = true, waiting = #contents.waiting, finished = Y.finishedCultures(fullTypes) })
-end
-
-StationInfo.add(shelfInfo)
 
 -- Active Culture catches up on its keeping, and its name with it, as it is carried and as containers are opened.
 PlaceKeepingUI.watch({ keep = TraditionalPreservationYeast.keepCulture }, TraditionalPreservationYeast.CULTURE_DAYS)

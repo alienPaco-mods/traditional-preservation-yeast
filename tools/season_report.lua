@@ -1,7 +1,8 @@
 -- Shows how long a culture takes through the year, how long Active and Hopped Culture keep, and how long yeast cakes
 -- take on TP Core's Drying Cloth, from forecasts read from the real game. It runs the mod's
--- own code (the ten-minute weather record, a run's start and updates, the popup), so it doubles as a check
--- that a change to that code keeps every number. Run from the mod folder: luajit tools/season_report.lua [climate.csv]
+-- own code (the ten-minute weather record, a jar on the Fermenting Shelf and its status, the keeping, the cloth), so it
+-- doubles as a check that a change to that code keeps every number. A culture is refreshed once a day (it can't go
+-- hungry in 24 hours, as it never works faster than the clock). Run from the mod folder: luajit tools/season_report.lua [climate.csv]
 -- Each line of the file: world month offset tempMin tempMean tempMax humMin humMean humMax rainy snowy
 local H = dofile((os.getenv("TPCORE") or "../TraditionalPreservationCore") .. "/tests/harness.lua")
 H.useModPaths()
@@ -10,10 +11,10 @@ H.installModData()
 Events = { OnInitGlobalModData = { Add = function() end } }
 dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 local Y = TraditionalPreservationYeast
+local Weather = require "TraditionalPreservationCore/Weather"
 
 local MONTHS = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
 local STEPS_PER_HOUR = 6
-local SECONDS_PER_HOUR = 3600
 
 local function readDays(path)
     local days = {}
@@ -34,16 +35,6 @@ local function temperatureAt(day, hour)
     return swing >= 0 and day.mean + (day.high - day.mean) * swing or day.mean + (day.mean - day.low) * swing
 end
 
-local function recipeData(seconds)
-    local craftRecipeData = { modData = {}, elapsed = 0 }
-    function craftRecipeData:getModData() return self.modData end
-    function craftRecipeData:getElapsedTime() return self.elapsed end
-    function craftRecipeData:setElapsedTime(elapsedTime) self.elapsed = elapsedTime end
-    function craftRecipeData:getAllConsumedItems() return { size = function() return 0 end } end
-    function craftRecipeData:getRecipe() return { getTime = function() return seconds end } end
-    return craftRecipeData
-end
-
 -- The first sampled world's calendar year, settled (Weather.settledMeans).
 local function settle(days)
     local year = {}
@@ -56,7 +47,6 @@ end
 local days = readDays(arg[1] or "tools/climate_year.csv")
 -- The ledger starts as a long-running save's would on 1 January.
 Y.getLedger().seasonTemperature, Y.getLedger().groundTemperature = settle(days)(days[1].month, days[1].offset)
-local seconds = Y.FERMENT_HOURS * SECONDS_PER_HOUR
 
 -- Keeping and drying run on their own ledgers (the culture's keeper, the cloth's), started the same way.
 local DryingCloth = require "TraditionalPreservationCore/DryingCloth"
@@ -92,12 +82,15 @@ end
 -- Updated every in-game hour, as an open window would.
 local FIRES = { "FiresideCovered", "FiresideOpen" }
 local runs = {}
+local function newCulture()
+    return { getFullType = function() return Y.FERMENTING end, getModData = function() return {} end }
+end
 local function startRuns(index)
     for _, place in ipairs({ "Open", "Sheltered", "AiredRoom", "Basement", "Moved", FIRES[1], FIRES[2] }) do
-        local craftRecipeData = recipeData(seconds)
-        Y.onFermentStart(craftRecipeData)
-        craftRecipeData.modData.place = place == "Moved" and "Sheltered" or place
-        table.insert(runs, { craftRecipeData = craftRecipeData, place = place, month = days[index].month, startHour = H.hours })
+        local record = { jars = {}, nextId = 1 }
+        local jar = Y.putJar(record, newCulture(), H.hours, place == "Moved" and "Sheltered" or place)
+        table.insert(runs, { record = record, jar = jar, at = place == "Moved" and "Sheltered" or place, place = place,
+            month = days[index].month, startHour = H.hours })
     end
 end
 
@@ -157,15 +150,20 @@ for index, day in ipairs(days) do
         end
         for _, run in ipairs(runs) do
             if not run.finished then
-                if run.place == "Moved" and H.hours - run.startHour >= 12 then run.craftRecipeData.modData.place = "Basement" end
-                Y.onFermentUpdate(run.craftRecipeData)
+                if run.place == "Moved" and H.hours - run.startHour >= 12 then run.at = "Basement" end
+                Y.advanceJar(run.jar, H.hours, run.at, nil, nil, Y.getLedger(), Y.CULTURE_KEEPER.ledger())
+                run.hoursOn = (run.hoursOn or 0) + 1
                 local key = run.month .. run.place
                 if not statuses[key] and H.hours - run.startHour >= 24 then
-                    statuses[key] = Y.batchStatus(run.craftRecipeData.modData, Y.FERMENT_HOURS, Y.getLedger())
+                    local placeC = Weather.placeTemperature(Y.getLedger(), run.at)
+                    statuses[key] = Y.jarStatus(run.jar, placeC, run.at)
+                    statuses[key].temperature, statuses[key].place = placeC, run.at
                 end
-                if run.craftRecipeData.elapsed >= seconds then
+                if Y.jarDone(run.jar) then
                     run.finished = true
                     results[key] = results[key] or (H.hours - run.startHour) / 24
+                elseif run.hoursOn % 24 == 0 then
+                    Y.refreshJars(run.record)
                 end
             end
         end
@@ -177,7 +175,6 @@ local function cell(month, place)
     return taken and string.format("%.2f", taken) or ""
 end
 -- A room while the power grid is on holds Weather.GRID_ROOM_C (22 C) whatever the month, so its days are the rate's.
-local Weather = require "TraditionalPreservationCore/Weather"
 local gridDays = string.format("%.2f", Y.FERMENT_HOURS / Y.cultureRate(Weather.GRID_ROOM_C) / 24)
 
 print(string.format("Days for one culture (%d hours at full speed), started on the first of the month", Y.FERMENT_HOURS))

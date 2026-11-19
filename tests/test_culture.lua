@@ -52,16 +52,16 @@ Y.onCreateInJar(recipeData({ item("Base.JarCrafted") }, { glass }))
 check("a glass one keeps its script icon", glass.modData.tpyJar == "Base.JarCrafted" and glass.modData.customInventoryIcon == nil)
 check("an old culture with no jar noted is glass", Y.jarOf(item(Y.FERMENTING)) == "Base.EmptyJar" and Y.jarKind("Base.JarCrafted") == "glass")
 
--- The shelf: OnStart notes the jars, OnCreate hands them on in order.
-local run = recipeData({ item(Y.FERMENTING, "Base.ClayJar"), item(Y.FERMENTING), item(Y.FERMENTING, "Base.ClayJarGlazed") }, {})
-Y.noteJars(run)
-local outs = { item(Y.ACTIVE), item(Y.ACTIVE), item(Y.ACTIVE) }
-run.getAllCreatedItems = function() return list(outs) end
-Y.onCreateOffShelf(run)
-check("each culture comes off in its own jar", outs[1].modData.tpyJar == "Base.ClayJar" and outs[2].modData.tpyJar == "Base.EmptyJar"
-    and outs[3].modData.tpyJar == "Base.ClayJarGlazed")
-check("with its clay icon", outs[1].modData.customInventoryIcon == "media/textures/Item_ActiveCulture_clay.png")
-check("and its keeping clock started", outs[1].modData.tpyKeep ~= nil)
+-- Made, a culture is fed and its run starts (it goes hungry off the shelf too); a fruit start says so in its name.
+check("a culture's run starts when it's made", made.modData.tpyRun ~= nil and made.modData.tpyRun.fedAt == 0
+    and made.modData.tpyRun.work.age == 0 and made.modData.tpyStart == nil)
+local fruity = item(Y.FERMENTING)
+NAMES[Y.FERMENTING] = "Fermenting Culture"
+Y.onCreateFruitStart(recipeData({ item("Base.Apple"), item("Base.EmptyJar") }, { fruity }))
+check("a fruit start is noted and named", fruity.modData.tpyStart == "fruit" and fruity.name == "Fermenting Culture (Fruit)")
+local potato = item(Y.FERMENTING)
+Y.onCreatePotatoStart(recipeData({ item("Base.EmptyJar") }, { potato }))
+check("and a potato water one", potato.modData.tpyStart == "potato" and potato.name == "Fermenting Culture (Potato Water)")
 
 -- Pour Out: the jar back, empty.
 local added = {}
@@ -113,9 +113,15 @@ local steep = recipeData({}, {})
 steep.getAllKeepInputItems = function() return list({ steeped }) end
 Y.onSteeped(steep)
 check("the litre comes back as Hop Water", steepedFluid.fluid == Y.HOP_WATER and steepedFluid.litres == 1.0)
+local mashed, mashedFluid = pot("Water", 0.0)
+local mash = recipeData({}, {})
+mash.getAllKeepInputItems = function() return list({ mashed }) end
+Y.onPotatoMashed(mash)
+check("a mashed potato's litre is Potato in Water", mashedFluid.fluid == Y.POTATO_SOAK and mashedFluid.litres == 1.0)
 
 -- Cakes on the cloth: a week at full speed, dead past 35 C; dry gives a packet of Yeast.
 local DryingCloth = require "TraditionalPreservationCore/DryingCloth"
+local Tiles = require "TraditionalPreservationYeast/Tiles"
 local kind = DryingCloth.kindOf(Y.CAKES)
 check("yeast cakes are a cloth kind", kind ~= nil and kind.hours == 168 and kind.killAbove == 35)
 check("full speed from 15 to 25 C", kind.drying.rate(15) == 1 and kind.drying.rate(25) == 1 and kind.drying.rate(0) == 0)
@@ -124,7 +130,7 @@ local inventory = { AddItem = function(_, fullType) local made = item(fullType) 
 kind.give({ data = { age = 1 } }, inventory, "dry")
 kind.give({ data = { age = 1 } }, inventory, "dead")
 check("a dry lot is Dried Yeast Cakes, a dead one nothing", #bag == 1 and bag[1] == Y.DRIED_CAKES)
-check("its sprite is the mod's own", kind.sprite(2, "dry") == "traditionalpreservationyeast_01_" .. (304 + 5 + 2))
+check("its sprite is the mod's own", kind.sprite(2, "dry") == "traditionalpreservationyeast_01_" .. (Tiles.FIRST_CAKE + 5 + 2))
 
 -- Wet on the cloth they keep ageing, slower as they dry: in a warm shut room (where nothing dries) they go off; in the
 -- open at 15 C they dry in 7 days about 2.3 days older (8 to Spent), however often they are looked at; shaped already 6 days old, at 20 C they don't.

@@ -48,4 +48,53 @@ module Base
             }
         }
     }
+
+    /* A raw potato mashed into cold water (Mash Potato in Water): kept steaming on a stove or a fire for half an hour
+       it becomes Potato Water. */
+    fluid YeastPotatoSoak
+    {
+        ColorReference = Wheat,
+        DisplayName = Fluid_Name_YeastPotatoSoak,
+        Categories
+        {
+            Beverage,
+        }
+        Properties
+        {
+            ThirstChange = -10.0,
+            UnhappyChange = 10.0,
+        }
+        BlendWhiteList
+        {
+            whitelist = true,
+            fluids
+            {
+                YeastPotatoSoak,
+            }
+        }
+    }
+
+    /* Potato boiled in water: cloudy with starch, it starts a culture sooner (Make Fermenting Culture with Potato Water). */
+    fluid YeastPotatoWater
+    {
+        ColorReference = BlanchedAlmond,
+        DisplayName = Fluid_Name_YeastPotatoWater,
+        Categories
+        {
+            Beverage,
+        }
+        Properties
+        {
+            ThirstChange = -10.0,
+            UnhappyChange = 5.0,
+        }
+        BlendWhiteList
+        {
+            whitelist = true,
+            fluids
+            {
+                YeastPotatoWater,
+            }
+        }
+    }
 }

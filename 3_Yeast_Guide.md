@@ -35,8 +35,9 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 |---|---|---|
 | Build a **Fermenting Shelf** | 2 planks, 4 nails, hammer (kept). Carpentry 2. Against a wall | The shelf |
 | **Make Fermenting Culture** (Cooking) | 5 uses of flour + a jar (glass or ceramic) holding at least 0.3 L water | 1 Fermenting Culture |
-| Load the shelf, press **Craft** | Up to 5 cultures | |
-| Wait **5 in-game days** (in warm weather) | | 1 **Active Culture** per culture, in its jar |
+| Right-click the shelf, **Put** them on | Up to 5 jars | |
+| **Refresh the Cultures** once a day | A use of flour + 0.1 L water a jar | |
+| Wait **5 in-game days** (in warm weather) | | 1 **Active Culture** per jar, in its jar (**Take Done**) |
 | **Shape Yeast Cakes** (Cooking) | An Active Culture + 3 uses of Cornmeal or Flour | Wet **Yeast Cakes** + the jar back |
 | Lay them on a **Drying Cloth** (TP Core) | A Sheet and 2 Stones make the cloth | |
 | Wait **about 7 days** (moving air, 15 to 25 C) | | **Dried Yeast Cakes** |
@@ -48,27 +49,28 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 
 1. **Build the shelf** from the Build menu (Furniture). It mounts **against a wall**.
 2. **Make Fermenting Culture** in the crafting menu: 5 flour uses + a Jar, Ceramic Jar or Glazed Ceramic Jar with at least 0.3 L water.
-3. **Open the shelf**, drop in up to **5 cultures**, press **Craft**.
-4. Come back in **5 days**. Collect the **Active Culture (Fresh)**. It's alive and won't wait: about 3 days at 20 C before it's **Spent**.
-5. **Shape Yeast Cakes** from it, and get your jar back.
-6. **Build a Drying Cloth** (Build menu, Furniture: a Sheet and 2 Stones) where the air moves: outdoors, under a roof, by an open window or by a fire. Right-click it and **lay the cakes on**. Five lots a cloth.
-7. About **a week** later, **take off the finished lots** and **Crumble Yeast Cakes**: one full Yeast packet (10 uses) a lot. Dried cakes keep; crumble them when you need yeast.
+3. **Right-click the shelf** and put up to **5 cultures** on it (or drop them on the square in **Shelf Info**).
+4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar. Miss a day and a jar goes hungry and stops; miss three and it has gone off.
+5. Come back in **5 days**. **Take Done**: the **Active Culture (Fresh)**. It's alive and won't wait: about 3 days at 20 C before it's **Spent**.
+6. **Shape Yeast Cakes** from it, and get your jar back.
+7. **Build a Drying Cloth** (Build menu, Furniture: a Sheet and 2 Stones) where the air moves: outdoors, under a roof, by an open window or by a fire. Right-click it and **lay the cakes on**. Five lots a cloth.
+8. About **a week** later, **take off the finished lots** and **Crumble Yeast Cakes**: one full Yeast packet (10 uses) a lot. Dried cakes keep; crumble them when you need yeast.
 
 ### Keeping the line: hops
 
 1. **Steep Hops**: a Cooking Pot or Saucepan with exactly 1 L of water + 1 **Hops (Dried)**. Heat it a quarter of an hour on a stove or fire: **Hop Tea**.
 2. **Feed Culture**: an Active Culture + an empty jar + 0.3 L Hop Tea + 5 flour uses: **2 Fed Culture**.
-3. Back on the shelf, **Craft**: a day later, **2 Hopped Culture**. They keep twice as long. Shape one into cakes, feed the other.
+3. Back on the shelf: a day later, **2 Hopped Culture**. A fed jar needs no refresh. They keep twice as long. Shape one into cakes, feed the other.
 
 ---
 
 ## 4. The Fermenting Shelf
 
-- **Each press of Craft starts its own timer.** Cultures started together finish together. Ones added later finish later.
-- **Holds 5 cultures in total**, counting waiting, fermenting and finished-but-uncollected ones.
-- **Cancel** stops every running batch and gives the cultures back.
-- **The jars show their progress:** pale when fresh, amber from halfway, **dark brown when done**, in the jar you used: glass, ceramic or glazed. A fed jar carries a hop sprig. A finished jar stays visible until it is collected.
-- **The shelf's own window tells you the rest:** where it stands, the temperature and the working rate there, a bar for each running batch with its time left, and what is waiting or finished.
+- **Each jar keeps its own clock.** One put on later finishes later. **Holds 5 jars.**
+- **Feed it like a real starter.** A Fermenting Culture is hungry after **24 hours of work** since it was made or last refreshed, and stops; after **72** it has gone off (take it off for the empty jar). Warm, that is a day and three days; in a cool basement, longer; frozen, it waits. **Refresh the Cultures** feeds every jar on the shelf at once. It goes hungry off the shelf too, so taking jars off doesn't skip a refresh.
+- **Quicker starts.** **Make Fermenting Culture with Fruit** (an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots too): 4 days. **with Potato Water**: 3.5 days. Potato Water: **Mash Potato in Water** (1 L in a pot + a Potato), then half an hour on the heat; 1 L starts three jars.
+- **The jars show how they're doing:** pale when fresh, amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off, **dark brown when done**, in the jar you used: glass, ceramic or glazed (a clay jar shows it on its cloth). A fed jar carries a hop sprig.
+- **Shelf Info tells you the rest:** where it stands, the temperature and working rate there, and a row for each jar with its time left and when it goes hungry. A shelf with anything on it can't be picked up.
 
 ---
 
@@ -166,7 +168,7 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 
 ## 8. Tips
 
-- **Stagger your batches** (press Craft at different times) to always have fresh yeast coming.
+- **Stagger your jars** (put them on days apart) to always have fresh yeast coming. One refresh feeds them all.
 - **Put a shelf in the basement for autumn and winter.** About 9 days a culture in October, 12 in November, 17 in December and 3 to 4 weeks from January to March: steadier than any unheated room.
 - **Flour is the real cost.** 5 flour uses per culture. Plan your wheat harvest with yeast in mind.
 - **Hoard jars.** Each culture borrows one until it's shaped into cakes. Ceramic jars count, and pottery is easier to come by than glass.
@@ -230,13 +232,14 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 | `TPY.weather()` | The temperature in each place (open air, under an open roof, a shut room, an aired room, a basement, by a fire, by banked embers), how fast a culture works there, and how many days it takes. |
 | `TPY.cultures()` | Every culture and wet cake on you or near: the jar, the place, and how long it keeps there. |
 | `TPY.here()` | Which kind of place you're standing in. |
-| `TPY.age(hours)` | Gives every shelf this many hours of perfect fermenting weather. `TPY.age(120)` finishes a culture. |
-| `TPY.fast(hours)` | Test timer: a culture takes this many hours. `TPY.fast()` goes back to the sandbox time. |
-| `TPY.give(name, n)` | Spawns `n` of: `"culture"`, `"active"`, `"fed"`, `"hopped"`, `"cakes"`, `"dried"`, `"hops"`, `"flour"`, or any full type such as `"Base.Yeast"`. `TPY.give()` lists them. |
-| `TPY.kit(kind)` | The things a test needs: `"build"` (the Fermenting Shelf), `"culture"` (a culture in each kind of jar), `"cakes"` (cultures, cornmeal and a Drying Cloth's makings), `"hops"` (hops, a saucepan of water, a jar, flour and a culture) or `"all"`. `TPY.kit()` lists them. |
+| `TPY.age(hours)` | Gives every shelf this many hours of perfect fermenting weather. Jars go hungry by it too. |
+| `TPY.fast(hours)` | Test timer: a plain culture takes this many hours (fruit and potato their share). `TPY.fast()` goes back to the sandbox time. |
+| `TPY.shelf()` | Every jar on the Fermenting Shelves near you: what it's doing, its progress and the hours since it was fed. |
+| `TPY.give(name, n)` | Spawns `n` of: `"culture"`, `"active"`, `"fed"`, `"hopped"`, `"cakes"`, `"dried"`, `"hops"`, `"flour"`, `"potato"`, `"apple"`, or any full type such as `"Base.Yeast"`. `TPY.give()` lists them. |
+| `TPY.kit(kind)` | The things a test needs: `"build"` (the Fermenting Shelf), `"culture"` (a culture in each kind of jar, and flour for the refreshes), `"starters"` (an apple, a potato and a saucepan of water for the quicker starts), `"cakes"` (cultures, cornmeal and a Drying Cloth's makings), `"hops"` (hops, a saucepan of water, a jar, flour and a culture) or `"all"`. `TPY.kit()` lists them. |
 | `TPC.cloth()`, `TPC.dryCloth(hours)` | TP Core's: the Drying Cloths near you, and drying their wet lots this many hours. |
 
-**Typical check:** `TPY.give("culture", 5)`, load the shelf and press Craft, then `TPY.age(60)`. The jars should turn amber at halfway, and `TPY.age(60)` again finishes them.
+**Typical check:** `TPY.fast(20)`, `TPY.give("culture", 5)`, put them all on the shelf, then `TPY.age(10)`. The jars should turn amber at halfway, and `TPY.age(10)` again finishes them. `TPY.age(24)` on fresh jars makes them hungry.
 
 ---
 

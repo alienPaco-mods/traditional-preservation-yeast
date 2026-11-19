@@ -3,7 +3,6 @@
 if not isDebugEnabled() then return end
 
 local Y = TraditionalPreservationYeast
-local Weather = require "TraditionalPreservationCore/Weather"
 local Fire = require "TraditionalPreservationCore/Fire"
 TPY = {}
 
@@ -13,10 +12,11 @@ function TPY.help()
     say("TPY.weather()        the temperature by place, and how fast a culture works there")
     say("TPY.cultures()       Active and Hopped Culture and wet Yeast Cakes on you or near: the jar, place and how long each keeps there")
     say("TPY.here()           which place you're standing in (open air, an open roof, indoors, a basement, by a fire)")
-    say("TPY.age(hours)       give every shelf this many hours of perfect fermenting weather")
-    say("TPY.fast(hours)      test timer: a culture takes this many hours. TPY.fast() goes back to the sandbox time")
+    say("TPY.age(hours)       give every shelf this many hours of perfect fermenting weather (jars go hungry by it too)")
+    say("TPY.fast(hours)      test timer: a plain culture takes this many hours (fruit and potato their share). TPY.fast() goes back to the sandbox time")
+    say("TPY.shelf()          every jar on the Fermenting Shelves within 3 tiles: state, progress, hours since fed")
     say("TPY.give(name, n)    spawn n of: culture (a Fermenting Culture), active (Active Culture), fed (Fed Culture), hopped (Hopped Culture), cakes (wet Yeast Cakes), dried (Dried Yeast Cakes), hops (Hops (Dried)), flour, or any full type. TPY.give() lists them")
-    say("TPY.kit(kind)        the things a test needs: \"build\" (the Fermenting Shelf), \"culture\" (Make Fermenting Culture) or \"all\". TPY.kit() lists them")
+    say("TPY.kit(kind)        the things a test needs: \"build\" (the Fermenting Shelf), \"culture\" (Make Fermenting Culture and its refreshes), \"starters\" (fruit and potato water), \"cakes\", \"hops\" or \"all\". TPY.kit() lists them")
 end
 
 function TPY.weather()
@@ -56,23 +56,45 @@ end
 
 function TPY.fast(hours)
     if not hours then
-        Y.applyFermentTime()
+        Y.FERMENT_HOURS = 120
+        Y.applySandbox()
         return say(string.format("Back to the sandbox time: %.1f hours.", Y.FERMENT_HOURS))
     end
     Y.FERMENT_HOURS = hours
-    Weather.setRecipeHours(Y.RECIPE_NAME, hours, Y.LOG_TAG)
-    say(string.format("Test timer on: a culture takes %s hours at full speed.", tostring(hours)))
+    say(string.format("Test timer on: a plain culture takes %s hours at full speed (jars on a shelf too).", tostring(hours)))
+end
+
+function TPY.shelf()
+    local Station = require "TraditionalPreservationCore/Station"
+    local Tiles = require "TraditionalPreservationYeast/Tiles"
+    local isShelf = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
+    local square = getPlayer():getSquare()
+    local shelves = Station.near(square, 3, function(isoObject) return isShelf(isoObject) ~= nil end)
+    if #shelves == 0 then return say("No Fermenting Shelf within 3 tiles.") end
+    for _, shelf in ipairs(shelves) do
+        local record, place = Y.shelfNow(shelf)
+        local placeC = Y.placeTemperature(Y.getLedger(), place)
+        say(string.format("Shelf in %s (%.1f C, %.0f%% speed): %d of %d jars", place, placeC, Y.cultureRate(placeC) * 100, #record.jars, Y.SHELF_JARS))
+        for _, jar in ipairs(record.jars) do
+            local status = Y.jarStatus(jar, placeC, place)
+            say(string.format("  %d. %s %s in %s: %s, %.0f%% of %.0f h, %.1f work hours since fed", jar.id, jar.kind, jar.start, jar.jar,
+                status.state, status.progress * 100, Y.jarHours(jar), jar.work.age - jar.fedAt))
+        end
+    end
 end
 
 local GIVES = { culture = Y.FERMENTING, active = Y.ACTIVE, fed = Y.FED, hopped = Y.HOPPED, cakes = Y.CAKES, dried = Y.DRIED_CAKES,
-    hops = "Base.HopsDried", flour = "Base.Flour2" }
+    hops = "Base.HopsDried", flour = "Base.Flour2", potato = "Base.Potato", apple = "Base.Apple" }
 
 function TPY.give(name, count)
-    if not name then return say("Things: culture (a Fermenting Culture), active (Active Culture), fed (Fed Culture), hopped (Hopped Culture), cakes (wet Yeast Cakes), dried (Dried Yeast Cakes), hops (Hops (Dried)), flour, plus any full type such as Base.Yeast") end
+    if not name then return say("Things: culture (a Fermenting Culture, fed just now), active (Active Culture), fed (Fed Culture), hopped (Hopped Culture), cakes (wet Yeast Cakes), dried (Dried Yeast Cakes), hops (Hops (Dried)), flour, potato, apple, plus any full type such as Base.Yeast") end
     local fullType = GIVES[name] or (name:find("%.") and name)
     if not fullType then return say("Not a thing: " .. tostring(name) .. ". TPY.give() lists them") end
     local inventory = getPlayer():getInventory()
-    for _ = 1, count or 1 do inventory:AddItem(fullType) end
+    for _ = 1, count or 1 do
+        local item = inventory:AddItem(fullType)
+        if fullType == Y.FERMENTING then Y.startRun(item, getGameTime():getWorldAgeHours(), Y.placeOf(getPlayer())) end
+    end
     say(string.format("Gave %d %s.", count or 1, fullType))
 end
 
@@ -83,8 +105,8 @@ local KITS = {
         items = { ["Base.Hammer"] = 1, ["Base.Plank"] = 2, ["Base.Nails"] = 4 },
     },
     culture = {
-        about = "15 flour, a Jar, a Ceramic Jar, a Glazed Ceramic Jar and a bottle of water, for three Make Fermenting Culture, one in each jar",
-        items = { ["Base.Flour2"] = 15, ["Base.EmptyJar"] = 1, ["Base.ClayJar"] = 1, ["Base.ClayJarGlazed"] = 1 },
+        about = "30 flour, a Jar, a Ceramic Jar, a Glazed Ceramic Jar and a bottle of water, for three Make Fermenting Culture, one in each jar, and their daily refreshes",
+        items = { ["Base.Flour2"] = 30, ["Base.EmptyJar"] = 1, ["Base.ClayJar"] = 1, ["Base.ClayJarGlazed"] = 1 },
         -- Vanilla's bottle may spawn with carbonated water.
         filled = { ["Base.WaterBottle"] = "Water" },
     },
@@ -98,7 +120,13 @@ KITS.hops = {
     items = { [Y.ACTIVE] = 1, ["Base.HopsDried"] = 2, ["Base.EmptyJar"] = 1, ["Base.Flour2"] = 5 },
     litre = { ["Base.Saucepan"] = "Water" },
 }
-local KIT_NAMES = { "build", "culture", "cakes", "hops" }
+KITS.starters = {
+    about = "an Apple, a Potato, a Saucepan of 1 L water, 2 Jars, 10 flour and a bottle of water, for Mash Potato in Water and Make Fermenting Culture with Fruit and with Potato Water",
+    items = { ["Base.Apple"] = 1, ["Base.Potato"] = 1, ["Base.EmptyJar"] = 2, ["Base.Flour2"] = 10 },
+    litre = { ["Base.Saucepan"] = "Water" },
+    filled = { ["Base.WaterBottle"] = "Water" },
+}
+local KIT_NAMES = { "build", "culture", "starters", "cakes", "hops" }
 
 function TPY.kit(kind)
     local names = kind == "all" and KIT_NAMES or { kind }

@@ -1,30 +1,16 @@
--- Checks the fermenting timer outside the game. Run from the mod folder: luajit tests/test_ferment.lua
+-- Checks the culture's work outside the game: the temperature curve, and each jar on the Fermenting Shelf on its own
+-- clock (hunger, going off, the starts, fed cultures, keeping once done). Run from the mod folder:
+-- luajit tests/test_ferment.lua
 local H = dofile((os.getenv("TPCORE") or "../TraditionalPreservationCore") .. "/tests/harness.lua")
 local hours = 10
 function getGameTime() return { getWorldAgeHours = function() return hours end } end
-local store = {}
-ModData = { getOrCreate = function() return store end }
 local onInit
 Events = { OnInitGlobalModData = { Add = function(handler) onInit = handler end } }
-local loaded = {}
-ScriptManager = { instance = {} }
-function ScriptManager.instance:getCraftRecipe()
-    return { Load = function(_, name, text) loaded[name] = text end }
-end
 H.useModPaths()
+H.installModData()
 dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 
-local check = H.check
-
-local function recipeData(time)
-    local craftRecipeData = { modData = {}, elapsed = 0 }
-    function craftRecipeData:getModData() return self.modData end
-    function craftRecipeData:setElapsedTime(elapsedTime) self.elapsed = elapsedTime end
-    function craftRecipeData:getAllConsumedItems() return H.list({}) end
-    function craftRecipeData:getRecipe() return { getTime = function() return time end } end
-    return craftRecipeData
-end
-
+local check, near = H.check, H.near
 local Y = TraditionalPreservationYeast
 local TIME = 120 * 3600
 local function weather(count, temperature)
@@ -51,72 +37,123 @@ check("a shut room is its mean, 2 C warmer in a cold one and a stuffy one", Y.pl
     and Y.placeTemperature({ temperature = 0, seasonTemperature = 25 }, "Sheltered") == 27
     and Y.placeTemperature({ temperature = 0, seasonTemperature = 25, threeDayTemperature = 18 }, "Sheltered") == 18)
 
--- Timers
-local warm = recipeData(TIME)
-Y.onFermentStart(warm)
-warm.modData.place = "Open"
-weather(60, 22)
-Y.onFermentUpdate(warm)
-check("60 warm hours are half of five days", math.abs(warm.elapsed - 60 * 3600) < 1)
-weather(100, 22)
-Y.onFermentUpdate(warm)
-check("and it stops at done", warm.elapsed == TIME)
 
-local cold = recipeData(TIME)
-Y.onFermentStart(cold)
-cold.modData.place = "Open"
-weather(50, 10)
-Y.onFermentUpdate(cold)
-check("a cool shed works at 40%", math.abs(cold.elapsed - 50 * 0.4 * 3600) < 1)
+-- The shelf's jars, on their own clocks (the record alone: Y.putJar, Y.advanceJar).
+local function culture(fullType, start)
+    local self = { modData = { tpyStart = start, tpyJar = "Base.ClayJar" } }
+    function self:getFullType() return fullType end
+    function self:getModData() return self.modData end
+    return self
+end
 
-local downstairs = recipeData(TIME)
-Y.onFermentStart(downstairs)
-downstairs.modData.place = "Basement"
-weather(24, -10)
-Y.onFermentUpdate(downstairs)
--- The season slips towards the frost hour by hour, the basement a third as far: no slower than its last hour's rate.
-check("a basement shelf carries on through a frost", downstairs.elapsed >= 24 * Y.cultureRate(Y.placeTemperature(Y.getLedger(), "Basement")) * 3600 - 1
-    and downstairs.elapsed > 2 * 24 * Y.cultureRate(-10) * 3600)
+local record = { jars = {}, nextId = 1 }
+local function put(fullType, start)
+    return Y.putJar(record, culture(fullType, start), hours, "Open")
+end
+-- count hours of weather at temperature everywhere, then every jar on the record brought up to now in the open.
+local function step(count, temperature)
+    for _ = 1, count do
+        hours = hours + 1
+        Y.advance(Y.getLedger(), hours, temperature)
+        Y.CULTURE_KEEPER.recordWeather(hours, temperature)
+    end
+    for _, jar in ipairs(record.jars) do Y.advanceJar(jar, hours, "Open", nil, nil, Y.getLedger(), Y.CULTURE_KEEPER.ledger()) end
+end
 
--- By a fire: 28 C, full speed, by the clock until the fire's noted fuel ran out, then the room under it.
-local Fire = require "TraditionalPreservationCore/Fire"
-local hearthside = recipeData(TIME)
-Y.onFermentStart(hearthside)
-hearthside.modData.place = Fire.PLACE
-hearthside.modData.fireUntil = hours + 10
-hearthside.modData.placeWithoutFire = "Open"
-weather(20, -10)
-Y.onFermentUpdate(hearthside)
-check("by a fire in a frost: 10 hours at full speed, then 10 in the frost",
-    math.abs(hearthside.elapsed - (10 + 10 * Y.cultureRate(-10)) * 3600) < 1)
-check("banked embers (24 C) are full speed too", Y.cultureRate(Y.placeTemperature(Y.getLedger(), Fire.EMBERS)) == 1)
+Y.getLedger()
+Y.CULTURE_KEEPER.ledger()
+local plain = put(Y.FERMENTING)
+check("a culture goes on in its jar, plain, just fed", plain.jar == "Base.ClayJar" and plain.start == "plain" and plain.fedAt == 0
+    and plain.kind == "culture" and Y.jarHours(plain) == 120)
+step(20, 22)
+check("20 warm hours: a sixth done, still working", near(plain.done, 20) and Y.jarState(plain) == "working")
+local status = Y.jarStatus(plain, 22, "Open")
+check("hungry in 4 hours, done in 100 if fed", near(status.hungryIn, 4) and near(status.hoursLeft, 100))
+step(10, 22)
+check("a day unfed it's hungry and stops", Y.jarState(plain) == "hungry" and near(plain.done, 24))
+check("and says when it goes off", near(Y.jarStatus(plain, 22, "Open").offIn, 42))
+check("one refresh feeds it", Y.refreshJars(record) == 1 and Y.jarState(plain) == "working")
+step(10, 22)
+check("fed, it goes on", near(plain.done, 34))
+step(5, 10)
+check("cool, slower, and hungry later", near(plain.done, 36) and near(plain.work.age - plain.fedAt, 12))
+step(24, -10)
+check("frozen, nothing moves, not even hunger", near(plain.done, 36) and near(plain.work.age - plain.fedAt, 12)
+    and Y.jarStatus(plain, -10, "Open").hoursLeft == nil)
 
-local away = recipeData(TIME)
-Y.onFermentStart(away)
-away.modData.place = "Open"
-hours = hours + 30
-Y.advance(Y.getLedger(), hours, 22)
-Y.onFermentUpdate(away)
-check("time away from the shelf still counts", math.abs(away.elapsed - 30 * 3600) < 1)
+local left = put(Y.FERMENTING)
+step(36, 22)
+plain.fedAt = plain.work.age
+step(36, 22)
+check("three days unfed it goes off, a day's work done", Y.jarState(left) == "off" and near(left.done, 24))
+check("gone off it is fed no more", #Y.refreshable(record) == 1 and Y.refreshable(record)[1] == plain)
+table.remove(record.jars, 2)
 
-local unstarted = recipeData(TIME)
-Y.onFermentUpdate(unstarted)
-check("a run its start hook never saw is left alone", unstarted.modData.workHours == nil and unstarted.elapsed == 0)
+-- The starts: fed every 20 hours at 22 C, how long each takes.
+local function hoursToDone(start)
+    record.jars = {}
+    local jar = put(Y.FERMENTING, start)
+    local took = 0
+    while not Y.jarDone(jar) and took < 400 do
+        step(1, 22)
+        took = took + 1
+        if took % 20 == 0 then Y.refreshJars(record) end
+    end
+    return took, jar
+end
+check("plain flour and water: five days", hoursToDone(nil) == 120)
+check("fruit: four", hoursToDone("fruit") == 96)
+check("potato water: three and a half", hoursToDone("potato") == 84)
+Y.FERMENT_HOURS = 60
+check("a start's share follows the sandbox's time", Y.jarHours(put(Y.FERMENTING, "fruit")) == 48)
+Y.FERMENT_HOURS = 120
 
-local pooled = recipeData(TIME)
-pooled.modData = { workHours = 50, place = "Basement" }
-Y.onFermentStart(pooled)
-check("a reused recipe object starts clean", pooled.modData.workHours == 0 and pooled.modData.place == nil)
+-- A Fed Culture rises in a day and never goes hungry.
+record.jars = {}
+local fed = put(Y.FED)
+step(23, 22)
+check("a fed culture wants no refresh", Y.jarState(fed) == "working" and #Y.refreshable(record) == 0)
+step(1, 22)
+check("and rises in a day", Y.jarState(fed) == "done" and Y.jarLook(fed, 1) == "fedDone")
 
-local status = Y.batchStatus({ workHours = 60, place = "Open" }, 120, { temperature = 10 })
-check("the popup shows progress and the real time left", status.progress == 0.5 and math.abs(status.hoursLeft - 150) < 1e-6 and math.abs(status.rate - 0.4) < 1e-9)
+-- Done part way through a stretch, its keeping counts from there: 30 hours at 22 C after 110 done, 10 to finish.
+record.jars = {}
+local late = put(Y.FERMENTING)
+late.done, late.fedAt = 110, 0
+step(30, 22)
+local keptAll = late.keep.age / 24
+check("done in the stretch keeps from that point", Y.jarDone(late) and near(Y.jarKeptDays(late), keptAll * 20 / 30, 1e-6))
+check("its status says when it's Spent here", Y.jarStatus(late, 22, "Open").spentIn ~= nil)
+step(72, 22)
+check("left on the shelf it goes Spent", Y.jarState(late) == "spent" and Y.jarLook(late, 1) == "off")
+
+-- Looks
+record.jars = {}
+local fruity = put(Y.FERMENTING, "fruit")
+check("a fruit start shows its fruit until halfway", Y.jarLook(fruity, 0.1) == "fruit" and Y.jarLook(fruity, 0.6) == "halfway")
+check("a fed one rises in its look", Y.jarLook(put(Y.FED), 0) == "fedRising")
+check("the shelf holds five", put(Y.FED) and put(Y.FED) and put(Y.FED) and put(Y.FED) == nil and Y.shelfRoom(record) == 0)
+check("and takes only cultures", Y.putJar({ jars = {}, nextId = 1 }, culture(Y.ACTIVE), hours, "Open") == nil)
+
+-- Off the shelf it goes on getting hungry: made, carried 30 warm hours, put on hungry; 80 hours, it goes on gone off.
+record.jars = {}
+local made = culture(Y.FERMENTING)
+Y.startRun(made, hours, "Open")
+step(30, 22)
+local carried = Y.putJar(record, made, hours, "Open")
+check("carried a day unfed, it goes on hungry, nothing done", Y.jarState(carried) == "hungry" and carried.done == 0)
+local forgotten = culture(Y.FERMENTING)
+Y.startRun(forgotten, hours, "Open")
+step(80, 22)
+check("forgotten three days, it goes on gone off", Y.jarState(Y.putJar(record, forgotten, hours, "Open")) == "off")
+local old = culture(Y.FERMENTING)
+check("one made before runs were kept goes on just fed", Y.jarState(Y.putJar(record, old, hours, "Open")) == "working")
 
 onInit()
 check("the default is five days", TraditionalPreservationYeast.FERMENT_HOURS == 120)
-check("and sets the recipe's time", loaded["TraditionalPreservationYeast.FermentCulture"]:find("432000", 1, true) ~= nil)
 SandboxVars = { TraditionalPreservationYeast = { FermentDays = 2.5 } }
 onInit()
-check("the sandbox option sets the time", TraditionalPreservationYeast.FERMENT_HOURS == 60 and loaded["TraditionalPreservationYeast.FermentCulture"]:find("216000", 1, true) ~= nil)
+check("the sandbox option sets the time", TraditionalPreservationYeast.FERMENT_HOURS == 60)
 SandboxVars.TraditionalPreservationYeast.TemperatureSensitivity = 1
 onInit()
 check("and the sensitivity", TraditionalPreservationYeast.SENSITIVITY == 0)

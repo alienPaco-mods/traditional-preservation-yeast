@@ -68,30 +68,22 @@ local function jarsUsed(craftRecipeData)
     return jars
 end
 
--- OnCreate of Make Fermenting Culture: the culture is in the jar that went in.
-function Y.onCreateInJar(craftRecipeData)
+-- OnCreate of Make Fermenting Culture: the culture is in the jar that went in, freshly fed (its run starts: it goes
+-- hungry wherever it is, TraditionalPreservationYeastShelf.lua), started with start (Y.STARTS; nil plain).
+local function makeCulture(craftRecipeData, start)
     local jar = jarsUsed(craftRecipeData)[1] or Y.GLASS_JAR
-    for _, item in ipairs(Recipes.created(craftRecipeData, ICONS)) do Y.putInJar(item, jar) end
-end
-
--- The jars of the cultures a shelf run took (its OnStart, Y.onFermentStart), for the jars it shows and gives back.
-function Y.noteJars(craftRecipeData)
-    local modData = craftRecipeData:getModData()
-    modData.jars = jarsUsed(craftRecipeData)
-    modData.fed = false
-    for _, item in ipairs(Recipes.consumed(craftRecipeData)) do
-        if item:getFullType() == Y.FED then modData.fed = true end
+    local now = getGameTime():getWorldAgeHours()
+    for _, item in ipairs(Recipes.created(craftRecipeData, ICONS)) do
+        Y.putInJar(item, jar)
+        item:getModData()[Y.START_KEY] = start
+        Y.startRun(item, now, (FluidAgeing.placeOfItem(item)))
+        Y.nameStart(item)
     end
 end
 
--- OnCreate of a shelf run: each culture comes off in the jar it went on in.
-function Y.onCreateOffShelf(craftRecipeData)
-    local jars = craftRecipeData:getModData().jars or {}
-    for i, item in ipairs(Recipes.created(craftRecipeData, ICONS)) do
-        Y.putInJar(item, jars[i] or Y.GLASS_JAR)
-        if Y.CULTURE_DAYS[item:getFullType()] then Y.keepCulture(item) end
-    end
-end
+function Y.onCreateInJar(craftRecipeData) makeCulture(craftRecipeData, nil) end
+function Y.onCreateFruitStart(craftRecipeData) makeCulture(craftRecipeData, "fruit") end
+function Y.onCreatePotatoStart(craftRecipeData) makeCulture(craftRecipeData, "potato") end
 
 -- OnCreate of Pour Out: the jar back, empty, as vanilla's Open Water Can adds its can.
 function Y.onCreateJarBack(craftRecipeData, character)
@@ -119,25 +111,37 @@ Y.BREW_HOURS = 0.25
 ItemFluid.turnsHot(Y.HOP_WATER, Y.HOP_TEA, Y.BREW_HOURS)
 local POTS = { ["Base.Pot"] = true, ["Base.PotForged"] = true, ["Base.Saucepan"] = true, ["Base.SaucepanCopper"] = true }
 
--- OnTest of Steep Hops: a pot holding nothing but water, 1 L of it at most (a hair over for float error).
+-- Potato water: a Potato mashed into a pot of cold water (Mash Potato in Water) is Potato in Water, and kept steaming
+-- half an hour it is Potato Water, whose starch starts a culture quicker (Y.STARTS). One Potato to 1 L, as the hops.
+Y.POTATO_SOAK, Y.POTATO_WATER = "YeastPotatoSoak", "YeastPotatoWater"
+Y.POTATO_BOIL_HOURS = 0.5
+ItemFluid.turnsHot(Y.POTATO_SOAK, Y.POTATO_WATER, Y.POTATO_BOIL_HOURS)
+
+-- OnTest of Steep Hops and Mash Potato in Water: a pot holding nothing but water, 1 L of it at most (a hair over for
+-- float error).
 function Y.canSteep(item)
     if not POTS[item:getFullType()] then return true end
     local name, amount = ItemFluid.oneFluid(item:getFluidContainer())
     return name == "Water" and amount <= Y.STEEP_LITRES + ItemFluid.AMOUNT_TOLERANCE_L
 end
 
--- OnCreate of Steep Hops: the litre the recipe took comes back as Hop Water, in the same pot.
-function Y.onSteeped(craftRecipeData)
+-- OnCreate of Steep Hops: the litre the recipe took comes back as Hop Water (or fluid), in the same pot.
+function Y.onSteeped(craftRecipeData, character, fluid)
     local kept = craftRecipeData:getAllKeepInputItems()
     for i = 0, kept:size() - 1 do
         local pot = kept:get(i)
         if POTS[pot:getFullType()] then
             local container = pot:getFluidContainer()
             container:Empty()
-            container:addFluid(Y.HOP_WATER, Y.STEEP_LITRES)
+            container:addFluid(fluid or Y.HOP_WATER, Y.STEEP_LITRES)
             return
         end
     end
+end
+
+-- OnCreate of Mash Potato in Water: the litre comes back as Potato in Water.
+function Y.onPotatoMashed(craftRecipeData)
+    Y.onSteeped(craftRecipeData, nil, Y.POTATO_SOAK)
 end
 
 -- Keeping: days of age a day counts as at a temperature. The script's days (3 fresh, 5 to Spent) are a 15 C cellar's:

@@ -10,15 +10,20 @@ H.installEvents()
 function getClimateManager()
     return { isUpdated = function() return true end, getTemperature = function() return 22 end, getHumidity = function() return 50 end }
 end
-local loaded = {}
-ScriptManager = { instance = {} }
-function ScriptManager.instance:getCraftRecipe()
-    return { Load = function(_, name, text) loaded[name] = text end }
-end
 SandboxVars = { TraditionalPreservationYeast = { FermentDays = 5 } }
 function getCell() return { getGridSquare = function() return nil end } end
 local player = H.player({ z = -1 })
 function getPlayer() return player end
+-- A culture given starts its run, so what AddItem gives back has modData.
+local addItem = player:getInventory().AddItem
+player:getInventory().AddItem = function(self, fullType)
+    local item = addItem(self, fullType)
+    item.modData = {}
+    item.getModData = function() return item.modData end
+    return item
+end
+local Station = require "TraditionalPreservationCore/Station"
+Station.near = function() return {} end
 
 dofile("42/media/lua/shared/TraditionalPreservationYeast.lua")
 local Y = TraditionalPreservationYeast
@@ -42,13 +47,14 @@ check("and a day with no number", Y.getLedger()[key] == before + 36)
 
 local sandbox = Y.FERMENT_HOURS
 run("fast", 2)
-check("fast sets the test timer and reloads the recipe", Y.FERMENT_HOURS == 2 and next(loaded) ~= nil)
+check("fast sets the test timer", Y.FERMENT_HOURS == 2)
 run("fast")
 check("fast with no number goes back to the sandbox time", Y.FERMENT_HOURS == sandbox)
 
 run("give", "culture", 3)
 run("give", "flour")
 check("give with no name lists the things", run("give"):find("culture", 1, true) ~= nil and #player.given == 4)
+check("shelf with none near says so", run("shelf"):find("No Fermenting Shelf", 1, true) ~= nil)
 check("cultures and flour land in the inventory", #player.given == 4
     and player.given[1] == "TraditionalPreservationYeast.FermentingYeastJar" and player.given[4] == "Base.Flour2")
 run("give", "Base.Yeast")
@@ -83,8 +89,13 @@ check("the build kit has the shelf's hammer, planks and nails", counted("Base.Ha
     and counted("Base.Nails") == 4)
 player.given = {}
 run("kit", "culture")
-check("the culture kit has the recipe's flour, a jar of each kind and water", counted("Base.Flour2") == 15
+check("the culture kit has the recipe's flour and the refreshes', a jar of each kind and water", counted("Base.Flour2") == 30
     and counted("Base.EmptyJar") == 1 and counted("Base.ClayJar") == 1 and counted("Base.ClayJarGlazed") == 1 and filled.Water == 1)
+player.given = {}
+run("kit", "starters")
+check("the starters kit has an apple, a potato, a saucepan of a litre, two jars, flour and water", counted("Base.Apple") == 1
+    and counted("Base.Potato") == 1 and counted("Base.Saucepan") == 1 and counted("Base.EmptyJar") == 2
+    and counted("Base.Flour2") == 10 and filled.Water == 3)
 player.given = {}
 run("kit", "cakes")
 check("the cakes kit has culture, cornmeal and a cloth's Sheet and Stones", counted("TraditionalPreservationYeast.ActiveCulture") == 2
@@ -92,9 +103,9 @@ check("the cakes kit has culture, cornmeal and a cloth's Sheet and Stones", coun
 player.given = {}
 run("kit", "hops")
 check("the hops kit has hops, a saucepan of a litre of water, a jar and flour", counted("Base.HopsDried") == 2
-    and counted("Base.Saucepan") == 1 and counted("Base.EmptyJar") == 1 and filled.Water == 2)
+    and counted("Base.Saucepan") == 1 and counted("Base.EmptyJar") == 1 and filled.Water == 4)
 player.given = {}
 run("kit", "all")
-check("all gives every kit", counted("Base.Plank") == 2 and counted("Base.Flour2") == 20 and filled.Water == 4)
+check("all gives every kit", counted("Base.Plank") == 2 and counted("Base.Flour2") == 45 and filled.Water == 8)
 
 H.done()

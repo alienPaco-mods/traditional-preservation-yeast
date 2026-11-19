@@ -1,6 +1,37 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.0
+- **The Fermenting Shelf off CraftLogic, and its second look** (2026-11-19, session 56; ROADMAP section 12; needs TP
+  Core 0.1.31). No crafting window: the jars are the shelf's own record in its movableData (`tpyShelf`), one a culture,
+  each on its own clock, stepped by the World (`TraditionalPreservationYeastWorld.lua`, was
+  `TraditionalPreservationYeastShelf.lua` on the server; the record is now the shared file of that name). Right-click:
+  what it holds, **Shelf Info** (TP Core's piece list: a row a jar, a tab for Fermenting and one for Fed cultures when
+  both are on, Refresh / Take Done / Take All buttons, a drop square), *Put ... on the Shelf* (One / All), **Refresh the
+  Cultures**, **Take Done**, **Take Everything Off**; the hand jobs are `TPYShelf`. A shelf with anything on it can't be
+  picked up. The Ferment Culture and Raise Fed Culture recipes, the slot rules, the crafting-window info block and the
+  progress popups are gone.
+- **Refreshing** (user, session 56): a Fermenting Culture is hungry after 24 hours of work (the culture's own curve)
+  since it was made or last refreshed, and stops; after 72 it has gone off and comes off as its empty jar. Refresh the
+  Cultures feeds every one on the shelf: a use of flour (in reach) and 0.1 L of water (carried) a jar, the hungriest
+  first. It goes hungry off the shelf too, from the moment it is made (modData `tpyRun`), so taking jars off doesn't skip
+  the refresh; its progress counts only on the shelf. A Fed Culture needs none.
+- **Quicker starts:** **Make Fermenting Culture with Fruit** (an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots)
+  takes 80% of the ferment time (4 days), **with Potato Water** 70% (3.5 days); the culture's name says its start
+  (modData `tpyStart`). **Mash Potato in Water** (a pot or saucepan of exactly 1 L water + a Potato) gives Potato in
+  Water, which turns to **Potato Water** after half an hour steaming (TP Core's `ItemFluid.turnsHot`).
+- **Done on the shelf, a jar keeps** by place from the moment it was done (the keeper's ledger), goes Spent there, and
+  comes off as old as it is.
+- **Art:** two new looks in every jar, hungry (sunk, grey liquid on top, a dried ring; a clay jar's cloth darker grey,
+  user's pick) and gone off or Spent (mould), and two start looks in glass only (fruit peel, potato bits; a clay jar
+  hides them). The sheet would pass 512 tiles with every look in every jar, so the starts sit after the grid
+  (`Tiles.GRID_LOOKS`, `FIRST_START_JAR`); the cakes moved to 464. Preview: `WIP/TPCore/art/yeast_shelf_mock.png`.
+- **Console:** `TPY.shelf()`; `TPY.fast` sets the plain time live; `TPY.give` takes potato and apple, and a culture given
+  starts fed; `TPY.kit("starters")`, and the culture kit has flour for the refreshes. **Season report:** jars refreshed
+  daily; every column as before but the moved jar's (the hour of the move now counts at the place it left, FluidAgeing's
+  rule: under 0.1 day); golden recorded anew. Tests: ferment and shelf tests rewritten on jars, culture and console
+  follow.
+
 ## 0.5.0
 - **Culture, cakes and hops** (2026-11-19; needs TP Core 0.1.20 for the Drying Cloth). The shelf no longer makes
   vanilla Yeast directly: it gives a live **Active Culture** in the jar it went on in, which keeps by its place on TP
