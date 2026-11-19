@@ -5,7 +5,7 @@ return {
     SHEETS = {
         {
             prefix = "traditionalpreservationyeast_01_",
-            tiles = 64,
+            tiles = 320,
         },
     },
     FACE_COUNT = 4,
@@ -16,5 +16,18 @@ return {
         fresh = 0,
         halfway = 1,
         done = 2,
+        fedRising = 3,
+        fedDone = 4,
+    },
+    JAR_KINDS = {
+        glass = 0,
+        clay = 1,
+        glazed = 2,
+    },
+    FIRST_CAKE = 304,
+    CAKE_STATES = {
+        wet = 0,
+        dry = 1,
+        dead = 2,
     },
 }

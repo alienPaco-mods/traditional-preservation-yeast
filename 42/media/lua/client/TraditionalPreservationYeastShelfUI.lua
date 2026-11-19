@@ -1,14 +1,15 @@
--- Traditional Preservation (Yeast) B42: keeps the Fermenting Shelf at five cultures. Vanilla limits
--- adding by free output slots, but each culture here needs two of them. Also the shelf's popups and the info block
--- in its crafting window (TP Core's StationInfo).
+-- Traditional Preservation (Yeast) B42: keeps the Fermenting Shelf at five cultures, counting the finished ones not
+-- yet taken (vanilla counts only free output slots). Also the shelf's popups, the info block in its crafting window
+-- (TP Core's StationInfo), and the look that keeps Active Culture by place (TP Core's PlaceKeepingUI).
 require "Entity/ISUI/Components/Crafting/ISCraftLogicPanel"
 local UI = require "TraditionalPreservationCore/UI"
 local Station = require "TraditionalPreservationCore/Station"
 local StationInfo = require "TraditionalPreservationCore/StationInfo"
 local Weather = require "TraditionalPreservationCore/Weather"
+local PlaceKeepingUI = require "TraditionalPreservationCore/PlaceKeepingUI"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
-local ITEMS_PER_CULTURE = 2
+local ITEMS_PER_CULTURE = 1
 
 local isShelf = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
 
@@ -75,3 +76,6 @@ local function shelfInfo(entity)
 end
 
 StationInfo.add(shelfInfo)
+
+-- Active Culture catches up on its keeping, and its name with it, as it is carried and as containers are opened.
+PlaceKeepingUI.watch({ keep = TraditionalPreservationYeast.keepCulture }, TraditionalPreservationYeast.CULTURE_DAYS)

@@ -16,7 +16,7 @@ module TraditionalPreservationYeast
             }
             group craft_outputs
             {
-                Item@Output@10@StackAny,
+                Item@Output@5@StackAny,
             }
         }
         /* CraftLogic, not DryingCraftLogic: drying scales with temperature and stalls in rain, which would break the fixed timer. */

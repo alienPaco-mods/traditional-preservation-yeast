@@ -20,6 +20,7 @@ local function recipeData(time)
     local craftRecipeData = { modData = {}, elapsed = 0 }
     function craftRecipeData:getModData() return self.modData end
     function craftRecipeData:setElapsedTime(elapsedTime) self.elapsed = elapsedTime end
+    function craftRecipeData:getAllConsumedItems() return H.list({}) end
     function craftRecipeData:getRecipe() return { getTime = function() return time end } end
     return craftRecipeData
 end

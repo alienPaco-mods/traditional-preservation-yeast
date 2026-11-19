@@ -1,0 +1,51 @@
+module Base
+{
+    /* Dried hops steeped in cold water (Steep Hops): kept steaming on a stove or a fire for a quarter of an hour it
+       becomes Hop Tea (TP Core's ItemFluid.turnsHot). */
+    fluid YeastHopWater
+    {
+        ColorReference = Khaki,
+        DisplayName = Fluid_Name_YeastHopWater,
+        Categories
+        {
+            Beverage,
+        }
+        Properties
+        {
+            ThirstChange = -10.0,
+            UnhappyChange = 5.0,
+        }
+        BlendWhiteList
+        {
+            whitelist = true,
+            fluids
+            {
+                YeastHopWater,
+            }
+        }
+    }
+
+    /* Hops boiled in water: bitter, and it keeps a culture clean while it feeds (Feed Culture). */
+    fluid YeastHopTea
+    {
+        ColorReference = DarkKhaki,
+        DisplayName = Fluid_Name_YeastHopTea,
+        Categories
+        {
+            Beverage,
+        }
+        Properties
+        {
+            ThirstChange = -10.0,
+            UnhappyChange = 10.0,
+        }
+        BlendWhiteList
+        {
+            whitelist = true,
+            fluids
+            {
+                YeastHopTea,
+            }
+        }
+    }
+}

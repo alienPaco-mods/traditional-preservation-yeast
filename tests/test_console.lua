@@ -54,6 +54,10 @@ check("cultures and flour land in the inventory", #player.given == 4
 run("give", "Base.Yeast")
 run("give", "nothing")
 check("give takes a full type too, and refuses an unknown name", #player.given == 5 and player.given[5] == "Base.Yeast")
+run("give", "hopped")
+run("give", "dried")
+check("give spawns the rework's items by name", player.given[6] == "TraditionalPreservationYeast.ActiveCultureHopped"
+    and player.given[7] == "TraditionalPreservationYeast.DriedYeastCakes")
 
 -- The bottle comes with a fluid container the kit fills.
 local filled = {}
@@ -79,10 +83,18 @@ check("the build kit has the shelf's hammer, planks and nails", counted("Base.Ha
     and counted("Base.Nails") == 4)
 player.given = {}
 run("kit", "culture")
-check("the culture kit has the recipe's flour, jar and water", counted("Base.Flour2") == 5 and counted("Base.EmptyJar") == 1
-    and filled.Water == 1)
+check("the culture kit has the recipe's flour, a jar of each kind and water", counted("Base.Flour2") == 15
+    and counted("Base.EmptyJar") == 1 and counted("Base.ClayJar") == 1 and counted("Base.ClayJarGlazed") == 1 and filled.Water == 1)
+player.given = {}
+run("kit", "cakes")
+check("the cakes kit has culture, cornmeal and a cloth's Sheet and Stones", counted("TraditionalPreservationYeast.ActiveCulture") == 2
+    and counted("Base.Cornmeal2") == 6 and counted("Base.Sheet") == 1 and counted("Base.Stone2") == 2)
+player.given = {}
+run("kit", "hops")
+check("the hops kit has hops, a saucepan of a litre of water, a jar and flour", counted("Base.HopsDried") == 2
+    and counted("Base.Saucepan") == 1 and counted("Base.EmptyJar") == 1 and filled.Water == 2)
 player.given = {}
 run("kit", "all")
-check("all gives every kit", counted("Base.Plank") == 2 and counted("Base.Flour2") == 5 and filled.Water == 2)
+check("all gives every kit", counted("Base.Plank") == 2 and counted("Base.Flour2") == 20 and filled.Water == 4)
 
 H.done()

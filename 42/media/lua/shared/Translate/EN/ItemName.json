@@ -1,3 +1,8 @@
 {
-  "TraditionalPreservationYeast.FermentingYeastJar": "Fermenting Culture"
+  "TraditionalPreservationYeast.FermentingYeastJar": "Fermenting Culture",
+  "TraditionalPreservationYeast.ActiveCulture": "Active Culture",
+  "TraditionalPreservationYeast.FedCulture": "Fed Culture",
+  "TraditionalPreservationYeast.ActiveCultureHopped": "Hopped Culture",
+  "TraditionalPreservationYeast.YeastCakes": "Yeast Cakes",
+  "TraditionalPreservationYeast.DriedYeastCakes": "Dried Yeast Cakes"
 }

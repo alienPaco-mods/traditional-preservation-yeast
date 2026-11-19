@@ -11,12 +11,19 @@ H.installGetText()
 -- The mod's own modules load for real, vanilla's are left out.
 local realRequire = require
 require = function(name)
-    if name:find("^TraditionalPreservationYeast/") or name:find("^TraditionalPreservationCore/") then
+    if name:find("^TraditionalPreservationYeast") or name:find("^TraditionalPreservationCore/") then
         return realRequire(name)
     end
 end
 
 -- Engine stand-ins
+-- A culture item in jar (a full type; none: one made before jars were noted).
+local function item(fullType, jar)
+    local self = { modData = { tpyJar = jar } }
+    function self:getFullType() return fullType end
+    function self:getModData() return self.modData end
+    return self
+end
 function isClient() return false end
 ComponentType = { Resources = "Resources", CraftLogic = "CraftLogic" }
 ResourceIO = { Input = "Input", Output = "Output" }
@@ -54,6 +61,7 @@ local function recipeData(progress, count)
     local craftRecipeData = { modData = {}, progress = progress, count = count, elapsed = 0 }
     function craftRecipeData:getModData() return self.modData end
     function craftRecipeData:setElapsedTime(elapsedTime) self.elapsed = elapsedTime end
+    function craftRecipeData:getAllConsumedItems() return list(self.consumed or {}) end
     function craftRecipeData:getRecipe()
         return { getTime = function() return 120 * 3600 end, getName = function() return "TraditionalPreservationYeast.FermentCulture" end }
     end
@@ -68,12 +76,12 @@ local function shelf(faceIndex, x, z, outside, waiting, batches, outputs)
     function logic:getOutputsGroupName() return "out" end
     function logic:getProgress(craftRecipeData) return craftRecipeData.progress end
     local items = {}
-    for _, fullType in ipairs(outputs) do table.insert(items, { getFullType = function() return fullType end }) end
+    for _, fullType in ipairs(outputs) do table.insert(items, item(fullType)) end
     local resources = {}
     function resources:getResourcesFromGroup(group)
         if group == "in" then
             local jars = {}
-            for i = 1, waiting do jars[i] = { getFullType = function() return "TraditionalPreservationYeast.FermentingYeastJar" end } end
+            for i = 1, waiting do jars[i] = item("TraditionalPreservationYeast.FermentingYeastJar") end
             return list({ { storedSize = function() return waiting end, getStoredItems = function() return list(jars) end } })
         end
         return list({ { getStoredItems = function() return list(items) end } })
@@ -120,13 +128,19 @@ Y.getLedger()
 -- Jars
 check("the map loader knows all four faces", loaders.traditionalpreservationyeast_01_0 and loaders.traditionalpreservationyeast_01_3)
 local halfway, fresh = recipeData(0.6, 1), recipeData(0.1, 2)
-local kitchen = shelf(2, 1, 0, false, 1, { fresh, halfway }, { "Base.Yeast", "Base.EmptyJar" })
+local kitchen = shelf(2, 1, 0, false, 1, { fresh, halfway }, { "TraditionalPreservationYeast.ActiveCulture" })
 loaders.traditionalpreservationyeast_01_2(kitchen)
 tick(30)
 -- One done, one halfway, two fresh running, one fresh waiting: looks 2,1,0,0,0 in slots 0-4 of face 2.
 check("each jar gets its sprite, finished first", table.concat(kitchen.sprites, " ") ==
     "traditionalpreservationyeast_01_46 traditionalpreservationyeast_01_30 traditionalpreservationyeast_01_14 "
     .. "traditionalpreservationyeast_01_18 traditionalpreservationyeast_01_22")
+local looks = TraditionalPreservationYeastShelf.jarLooks({ { jar = "Base.ClayJar" } }, { { progress = 0.7, count = 2, jars = { "Base.ClayJarGlazed" } } }, { { jar = "Base.JarCrafted" } })
+check("each jar's look and kind: done glass, halfway glazed, halfway glass (an old run), fresh clay",
+    #looks == 4 and looks[1][1] == 2 and looks[1][2] == 0 and looks[2][1] == 1 and looks[2][2] == 2
+    and looks[3][2] == 0 and looks[4][1] == 0 and looks[4][2] == 1)
+local fed = TraditionalPreservationYeastShelf.jarLooks({ { jar = "Base.ClayJar", fed = true } }, { { progress = 0.1, count = 1, jars = {}, fed = true } }, { { jar = "Base.ClayJarGlazed", fed = true } })
+check("fed cultures rise and finish in their own looks", fed[1][1] == 4 and fed[1][2] == 2 and fed[2][1] == 3 and fed[3][1] == 3 and fed[3][2] == 1)
 check("running cultures learn their place", halfway.modData.place == "Sheltered" and fresh.modData.place == "Sheltered")
 tick(30)
 check("an unchanged shelf is left alone", kitchen.clears == 1)
@@ -217,7 +231,7 @@ check("waiting, finished and the weather note", table.concat(block.notes, " | ")
     .. "Finished and waiting to be taken: 1 | Times left assume the temperature holds as it is now.")
 check("anything else gets no block", shelfInfo({ getSprite = function() return { getName = function() return "x" end } end }) == nil)
 
--- Slots: five cultures, each needing two output slots
+-- Slots: five cultures, each needing an output slot, finished ones not yet taken counting too
 local function shelfSlot(stored, freeOutputs, sprite)
     local logic = { getFreeOutputSlotCount = function() return freeOutputs end, getCurrentRecipe = function() return nil end }
     local entity = {
@@ -238,16 +252,16 @@ local function add(slot, entity, logic, count)
     for i = 1, count do items[i] = {} end
     ISCraftLogicPanel.ItemSlotAddItems({}, entity, slot, items, logic)
 end
-local slot, entity, logic = shelfSlot(0, 10)
+local slot, entity, logic = shelfSlot(0, 5)
 add(slot, entity, logic, 7)
 check("an empty shelf takes five of seven cultures and says it's full", #queuedActions == 5 and halos[1] == getText("IGUI_TraditionalPreservationYeast_Full"))
 check("each queued culture checks again when it runs", queuedActions[1].canAddItem(queuedActions[1]))
-slot, entity, logic = shelfSlot(2, 8)
+slot, entity, logic = shelfSlot(2, 4)
 add(slot, entity, logic, 3)
 check("cultures waiting to go in count against the room", #queuedActions == 2)
-check("and the slot isn't green when there's none", not ISItemSlot.defaultVerifyItem({}, shelfSlot(3, 6), {}))
-check("but is with room", ISItemSlot.defaultVerifyItem({}, shelfSlot(2, 6), {}))
-local other, otherEntity = shelfSlot(0, 10, "carpentry_02_122")
+check("and the slot isn't green when there's none", not ISItemSlot.defaultVerifyItem({}, shelfSlot(3, 3), {}))
+check("but is with room", ISItemSlot.defaultVerifyItem({}, shelfSlot(2, 3), {}))
+local other, otherEntity = shelfSlot(0, 5, "carpentry_02_122")
 add(other, otherEntity, nil, 1)
 check("other stations go to vanilla", vanillaAdds == 1 and #queuedActions == 0)
 

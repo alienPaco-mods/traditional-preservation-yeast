@@ -5,5 +5,17 @@
   "TraditionalPreservationYeast.FermentCulture": "Ferment Culture",
   "Fermenting_Shelf": "Fermenting Shelf",
   "TraditionalPreservationYeast.Fermenting_Shelf": "Fermenting Shelf",
-  "FermentingShelf": "Fermenting Shelf"
+  "FermentingShelf": "Fermenting Shelf",
+  "PourOutCulture": "Pour Out Culture",
+  "TraditionalPreservationYeast.PourOutCulture": "Pour Out Culture",
+  "RaiseFedCulture": "Raise Fed Culture",
+  "TraditionalPreservationYeast.RaiseFedCulture": "Raise Fed Culture",
+  "SteepHops": "Steep Hops",
+  "TraditionalPreservationYeast.SteepHops": "Steep Hops",
+  "FeedCulture": "Feed Culture",
+  "TraditionalPreservationYeast.FeedCulture": "Feed Culture",
+  "ShapeYeastCakes": "Shape Yeast Cakes",
+  "TraditionalPreservationYeast.ShapeYeastCakes": "Shape Yeast Cakes",
+  "CrumbleYeastCakes": "Crumble Yeast Cakes",
+  "TraditionalPreservationYeast.CrumbleYeastCakes": "Crumble Yeast Cakes"
 }

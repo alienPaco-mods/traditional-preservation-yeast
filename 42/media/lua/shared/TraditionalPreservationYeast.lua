@@ -11,7 +11,8 @@ Y.FERMENT_HOURS = 120  -- five 24-hour in-game days at the best temperature
 Y.MOD_DATA_KEY = "TraditionalPreservationYeast"
 Y.LOG_TAG = "TraditionalPreservationYeast"   -- names the mod in Core's log lines
 Y.RECIPE_NAME = "TraditionalPreservationYeast.FermentCulture"
-Y.YEAST = "Base.Yeast"
+Y.RAISE_RECIPE = "TraditionalPreservationYeast.RaiseFedCulture"
+Y.RAISE_HOURS = 24  -- a fed culture rises in a day at the best temperature
 -- One kind of work: the ledger's totals are "cultureOpen", "cultureOpenRate" and so on.
 Y.PROCESS = "culture"
 local PROCESS = Y.PROCESS
@@ -61,6 +62,7 @@ end
 -- The engine pools recipe data without clearing its ModData, so every run must set all of this.
 function Y.onFermentStart(craftRecipeData)
     Weather.startRun(craftRecipeData:getModData(), Y.getLedger(), PROCESS)
+    Y.noteJars(craftRecipeData)
 end
 
 -- Craft timers tick at a fixed speed whatever Day Length says, so this replaces their count with the
@@ -87,14 +89,10 @@ function Y.batchStatus(modData, recipeHours, ledger)
     return Weather.batchStatus(modData.workHours or 0, recipeHours, ledger, runPlace(modData), Y.cultureRate)
 end
 
--- A finished culture is one Yeast and one Empty Jar, and stays on the shelf until both are taken, so the larger
--- count is the cultures not yet taken. fullTypes is a list of the finished items' full types.
+-- A finished culture is one Active Culture, in its jar, and stays on the shelf until taken. fullTypes is a list of
+-- the finished items' full types.
 function Y.finishedCultures(fullTypes)
-    local yeast, jars = 0, 0
-    for _, fullType in ipairs(fullTypes) do
-        if fullType == Y.YEAST then yeast = yeast + 1 else jars = jars + 1 end
-    end
-    return math.max(yeast, jars)
+    return #fullTypes
 end
 
 -- Reads the sandbox's ferment time and sensitivity.
@@ -109,6 +107,9 @@ end
 function Y.applyFermentTime()
     Y.applySandbox()
     Weather.setRecipeHours(Y.RECIPE_NAME, Y.FERMENT_HOURS, Y.LOG_TAG)
+    Weather.setRecipeHours(Y.RAISE_RECIPE, Y.RAISE_HOURS, Y.LOG_TAG)
 end
 
 Events.OnInitGlobalModData.Add(Y.applyFermentTime)
+
+require "TraditionalPreservationYeastCulture"

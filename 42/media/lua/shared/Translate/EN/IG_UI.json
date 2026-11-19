@@ -6,5 +6,9 @@
   "IGUI_TraditionalPreservationYeast_Time": "%1d %2h, if the temperature holds",
   "IGUI_TraditionalPreservationYeast_Temperature": "Temperature",
   "IGUI_TraditionalPreservationYeast_Rate": "Working Rate",
-  "IGUI_TraditionalPreservationYeast_InfoCultures": "Cultures: %1"
+  "IGUI_TraditionalPreservationYeast_InfoCultures": "Cultures: %1",
+  "IGUI_TraditionalPreservationYeast_CultureFresh": "%1 (Fresh)",
+  "IGUI_TraditionalPreservationYeast_CultureSpent": "%1 (Spent)",
+  "IGUI_TraditionalPreservationYeast_CakesTitle": "Yeast Cakes",
+  "IGUI_TraditionalPreservationYeast_CakesSpent": "Spent cakes won't dry into yeast."
 }

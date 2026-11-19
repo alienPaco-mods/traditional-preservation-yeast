@@ -1,5 +1,28 @@
 # Changelog: Traditional Preservation (Yeast)
 
+
+## 0.5.0
+- **Culture, cakes and hops** (2026-11-19; needs TP Core 0.1.20 for the Drying Cloth). The shelf no longer makes
+  vanilla Yeast directly: it gives a live **Active Culture** in the jar it went on in, which keeps by its place on TP
+  Core's PlaceKeeping (3 fresh and 5 days to Spent in a 15 C cellar: about 3 days at 20 C, a day at 30 C) and reads
+  (Fresh) or (Spent). **Shape Yeast Cakes** (a culture + 3 Cornmeal or Flour, the jar back) gives wet Yeast Cakes,
+  which keep 5 fresh and 8 days to Spent and dry on TP Core's **Drying Cloth** in 168 hours at full speed (15 to
+  25 C, slower cool or hot, waiting in a shut room and below freezing, dead after an hour above 35 C) into **Dried
+  Yeast Cakes**, which keep. Wet on the cloth they keep ageing (the culture's curve held at its 20 C speed above 20 C,
+  slowed by wetness squared) and a lot that goes Spent first is gone off; **Crumble
+  Yeast Cakes** makes them a packet of vanilla Yeast. **Steep Hops** (1 L of water in a pot or saucepan + Hops
+  (Dried)) gives Hop Water, which turns to **Hop Tea** after a quarter of an hour steaming; **Feed Culture** (a
+  culture + an empty jar + 0.3 L Hop Tea + 5 flour) gives 2 Fed Culture, and **Raise Fed Culture** on the shelf (a day
+  at the best temperature) makes them **Hopped Culture**, which keeps twice as long (7 / 10 cellar days). **Pour Out
+  Culture** gives any culture's jar back.
+- **Jars:** a culture is made in a Jar, Ceramic Jar or Glazed Ceramic Jar, and every step gives back the same jar
+  (modData `tpyJar`); a ceramic culture has its own icon and ground model. The shelf draws each jar's kind (tileset:
+  three kinds by five looks, a fed jar with a hop sprig), and its output slot holds 5 (one item a culture).
+- **Console:** `TPY.cultures()`; `TPY.give` takes active, fed, hopped, cakes, dried and hops; `TPY.kit("cakes")` and
+  `TPY.kit("hops")`, and the culture kit has a jar of each kind. **Season report:** how long Active and Hopped Culture
+  keep and how long a lot of cakes takes on the cloth, by place and month (golden recorded anew; the culture's days
+  are unchanged). Tests: `test_culture.lua` new; shelf, ferment and console tests follow.
+
 ## 0.4.24
 - **Aired rooms** (2026-11-19, TP Core 0.1.15): the shelf reads TP Core's new place temperatures (a shut room
   follows the last three days and is stuffy in summer, so autumn indoors is slower: a November culture about 67 days

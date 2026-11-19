@@ -1,6 +1,6 @@
 [h1]Traditional Preservation (Yeast)[/h1]
 
-Grow your own yeast from flour and water. Vanilla yeast is loot only, so once the stores are picked clean there's no more bread. This mod lets you ferment a wild culture on a simple wall shelf, the way bakers kept them going for centuries, and turn it into ordinary vanilla Yeast.
+Grow your own yeast from flour and water. Vanilla yeast is loot only, so once the stores are picked clean there's no more bread. This mod lets you ferment a wild culture on a simple wall shelf, the way bakers kept them going for centuries, dry it into yeast cakes, and crumble those into ordinary vanilla Yeast. Hops keep a culture going from one batch to the next.
 
 [b]Build 42 only (42.22 or newer). This is an early release, so back up your save before enabling it. Singleplayer only: multiplayer is not supported.[/b]
 
@@ -9,7 +9,9 @@ Traditional Preservation (Yeast) requires [b]Traditional Preservation (Core)[/b]
 [h2]Features[/h2]
 [list]
 [*]A buildable Fermenting Shelf that mounts on a wall, with its own art
-[*]Each jar on the shelf shows its own progress, from pale to amber to dark brown
+[*]Each jar on the shelf shows its own progress, from pale to amber to dark brown, in the jar you used: glass or ceramic
+[*]Yeast cakes dry on TP Core's Drying Cloth, a sheet held down with two stones
+[*]Hop tea feeds a culture: one jar rises into two
 [*]Makes real vanilla Yeast, for bread, baking and every mod that uses it
 [*]Temperature matters: a warm kitchen in summer, a shelf by the fire in winter
 [*]Keeps working while you are away
@@ -18,12 +20,15 @@ Traditional Preservation (Yeast) requires [b]Traditional Preservation (Core)[/b]
 [h2]How it works[/h2]
 [olist]
 [*][b]Build a Fermenting Shelf[/b] against a wall (Build menu, Furniture): 2 planks, 4 nails and a hammer (kept). Carpentry 2.
-[*][b]Make Fermenting Culture[/b] (crafting menu, Cooking): 5 uses of flour and a glass jar holding at least 0.3 L of water.
+[*][b]Make Fermenting Culture[/b] (crafting menu, Cooking): 5 uses of flour and a jar (glass or ceramic) holding at least 0.3 L of water.
 [*][b]Open the shelf[/b], add up to 5 cultures and press Craft.
-[*]After [b]5 in-game days[/b] at a good temperature, take out 1 vanilla Yeast and your empty jar for each culture.
+[*]After [b]5 in-game days[/b] at a good temperature, take out an Active Culture for each, in its jar. It's alive: about 3 days at 20 C before it's spent.
+[*][b]Shape Yeast Cakes[/b]: the culture and 3 uses of cornmeal or flour. The jar comes back.
+[*]Lay the cakes on a [b]Drying Cloth[/b] (a Sheet and 2 Stones) where the air moves. About a week later they're dry, and keep.
+[*][b]Crumble Yeast Cakes[/b]: one full packet of vanilla Yeast.
 [/olist]
 
-One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves of bread.
+One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves of bread. [b]Steep Hops[/b] (Hops (Dried) in 1 L of water, heated) makes Hop Tea, and [b]Feed Culture[/b] turns one culture, an empty jar, hop tea and 5 flour into two, which rise on the shelf in a day and keep twice as long.
 
 [h2]The shelf[/h2]
 [list]
@@ -47,7 +52,9 @@ A kitchen shelf is enough from May to October, taking 5 days a culture in summer
 
 [h2]Good to know[/h2]
 [list]
-[*]Your jar always comes back as a plain Empty Jar, even if you used a crafted one.
+[*]Your jar comes back, the same kind you put in.
+[*]Yeast cakes die above 35 C, and nothing dries in a shut room: open a window.
+[*]Wet cakes keep about 5 days at 20 C. On the cloth they age more slowly as they dry, so fresh cakes where the air moves dry in time in any month; old ones, or ones left in a shut room, go off.
 [*]Flour is the real cost: 5 uses per culture, so plan your wheat with yeast in mind.
 [*]No vanilla recipe, loot table, hunger or calorie value is changed.
 [*]The tiledef number 5127 must be unique among your active mods.

@@ -1,11 +1,74 @@
 module TraditionalPreservationYeast
 {
+    /* Culture jars: one item each, whatever the jar. The jar it is in is the item's modData tpyJar (a full type), set
+       by TraditionalPreservationYeast.onCreateInJar; a clay one's icon comes from the same modData. The icons here are
+       the glass ones. */
     item FermentingYeastJar
     {
         ItemType = base:normal,
         Weight = 0.5,
-        Icon = GlassJar,
+        Icon = FermentingCulture_glass,
         WorldStaticModel = JarGlass_Ground,
+    }
+
+    /* Keeps by place on TP Core's PlaceKeeping: these days are a 15 C cellar's (about 2 and 3 at 20 C). Spent when
+       rotten. */
+    item ActiveCulture
+    {
+        ItemType = base:food,
+        DisplayCategory = Food,
+        Weight = 0.5,
+        Icon = ActiveCulture_glass,
+        WorldStaticModel = JarGlass_Ground,
+        CantEat = true,
+        DaysFresh = 3,
+        DaysTotallyRotten = 5,
+    }
+
+    /* A fed culture rising: Raise Fed Culture on the shelf makes it Active Culture (Hopped). */
+    item FedCulture
+    {
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = FedCulture_glass,
+        WorldStaticModel = JarGlass_Ground,
+    }
+
+    /* A hopped culture keeps twice as long (cellar days; about 4 and 6 at 20 C). */
+    item ActiveCultureHopped
+    {
+        ItemType = base:food,
+        DisplayCategory = Food,
+        Weight = 0.5,
+        Icon = ActiveCultureHopped_glass,
+        WorldStaticModel = JarGlass_Ground,
+        CantEat = true,
+        DaysFresh = 7,
+        DaysTotallyRotten = 10,
+    }
+
+    /* Wet yeast cakes: they keep as the culture does until laid on TP Core's Drying Cloth, where they dry into a
+       packet of vanilla Yeast. */
+    item YeastCakes
+    {
+        ItemType = base:food,
+        DisplayCategory = Food,
+        Weight = 0.2,
+        Icon = YeastCakes,
+        WorldStaticModel = Flour,
+        CantEat = true,
+        DaysFresh = 5,
+        DaysTotallyRotten = 8,
+    }
+
+    /* Off the Drying Cloth, dry: they keep, and Crumble Yeast Cakes makes them a packet of vanilla Yeast. */
+    item DriedYeastCakes
+    {
+        ItemType = base:normal,
+        DisplayCategory = Food,
+        Weight = 0.1,
+        Icon = DriedYeastCakes,
+        WorldStaticModel = Flour,
     }
 
     craftRecipe MakeFermentingCulture
@@ -16,10 +79,11 @@ module TraditionalPreservationYeast
         category = Cooking,
         xpAward = Cooking:3,
         needTobeLearn = false,
+        OnCreate = TraditionalPreservationYeast.onCreateInJar,
         inputs
         {
             item 5 [Base.Flour2],
-            item 1 [Base.EmptyJar;Base.JarCrafted] mode:destroy,
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] mode:destroy,
             -fluid 0.3 [Water],
         }
         outputs
@@ -28,7 +92,8 @@ module TraditionalPreservationYeast
         }
     }
 
-    /* time is overwritten from FERMENT_HOURS in TraditionalPreservationYeast.lua */
+    /* time is overwritten from FERMENT_HOURS in TraditionalPreservationYeast.lua. Each culture comes off in the jar it
+       went on in (OnStart notes them, OnCreate gives them back). */
     craftRecipe FermentCulture
     {
         time = 432000,
@@ -36,14 +101,135 @@ module TraditionalPreservationYeast
         category = Cooking,
         OnStart = TraditionalPreservationYeast.onFermentStart,
         OnUpdate = TraditionalPreservationYeast.onFermentUpdate,
+        OnCreate = TraditionalPreservationYeast.onCreateOffShelf,
         inputs
         {
             item variable[1:5] [TraditionalPreservationYeast.FermentingYeastJar] flags[ItemCount] mode:destroy,
         }
         outputs
         {
-            item variable[1:5] Base.Yeast,
-            item variable[1:5] Base.EmptyJar,
+            item variable[1:5] TraditionalPreservationYeast.ActiveCulture,
+        }
+    }
+
+    /* time is set to RAISE_HOURS in TraditionalPreservationYeast.lua. */
+    craftRecipe RaiseFedCulture
+    {
+        time = 86400,
+        Tags = FermentingShelf,
+        category = Cooking,
+        OnStart = TraditionalPreservationYeast.onFermentStart,
+        OnUpdate = TraditionalPreservationYeast.onFermentUpdate,
+        OnCreate = TraditionalPreservationYeast.onCreateOffShelf,
+        inputs
+        {
+            item variable[1:5] [TraditionalPreservationYeast.FedCulture] flags[ItemCount] mode:destroy,
+        }
+        outputs
+        {
+            item variable[1:5] TraditionalPreservationYeast.ActiveCultureHopped,
+        }
+    }
+
+    /* Cold water and dried hops in a pot or saucepan; on the heat it becomes Hop Tea. All the pot's water steeps, so it
+       holds 1 L at most. */
+    craftRecipe SteepHops
+    {
+        time = 40,
+        timedAction = Making,
+        Tags = InHandCraft;Cooking,
+        category = Cooking,
+        needTobeLearn = false,
+        OnTest = TraditionalPreservationYeast.canSteep,
+        OnCreate = TraditionalPreservationYeast.onSteeped,
+        inputs
+        {
+            item 1 [Base.Pot;Base.PotForged;Base.Saucepan;Base.SaucepanCopper] mode:keep,
+            -fluid 1.0 [Water],
+            item 1 [Base.HopsDried] mode:destroy,
+        }
+        outputs
+        {
+        }
+    }
+
+    /* One culture, fed, fills its own jar and one more (one carries the line on, one goes to cakes). */
+    craftRecipe FeedCulture
+    {
+        time = 60,
+        timedAction = Making,
+        Tags = InHandCraft;Cooking,
+        category = Cooking,
+        xpAward = Cooking:3,
+        needTobeLearn = false,
+        OnCreate = TraditionalPreservationYeast.onCreateFed,
+        inputs
+        {
+            item 1 [TraditionalPreservationYeast.ActiveCulture;TraditionalPreservationYeast.ActiveCultureHopped] mode:destroy,
+            item 1 [Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed] flags[IsEmpty] mode:destroy,
+            item 1 [Base.Pot;Base.PotForged;Base.Saucepan;Base.SaucepanCopper;Base.EmptyJar;Base.JarCrafted;Base.ClayJar;Base.ClayJarGlazed;Base.WaterBottle;Base.Mugl] mode:keep,
+            -fluid 0.3 [YeastHopTea],
+            item 5 [Base.Flour2],
+        }
+        outputs
+        {
+            item 2 TraditionalPreservationYeast.FedCulture,
+        }
+    }
+
+    /* A culture mixed with cornmeal (or flour), shaped into cakes; the jar comes back. */
+    craftRecipe ShapeYeastCakes
+    {
+        time = 80,
+        timedAction = Making,
+        Tags = InHandCraft;Cooking,
+        category = Cooking,
+        xpAward = Cooking:3,
+        needTobeLearn = false,
+        OnCreate = TraditionalPreservationYeast.onCreateCakes,
+        inputs
+        {
+            item 1 [TraditionalPreservationYeast.ActiveCulture;TraditionalPreservationYeast.ActiveCultureHopped] mode:destroy,
+            item 3 [Base.Cornmeal2;Base.Flour2],
+        }
+        outputs
+        {
+            item 1 TraditionalPreservationYeast.YeastCakes,
+        }
+    }
+
+    craftRecipe CrumbleYeastCakes
+    {
+        time = 30,
+        timedAction = Making,
+        Tags = InHandCraft;Cooking,
+        category = Cooking,
+        needTobeLearn = false,
+        inputs
+        {
+            item 1 [TraditionalPreservationYeast.DriedYeastCakes] mode:destroy,
+        }
+        outputs
+        {
+            item 1 Base.Yeast,
+        }
+    }
+
+    /* The jar comes back empty, the one the culture was in (OnCreate adds it, as vanilla's Open Water Can does). */
+    craftRecipe PourOutCulture
+    {
+        time = 30,
+        timedAction = Making,
+        Tags = InHandCraft,
+        category = Cooking,
+        needTobeLearn = false,
+        OnCreate = TraditionalPreservationYeast.onCreateJarBack,
+        inputs
+        {
+            item 1 [TraditionalPreservationYeast.ActiveCulture;TraditionalPreservationYeast.ActiveCultureHopped;TraditionalPreservationYeast.FermentingYeastJar;TraditionalPreservationYeast.FedCulture] flags[AllowRottenItem] mode:destroy,
+        }
+        outputs
+        {
         }
     }
 }
