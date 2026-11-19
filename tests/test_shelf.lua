@@ -196,8 +196,8 @@ local context, menu = menuFor(empty)
 check("the shelf's own entry, with its icon", context.options[1].name == "Fermenting Shelf"
     and context.options[1].iconTexture == "media/textures/Item_FermentingShelf.png")
 check("the status row first, greyed: what it holds", menu.options[1].name == "Jars: 0 / 5" and menu.options[1].isDisabled)
-check("then Shelf Info, and Info at the bottom of the main menu", menu.options[2].name == "Shelf Info"
-    and context.options[2].name == "Shelf Info")
+check("then its Info row, the station's full name, and the same at the bottom of the main menu",
+    menu.options[2].name == "Fermenting Shelf Info" and context.options[2].name == "Fermenting Shelf Info")
 local put = named(menu, "Put Fermenting")
 check("Put Fermenting Culture on the Shelf: One, All (2)", put and put.subOption.options[1].name == "One"
     and put.subOption.options[2].name == "All (2)")

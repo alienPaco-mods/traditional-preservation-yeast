@@ -1,6 +1,10 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.3
+- The window rows read the station's full name and Info (Fermenting Shelf Info), as vanilla's Fireplace Info and
+  Generator Info; the window's title is the bare name. The short "Vessel Info", "Tub Info" and the like are gone.
+
 ## 0.6.2
 - **A full pot** (user): Steep Hops and Mash Potato in Water take a full Cooking Pot or Forged Pot, 1.5 L of clean
   water (tainted refused), and all of it turns (1.5 L of Hop Water or Potato in Water), so nothing is poured off;

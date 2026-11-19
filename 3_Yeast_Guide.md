@@ -49,7 +49,7 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 
 1. **Build the shelf** from the Build menu (Furniture). It mounts **against a wall**.
 2. **Make Fermenting Culture** in the crafting menu: an empty Jar, Ceramic Jar or Glazed Ceramic Jar + 5 flour uses + half a litre of water from a bottle, pot or any container (the container is kept).
-3. **Right-click the shelf** and put up to **5 cultures** on it (or drop them on the square in **Shelf Info**).
+3. **Right-click the shelf** and put up to **5 cultures** on it (or drop them on the square in the **Fermenting Shelf Info** window).
 4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar. Miss a day and a jar goes hungry and stops; miss three and it has gone off.
 5. Come back in **5 days**. **Take Done**: the **Active Culture (Fresh)**. It's alive and won't wait: about 3 days at 20 C before it's **Spent**.
 6. **Shape Yeast Cakes** from it, and get your jar back.
@@ -70,7 +70,7 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 - **Feed it like a real starter.** A Fermenting Culture is hungry after **24 hours of work** since it was made or last refreshed, and stops; after **72** it has gone off (take it off for the empty jar). Warm, that is a day and three days; in a cool basement, longer; frozen, it waits. **Refresh the Cultures** feeds every jar on the shelf at once. It goes hungry off the shelf too, so taking jars off doesn't skip a refresh.
 - **Quicker starts.** **Make Fermenting Culture with Fruit** (an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots too): 4 days. **with Potato Water**: 3.5 days. Potato Water: **Mash Potato in Water** (a full Cooking Pot, 1.5 L, + a Potato), then half an hour on the heat; the pot starts three jars, none left over. Right-click the pot for **One** or **All**.
 - **The jars show how they're doing:** pale when fresh, amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off, **dark brown when done**, in the jar you used: glass, ceramic or glazed (a ceramic jar shows it on its cloth). A fed jar carries a hop sprig.
-- **Shelf Info tells you the rest:** where it stands, the temperature and working rate there, and a row for each jar with its time left and when it goes hungry. A shelf with anything on it can't be picked up.
+- **The Fermenting Shelf window tells you the rest:** where it stands, the temperature and working rate there, and a row for each jar with its time left and when it goes hungry. A shelf with anything on it can't be picked up.
 
 ---
 
@@ -184,7 +184,7 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 | Shelf won't place | It must go against a wall |
 | Can't add a culture | The shelf already has 5 (waiting, fermenting or uncollected) |
 | Culture reads (Spent) | It kept too long or too warm: pour it out and start again, or feed it before it goes |
-| Cakes won't dry | A shut room's air doesn't move: open a window. Or it's frozen. Cloth Info says which |
+| Cakes won't dry | A shut room's air doesn't move: open a window. Or it's frozen. The Drying Cloth window says which |
 | Cakes came off as nothing | They died: above 35 C for an hour |
 | Steep Hops greyed out | It takes a full Cooking Pot (not a saucepan): 1.5 L of clean water and nothing else |
 | Culture recipe greyed out | It needs an empty jar, half a litre of clean water in any container, and 5 flour uses |

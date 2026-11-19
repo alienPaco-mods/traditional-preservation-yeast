@@ -183,7 +183,7 @@ local ShelfWindow = InfoWindow:derive("TraditionalPreservationYeastShelfWindow")
 
 function ShelfWindow:new(playerObj, station)
     local o = InfoWindow.new(self, playerObj, station)
-    o.title = say("ShelfInfo")
+    o.title = getText("IGUI_CraftingWindow_FermentingShelf")
     return o
 end
 

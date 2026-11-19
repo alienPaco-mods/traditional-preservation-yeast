@@ -35,7 +35,7 @@ One culture gives one full packet of Yeast, which is 10 uses, or about 10 loaves
 [list]
 [*]Each jar keeps its own clock, so you can stagger them and always have yeast coming. The shelf holds 5.
 [*]A culture goes hungry off the shelf too, so keep up the refreshes.
-[*]Shelf Info lists every jar: its progress, the time left at today's temperature, and when it goes hungry. Hover a row for the temperature and working rate.
+[*]The Fermenting Shelf window lists every jar: its progress, the time left at today's temperature, and when it goes hungry. Hover a row for the temperature and working rate.
 [/list]
 
 [h2]Temperature[/h2]
