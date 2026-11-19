@@ -1,5 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.4.23
+- **Five places** (2026-11-19, TP Core 0.1.14): TP Core has no Enclosed place any more, so `TPY.weather()` and the
+  ledger have no shed; the guide's console table follows. Nothing else changes in game.
+
 ## 0.4.22
 - **Naming sweep** (2026-11-16, TP Core's DEVGUIDE "How code is named"): the ledger's `Y.PROCESS` (was `KIND`), the shelf's jar `looks` (`jarLooks`, `Tiles.JAR_LOOKS`; the tile builder's `JAR_COLOURS`, rerun byte-identical). Tests and golden results unchanged; nothing changes in game. Saved keys follow TP Core's renames (`workHours`, `marks`, the Smokehouse stack's hours): pre-release, an old test save's stations read as new, so test on a fresh save.
 

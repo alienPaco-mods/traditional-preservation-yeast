@@ -191,7 +191,7 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 
 | Command | What it does |
 |---|---|
-| `TPY.weather()` | The temperature in each place (open air, under an open roof, indoors, a loft, a basement, in a shed, by a fire, by banked embers), how fast a culture works there, and how many days it takes. |
+| `TPY.weather()` | The temperature in each place (open air, under an open roof, indoors, a loft, a basement, by a fire, by banked embers), how fast a culture works there, and how many days it takes. |
 | `TPY.here()` | Which kind of place you're standing in. |
 | `TPY.age(hours)` | Gives every shelf this many hours of perfect fermenting weather. `TPY.age(120)` finishes a culture. |
 | `TPY.fast(hours)` | Test timer: a culture takes this many hours. `TPY.fast()` goes back to the sandbox time. |
