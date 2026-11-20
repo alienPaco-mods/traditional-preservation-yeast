@@ -196,7 +196,7 @@ end
 
 Y.CAKES_ON_CLOTH = DryingCloth.register({
     name = "yeastCakes", title = "IGUI_TraditionalPreservationYeast_CakesTitle", types = { [Y.CAKES] = true }, perLot = 1,
-    hours = Y.CAKE_DRY_HOURS, curve = Y.CAKE_DRY_CURVE, killAbove = Y.CAKE_KILL_C,
+    hours = Y.CAKE_DRY_HOURS, curve = Y.CAKE_DRY_CURVE, killAbove = Y.CAKE_KILL_C, pattern = "media/textures/TPCell_YeastCakes.png",
     sprite = function(lot, state) return Tiles.PREFIX .. (Tiles.FIRST_CAKE + Tiles.CAKE_STATES[state] * CAKE_LOTS + lot) end,
     layable = function(item) return Y.isSpent(item) and "IGUI_TraditionalPreservationYeast_CakesSpent" or nil end,
     lay = function(items, now, place)

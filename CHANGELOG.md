@@ -1,6 +1,10 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.5
+- Yeast cakes on the Drying Cloth show in Cloth Info's cells as the item's icon lays them at twice its size, cut to the cell: two behind, high, the third laid on top of them, in the series' pattern colours with a cross cut in each (TP Core 0.1.39's patterns);
+  `TPCell_YeastCakes`, and `TPCell_Jar` for the Fermenting Shelf's window.
+
 ## 0.6.4
 - Fermenting Shelf Info's drop square shows a Fermenting Culture jar.
 
