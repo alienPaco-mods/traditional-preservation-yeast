@@ -4,17 +4,19 @@ if not isDebugEnabled() then return end
 
 local Y = TraditionalPreservationYeast
 local Fire = require "TraditionalPreservationCore/Fire"
+local Frost = require "TraditionalPreservationCore/Frost"
 TPY = {}
 
 local function say(text) print("[TPY] " .. text) end
 
 function TPY.help()
     say("TPY.weather()        the temperature by place, and how fast a culture works there")
-    say("TPY.cultures()       Active and Hopped Culture and wet Yeast Cakes on you or near: the jar, place and how long each keeps there")
+    say("TPY.cultures()       Active and Hopped Culture and wet Yeast Cakes on you or near: the jar, place, how long each keeps there and its frost")
     say("TPY.here()           which place you're standing in (open air, an open roof, indoors, a basement, by a fire)")
     say("TPY.age(hours)       give every shelf this many hours of perfect fermenting weather (jars go hungry by it too)")
     say("TPY.fast(hours)      test timer: a plain culture takes this many hours (fruit and potato their share). TPY.fast() goes back to the sandbox time")
-    say("TPY.shelf()          every jar on the Fermenting Shelves within 3 tiles: state, progress, hours since fed")
+    say("TPY.shelf()          every jar on the Fermenting Shelves within 3 tiles: state, progress, hours since fed, hours frozen")
+    say("TPY.frost(hours)     freeze the cultures on you and near, and the jars on the shelves within 3 tiles, for hours (default 6): 6 h makes a Fermenting Culture hungry, 48 h spends a culture")
     say("TPY.give(name, n)    spawn n of: culture (a Fermenting Culture), active (Active Culture), fed (Fed Culture), hopped (Hopped Culture), cakes (wet Yeast Cakes), dried (Dried Yeast Cakes), hops (Hops (Dried)), flour, or any full type. TPY.give() lists them")
     say("TPY.kit(kind)        the things a test needs: \"build\" (the Fermenting Shelf), \"culture\" (Make Fermenting Culture and its refreshes), \"starters\" (fruit and potato water), \"cakes\", \"hops\" or \"all\". TPY.kit() lists them")
 end
@@ -40,7 +42,15 @@ function TPY.cultures()
     local PlaceKeepingUI = require "TraditionalPreservationCore/PlaceKeepingUI"
     local found = PlaceKeepingUI.near(Y.CULTURE_DAYS)
     if #found == 0 then return say("No culture or wet cakes on you or within " .. PlaceKeepingUI.REACH .. " tiles.") end
-    for _, item in ipairs(found) do say(Y.jarOf(item) .. ": " .. Y.CULTURE_KEEPER.describe(item)) end
+    for _, item in ipairs(found) do
+        local line = Y.jarOf(item) .. ": " .. Y.CULTURE_KEEPER.describe(item)
+        local frost = item:getModData()[Y.FROST_KEY]
+        if frost then
+            line = line .. string.format(", frozen %.1f h in all%s", frost.age,
+                Frost.freezingAt(Y.FROST, frost.place) and " (freezing here now)" or "")
+        end
+        say(line)
+    end
 end
 
 function TPY.here()
@@ -64,12 +74,16 @@ function TPY.fast(hours)
     say(string.format("Test timer on: a plain culture takes %s hours at full speed (jars on a shelf too).", tostring(hours)))
 end
 
-function TPY.shelf()
+-- The Fermenting Shelves within 3 tiles.
+local function shelvesNear()
     local Station = require "TraditionalPreservationCore/Station"
     local Tiles = require "TraditionalPreservationYeast/Tiles"
     local isShelf = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
-    local square = getPlayer():getSquare()
-    local shelves = Station.near(square, 3, function(isoObject) return isShelf(isoObject) ~= nil end)
+    return Station.near(getPlayer():getSquare(), 3, function(isoObject) return isShelf(isoObject) ~= nil end)
+end
+
+function TPY.shelf()
+    local shelves = shelvesNear()
     if #shelves == 0 then return say("No Fermenting Shelf within 3 tiles.") end
     for _, shelf in ipairs(shelves) do
         local record, place = Y.shelfNow(shelf)
@@ -77,10 +91,34 @@ function TPY.shelf()
         say(string.format("Shelf in %s (%.1f C, %.0f%% speed): %d of %d jars", place, placeC, Y.cultureRate(placeC) * 100, #record.jars, Y.SHELF_JARS))
         for _, jar in ipairs(record.jars) do
             local status = Y.jarStatus(jar, placeC, place)
-            say(string.format("  %d. %s %s in %s: %s, %.0f%% of %.0f h, %.1f work hours since fed", jar.id, jar.kind, jar.start, jar.jar,
-                status.state, status.progress * 100, Y.jarHours(jar), jar.work.age - jar.fedAt))
+            say(string.format("  %d. %s %s in %s: %s, %.0f%% of %.0f h, %.1f work hours since fed, frozen %.1f h in all", jar.id, jar.kind,
+                jar.start, jar.jar, status.state, status.progress * 100, Y.jarHours(jar), jar.work.age - jar.fedAt, jar.frost and jar.frost.age or 0))
         end
     end
+end
+
+-- Hours of frost on the cultures and wet cakes on you and near, and on every jar on the shelves within 3 tiles, as if
+-- they had frozen that long (the sandbox's Starters freeze aside). Carried Fermenting Cultures count when put on a
+-- shelf (their run's frost), so this freezes them only on the shelf. Cooked or burnt ones never freeze.
+function TPY.frost(hours)
+    hours = hours or 6
+    local PlaceKeepingUI = require "TraditionalPreservationCore/PlaceKeepingUI"
+    local found = PlaceKeepingUI.near(Y.CULTURE_DAYS)
+    for _, item in ipairs(found) do
+        local clock = Y.keepCulture(item)
+        if Y.freezes(item) then Y.frostBite(item, clock, hours) end
+    end
+    local jars = 0
+    for _, shelf in ipairs(shelvesNear()) do
+        local record = Y.shelfNow(shelf)
+        for _, jar in ipairs(record.jars) do
+            jar.frost.age = jar.frost.age + hours
+            Y.frostJar(jar, hours)
+            jars = jars + 1
+        end
+        if TraditionalPreservationYeastWorld then TraditionalPreservationYeastWorld.refresh(shelf) end
+    end
+    say(string.format("Froze %d cultures and %d shelf jars for %s hours.", #found, jars, tostring(hours)))
 end
 
 local GIVES = { culture = Y.FERMENTING, active = Y.ACTIVE, fed = Y.FED, hopped = Y.HOPPED, cakes = Y.CAKES, dried = Y.DRIED_CAKES,

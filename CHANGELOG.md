@@ -1,5 +1,22 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.6.8
+Needs TP Core 0.1.52 (its `Frost`).
+- **Frost** (session 76): a culture freezes at 0 C, where its work already pauses, counted by place on TP Core's frost
+  record (`Y.FROST`). A Fermenting Culture frozen through (6 hours in all), on the shelf or carried, goes **hungry**:
+  its `fedAt` moves back, so one refresh puts it right. Active Culture, Hopped Culture and wet Yeast Cakes (in hand,
+  in a container or on the Drying Cloth) and a done jar on the shelf take **1/48 of their days to Spent** an hour
+  frozen (`Frost.STARTER_RUIN_HOURS`). A Fed Culture rising only waits; Dried Yeast Cakes take nothing; a cooked or
+  burnt item keeps vanilla's timers and never freezes. A basement never freezes, nor a place by a lit fire or banked
+  embers.
+- New sandbox option **Starters freeze** (`FrostDamage`, on): off, frost does no harm and the records go on counting.
+- Save keys: item modData `tpyFrost` (a kept culture's and a carried Fermenting Culture's frost record); a shelf jar's
+  `frost` and a cloth lot's `frost` in their own records.
+- Console: `TPY.frost(hours)`; `TPY.shelf()` and `TPY.cultures()` show hours frozen. New `tests/test_frost.lua`.
+- `tools/season_report.lua` counts frost (golden re-recorded): from November to March a finished culture lasts about
+  two days above ground and cake lots go Spent before they dry; basements unchanged; a plain culture up to about two
+  days longer where it froze through. README and guide tables refreshed.
+
 ## 0.6.7
 - **Fermenting Shelf Info built to the approved mock** (`art/all_info_mock.png`): a band (Empty, Lost, Hungry, Done,
   Waiting, Fermenting with the next jar to go hungry or be done; worst first), the Station block (outline icon, Place,

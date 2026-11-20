@@ -55,6 +55,9 @@ run("give", "culture", 3)
 run("give", "flour")
 check("give with no name lists the things", run("give"):find("culture", 1, true) ~= nil and #player.given == 4)
 check("shelf with none near says so", run("shelf"):find("No Fermenting Shelf", 1, true) ~= nil)
+player:getInventory().getAllEvalRecurse = function() return H.list({}) end
+check("frost with nothing near freezes nothing, 6 hours by default", run("frost"):find("Froze 0 cultures and 0 shelf jars for 6 hours", 1, true) ~= nil)
+check("cultures with none near says so", run("cultures"):find("No culture", 1, true) ~= nil)
 check("cultures and flour land in the inventory", #player.given == 4
     and player.given[1] == "TraditionalPreservationYeast.FermentingYeastJar" and player.given[4] == "Base.Flour2")
 run("give", "Base.Yeast")

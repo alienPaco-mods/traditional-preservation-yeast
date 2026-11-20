@@ -10,6 +10,7 @@ local Recipes = require "TraditionalPreservationCore/Recipes"
 local ItemFluid = require "TraditionalPreservationCore/ItemFluid"
 local DryingCloth = require "TraditionalPreservationCore/DryingCloth"
 local FluidAgeing = require "TraditionalPreservationCore/FluidAgeing"
+local Frost = require "TraditionalPreservationCore/Frost"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 Y.FERMENTING = "TraditionalPreservationYeast.FermentingYeastJar"
@@ -155,10 +156,26 @@ Y.CULTURE_KEEPER = PlaceKeeping.new({
     modDataKey = "tpyKeep", days = Y.CULTURE_DAYS,
 })
 
--- Brings a culture's age up to now where it is (or place), and its name with it: Active Culture (Fresh), (Spent).
--- Returns its clock.
+-- Moves a kept culture hours of frost nearer Spent (never past it): its clock's base, so the keeping goes on from
+-- there. Also the console's TPY.frost.
+function Y.frostBite(item, clock, hours)
+    Frost.bite(item, hours, Frost.STARTER_RUIN_HOURS, clock)
+end
+
+-- True if frost reaches a kept culture: a cooked or burnt one keeps vanilla's timers and never freezes.
+function Y.freezes(item)
+    return not item:isCooked() and not item:isBurnt()
+end
+
+-- Brings a culture's age up to now where it is (or place), its frost with it (TP Core's Frost.see, at the place its
+-- clock was seen in last; none cooked or burnt), and its name: Active Culture (Fresh), (Spent). Returns its clock.
 function Y.keepCulture(item, now, place, ledger)
+    now = now or getGameTime():getWorldAgeHours()
     local clock = Y.CULTURE_KEEPER.keep(item, now, place, ledger)
+    if Y.freezes(item) then
+        local frozen = Frost.see(item:getModData(), Y.FROST_KEY, Y.FROST, now, clock.fluidAge)
+        if frozen > 0 and Y.frostDamage() then Y.frostBite(item, clock, frozen) end
+    end
     local spent = item:getAge() >= item:getOffAgeMax()
     local name = getText(spent and "IGUI_TraditionalPreservationYeast_CultureSpent" or "IGUI_TraditionalPreservationYeast_CultureFresh",
         getItemNameFromFullType(item:getFullType()))
@@ -178,7 +195,8 @@ end
 -- below freezing and in a shut room (the cloth's rule), dead past 35 C. While wet they keep ageing by the cloth's
 -- place (a shut room's still air ages them though it dries nothing): on the culture's curve, held at its 20 C speed
 -- above 20 C, and slowed as they dry, by how wet they still are squared (half dry, a quarter as fast). Spent before
--- dry, the lot is gone off. Dry, a lot comes off as Dried Yeast Cakes (Crumble Yeast Cakes: a packet of vanilla Yeast), which keep; taken
+-- dry, the lot is gone off. Frozen while wet, each hour takes them 1/48 of their days to Spent (as Active Culture).
+-- Dry, a lot comes off as Dried Yeast Cakes (Crumble Yeast Cakes: a packet of vanilla Yeast), which keep; taken
 -- off wet, the cakes come back as old as they are; dead or gone off, nothing comes back.
 Y.CAKE_DRY_HOURS = 168
 Y.CAKE_KILL_C = 35
@@ -201,7 +219,8 @@ Y.CAKES_ON_CLOTH = DryingCloth.register({
     sprite = function(spot, state) return Tiles.PREFIX .. (Tiles.FIRST_CAKE + Tiles.CAKE_STATES[state] * CAKE_SPOTS + spot) end,
     layable = function(item) return Y.isSpent(item) and "IGUI_TraditionalPreservationYeast_CakesSpent" or nil end,
     lay = function(items, now, place)
-        return { age = items[1]:getAge(), keep = FluidAgeing.newFluidAge(Y.CULTURE_KEEPER.ageing, Y.CULTURE_KEEPER.ledger(), now, place) }
+        return { age = items[1]:getAge(), keep = FluidAgeing.newFluidAge(Y.CULTURE_KEEPER.ageing, Y.CULTURE_KEEPER.ledger(), now, place),
+            frost = Y.freezes(items[1]) and Frost.newRecord(Y.FROST, now, place) or nil }
     end,
     goesOff = function(lot, now, place, fire, isoObject)
         local keep = lot.data and lot.data.keep
@@ -222,6 +241,10 @@ Y.CAKES_ON_CLOTH = DryingCloth.register({
         local nowWet = 1 - math.min(lot.dry.age / Y.CAKE_DRY_HOURS, 1)
         keep.age = keepWas + (keep.age - keepWas) * share * (wasWet * wasWet + wasWet * nowWet + nowWet * nowWet) / 3
         lot.data.dryWas = lot.dry.age
+        -- Frost on wet cakes (the lot's frost record, as an item's, started at lay; none for cooked or burnt cakes):
+        -- 1/48 of their days to Spent an hour frozen.
+        local frozen = lot.data.frost and Frost.see(lot.data, "frost", Y.FROST, now, keep) or 0
+        if frozen > 0 and Y.frostDamage() then keep.age = keep.age + frozen / Frost.STARTER_RUIN_HOURS * CAKE_SPENT_DAYS * 24 end
         local after = Y.cakeLotAge(lot)
         if after < CAKE_SPENT_DAYS then return nil end
         if before >= CAKE_SPENT_DAYS or after <= before then return 0 end

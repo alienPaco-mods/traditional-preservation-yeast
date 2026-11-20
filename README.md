@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.7)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.8)
 
 **Status: experimental.** Back up your save before enabling.
 
@@ -58,12 +58,27 @@ Days to Spent, made on the first of the month (`tools/season_report.lua`):
 
 | Month | Outdoors, under a roof | Shut room | Aired room | Basement |
 |---|---|---|---|---|
-| Jan | 53 | 55 | 59 | 14 |
-| Apr | 12 | 11 | 11 | 12 |
+| Jan | 2 | 2 | 2 | 14 |
+| Apr | 10 | 11 | 11 | 12 |
 | Jul | 3 | 3 | 4 | 7 |
 | Aug | 2 | 3 | 2 | 6 |
-| Oct | 9 | 7 | 9 | 7 |
-| Nov | 41 | 17 | 33 | 9 |
+| Oct | 8 | 7 | 9 | 7 |
+| Nov | 5 | 15 | 11 | 9 |
+
+From November to March frost spends a culture anywhere above ground in about two days (Frost, below): keep finished cultures in the basement, or bake.
+
+### Frost
+
+A culture freezes at **0 C**, where its work already pauses, counted by place on TP Core's frost record, so a jar left alone catches up when it is next seen. Frost hurts a live culture a little, never at once:
+
+| What | Frozen |
+|---|---|
+| Fermenting Culture (on the shelf or carried) | Frozen **6 hours in all**, it goes **hungry**: one refresh puts it right. The frozen time itself only pauses it. |
+| Active Culture, Hopped Culture, wet Yeast Cakes (in hand, in a container or on the Drying Cloth) | Each hour frozen takes **1/48 of its days to Spent**: two days of frost spend a fresh one. |
+| A done jar waiting on the shelf | The same, from its days to Spent. |
+| Fed Culture rising, Dried Yeast Cakes | Nothing: a Fed Culture only waits, and dried cakes have no water to freeze. |
+
+A basement never freezes (its coldest is about 4 C), nor a place by a lit fire or banked embers while the fuel lasts; a powered fridge never freezes, and a powered freezer stops a culture's keeping as before. A cooked or burnt culture keeps vanilla's timers and never freezes. **Starters freeze** in the sandbox options (on by default) turns it off: then the cold only pauses them.
 
 ### Hops: keeping a culture going
 
@@ -76,24 +91,24 @@ A Hopped Culture keeps twice as long (7 fresh, 10 to Spent in a cellar: about 6 
 
 ### Drying the cakes
 
-The Drying Cloth is TP Core's (its README, "The Drying Cloth"). Yeast cakes dry in **168 hours (7 days) at full speed**, from 15 to 25 C in moving air: 60% at 10 C, 30% at 5 C, nothing at 0 C and below (they wait), 80% at 30 C and 60% at 35 C. **Above 35 C for an hour they die**, and come off as nothing. In a shut room's still air they wait for a window to be opened. By a fire in a room they dry, in about 8 days (7 by banked embers). While wet they keep ageing on the cloth, by its place: on the culture's curve held at its 20 C speed above 20 C, and slowed as they dry, by how wet they still are squared (half dry, a quarter as fast). Laid fresh where the air moves they dry having used 2 to 5 of their 8 days in any month (the season table); shaped from a culture already a few days old, by a fire, or in a shut room (which ages them and dries nothing) they can go Spent first, and the lot is gone off: the Drying Cloth window says so, and it comes off as nothing. Taken off before they are dry, they come back wet, as old as they are.
+The Drying Cloth is TP Core's (its README, "The Drying Cloth"). Yeast cakes dry in **168 hours (7 days) at full speed**, from 15 to 25 C in moving air: 60% at 10 C, 30% at 5 C, nothing at 0 C and below (they wait), 80% at 30 C and 60% at 35 C. **Above 35 C for an hour they die**, and come off as nothing. In a shut room's still air they wait for a window to be opened. By a fire in a room they dry, in about 8 days (7 by banked embers). While wet they keep ageing on the cloth, by its place: on the culture's curve held at its 20 C speed above 20 C, and slowed as they dry, by how wet they still are squared (half dry, a quarter as fast). Laid fresh where the air moves they dry having used 2 to 7 of their 8 days from April to October (the season table); from November to March frost spends them before they dry anywhere but a basement or by a fire; shaped from a culture already a few days old, by a fire, or in a shut room (which ages them and dries nothing) they can go Spent first, and the lot is gone off: the Drying Cloth window says so, and it comes off as nothing. Taken off before they are dry, they come back wet, as old as they are.
 
 Days for a lot to dry, laid on the first of the month:
 
 | Month | Outdoors, under a roof | Aired room | Basement |
 |---|---|---|---|
-| Jan | 76 | 79 | 21 |
+| Jan | spent | spent | 21 |
 | Apr | 16 | 16 | 18 |
 | Jun | 8 | 7 | 11 |
 | Aug | 7 | 7 | 8 |
 | Oct | 15 | 12 | 9 |
-| Nov | 107 | 113 | 11 |
+| Nov | spent | spent | 11 |
 
-One cloth turns out at most five packets a week in summer. In winter, lay it by a fire.
+One cloth turns out at most five packets a week in summer (spent: the frost spent them first). In winter, lay it by a fire.
 
 ## Temperature
 
-A culture works by the temperature where the shelf stands, like the stations in the other Traditional Preservation mods. It's best from **18 to 30 C**, at 40% speed at 10 C, 20% at 5 C, and only crawls just above freezing. At 0 C and below it stops and waits, without ever dying: the Fermenting Shelf window says *waiting: too cold*, and its hunger waits too. Real heat slows it too (60% at 35 C).
+A culture works by the temperature where the shelf stands, like the stations in the other Traditional Preservation mods. It's best from **18 to 30 C**, at 40% speed at 10 C, 20% at 5 C, and only crawls just above freezing. At 0 C and below it stops and waits: the Fermenting Shelf window says *waiting: too cold*, and its hunger waits too; frozen through, it goes hungry (Frost, above). Real heat slows it too (60% at 35 C).
 
 - **Open air** (a shelf on an outside wall) and **under an open roof** (a porch, an open shed): the weather, hour by hour.
 - **Indoors** (a shut room: every window to the outside shut or boarded): an unheated room follows the average of the last 3 days, 2 C warmer in the cold months and up to 2 C warmer in summer (stuffy). A room is **22 C while the power grid is on**, as vanilla's are.
@@ -110,14 +125,14 @@ Days a plain culture takes, started on the first of the month and refreshed dail
 | Jan | 77 | 79 | 84 | 24 | 11 | 20 |
 | Feb | 54 | 52 | 55 | 25 | 7 | 13 |
 | Mar | 29 | 27 | 28 | 24 | 6 | 10 |
-| Apr | 16 | 15 | 15 | 19 | 5 | 6 |
+| Apr | 17 | 15 | 15 | 19 | 5 | 6 |
 | May | 9 | 8 | 9 | 16 | 5 | 5 |
 | Jun | 5 | 5 | 5 | 11 | 5 | 5 |
 | Jul | 6 | 5 | 5 | 9 | 5 | 5 |
 | Aug | 7 | 5 | 6 | 8 | 5 | 5 |
 | Sep | 7 | 6 | 6 | 8 | 5 | 5 |
-| Oct | 13 | 10 | 12 | 9 | 5 | 6 |
-| Nov | 96 | 67 | 106 | 12 | 6 | 8 |
+| Oct | 15 | 10 | 12 | 9 | 5 | 6 |
+| Nov | 98 | 67 | 106 | 12 | 6 | 8 |
 | Dec | 92 | 97 | 102 | 17 | 10 | 21 |
 
 By a fire or banked embers in a shut room, or in any room while the grid is on (22 C): 5 days in any month. From October a shut room no longer keeps the summer's warmth: a November culture there takes about 67 days, by a fire 5.
@@ -128,9 +143,9 @@ So a kitchen shelf is enough from May to October. In winter, set it by an indoor
 
 ## Changing the timer
 
-Set **Fermenting time (days)** (the time at the best temperature) and **Temperature sensitivity** (Off, Forgiving, Normal, Harsh) under Traditional Preservation (Yeast) in the sandbox options. The default is `FERMENT_HOURS` at the top of `42/media/lua/shared/TraditionalPreservationYeast.lua`. Fractions work. Running batches pick up the new time after a game restart.
+Set **Fermenting time (days)** (the time at the best temperature), **Temperature sensitivity** (Off, Forgiving, Normal, Harsh) and **Starters freeze** (Frost, above) under Traditional Preservation (Yeast) in the sandbox options. The default is `FERMENT_HOURS` at the top of `42/media/lua/shared/TraditionalPreservationYeast.lua`. Fractions work. Running batches pick up the new time after a game restart.
 
-`luajit tests/test_ferment.lua` checks the temperature curve, places, each jar's clock (hunger, going off, the starts, fed cultures, keeping once done, hunger off the shelf) and the sandbox options, `luajit tests/test_shelf.lua` the shelf's sprites, its menu and hand jobs, the Fermenting Shelf window's rows, band and cells, and the refresh's flour and water, `luajit tests/test_culture.lua` the jars through every step, the keeping, hops, feeding and the cakes on the cloth, and `luajit tests/test_console.lua` the debug commands. `luajit tools/season_report.lua` runs the rules against `tools/climate_year.csv`, the game's forecasts: the culture's days, how long Active and Hopped Culture keep, and how long a lot of cakes takes on the cloth (golden-checked by `tp test Yeast`).
+`luajit tests/test_ferment.lua` checks the temperature curve, places, each jar's clock (hunger, going off, the starts, fed cultures, keeping once done, hunger off the shelf) and the sandbox options, `luajit tests/test_shelf.lua` the shelf's sprites, its menu and hand jobs, the Fermenting Shelf window's rows, band and cells, and the refresh's flour and water, `luajit tests/test_culture.lua` the jars through every step, the keeping, hops, feeding and the cakes on the cloth, `luajit tests/test_frost.lua` frost on every culture, on the shelf, carried, kept and on the cloth, and `luajit tests/test_console.lua` the debug commands. `luajit tools/season_report.lua` runs the rules against `tools/climate_year.csv`, the game's forecasts: the culture's days, how long Active and Hopped Culture keep, and how long a lot of cakes takes on the cloth (golden-checked by `tp test Yeast`).
 
 ## Rebuilding the tileset
 
@@ -149,6 +164,6 @@ In debug mode, `TPY.help()` in the Lua console lists commands for testing this m
 
 ## Engineering notes
 
-The shared Traditional Preservation core (weather, places, station tracking, popups) is the required TP Core mod (id `TraditionalPreservationCore`), loaded as `require "TraditionalPreservationCore/Weather"`. Edit it there. The fermenting curve, the jars and the shelf's record stay in this mod's own files. The cultures, their keeping, hops and the cakes are in `42/media/lua/shared/TraditionalPreservationYeastCulture.lua`: the jar a culture is in is its modData `tpyJar` (a full type), and a ceramic one is drawn through modData `customInventoryIcon` and `worldStaticModel`, which the engine reads before the script's; every recipe's `OnCreate` hands the jar on (`Y.onCreateInJar` and the starts' `Y.onCreateFruitStart`, `Y.onCreatePotatoStart`, `Y.onCreateFed`, `Y.onCreateCakes`, `Y.onCreateJarBack`; the shelf gives each back by `Y.jarOutput`). Keeping is TP Core's `PlaceKeeping` (`Y.CULTURE_KEEPER`, ledger `TraditionalPreservationYeastKeep`, item clock `tpyKeep`). Hop Water turns to Hop Tea, and Potato in Water to Potato Water, through TP Core's `ItemFluid.turnsHot`. The cakes are a kind registered on TP Core's `DryingCloth` (`Y.CAKES_ON_CLOTH`): the lot keeps the cakes' age as a FluidAgeing age on the keeper's ledger (process `cakeKeep`, `keeper.addAgeing`), its `goesOff` says when they go Spent, and it gives Dried Yeast Cakes when dry.
+The shared Traditional Preservation core (weather, places, station tracking, popups) is the required TP Core mod (id `TraditionalPreservationCore`), loaded as `require "TraditionalPreservationCore/Weather"`. Edit it there. The fermenting curve, the jars and the shelf's record stay in this mod's own files. The cultures, their keeping, hops and the cakes are in `42/media/lua/shared/TraditionalPreservationYeastCulture.lua`: the jar a culture is in is its modData `tpyJar` (a full type), and a ceramic one is drawn through modData `customInventoryIcon` and `worldStaticModel`, which the engine reads before the script's; every recipe's `OnCreate` hands the jar on (`Y.onCreateInJar` and the starts' `Y.onCreateFruitStart`, `Y.onCreatePotatoStart`, `Y.onCreateFed`, `Y.onCreateCakes`, `Y.onCreateJarBack`; the shelf gives each back by `Y.jarOutput`). Keeping is TP Core's `PlaceKeeping` (`Y.CULTURE_KEEPER`, ledger `TraditionalPreservationYeastKeep`, item clock `tpyKeep`). Hop Water turns to Hop Tea, and Potato in Water to Potato Water, through TP Core's `ItemFluid.turnsHot`. The cakes are a kind registered on TP Core's `DryingCloth` (`Y.CAKES_ON_CLOTH`): the lot keeps the cakes' age as a FluidAgeing age on the keeper's ledger (process `cakeKeep`, `keeper.addAgeing`), its `goesOff` says when they go Spent, and it gives Dried Yeast Cakes when dry. Frost is TP Core's `Frost` at 0 C (`Y.FROST`, sandbox `FrostDamage`, `Y.frostDamage()`): a kept culture carries its frost record in modData `tpyFrost` and `Y.keepCulture` bites it (none cooked or burnt: `Y.freezes`) (`Y.frostBite`, `Frost.STARTER_RUIN_HOURS` 48); a lot of cakes on the cloth keeps its record in its lot data (`frost`, started at `lay`) and `goesOff` adds the bite to its keep.
 
-The shelf has no crafting window (TP Core's station rule: pieces put on a station). Its jars are a record in the shelf's movableData (`tpyShelf`, `42/media/lua/shared/TraditionalPreservationYeastShelf.lua`): each jar's work is a FluidAgeing age on the culture's ledger (process `culture`), `fedAt` its work hours at its last feed, `done` its progress, which counts only while fed (`Y.HUNGRY_HOURS` 24, off at `Y.OFF_HOURS` 72), and `keep` a FluidAgeing age on the keeper's ledger from which, once done, it goes Spent on the shelf. A culture off the shelf carries its run in modData `tpyRun` (`Y.startRun` at its recipe; work, `fedAt`, `done`) and its start in `tpyStart`, so it goes hungry wherever it is. `42/media/lua/server/TraditionalPreservationYeastWorld.lua` steps every loaded shelf (TP Core's `Station.tracker`, scanning for new ones) and layers one attached sprite a jar; `42/media/lua/client/TraditionalPreservationYeastShelfUI.lua` is the menu and the Fermenting Shelf window (TP Core's `InfoWindow`: `band`, `stationBlock`, `holds` with a drag onto the cells, `pieceListBlock`, `buttonRow`; `PiecesUI`), and `TimedActions/TPYShelf.lua` the put, take and refresh. The ferment time comes from the sandbox's Ferment Days on `OnInitGlobalModData`; a start takes its share (`Y.STARTS`), a fed culture `Y.RAISE_HOURS` (24).
+The shelf has no crafting window (TP Core's station rule: pieces put on a station). Its jars are a record in the shelf's movableData (`tpyShelf`, `42/media/lua/shared/TraditionalPreservationYeastShelf.lua`): each jar's work is a FluidAgeing age on the culture's ledger (process `culture`), `fedAt` its work hours at its last feed, `done` its progress, which counts only while fed (`Y.HUNGRY_HOURS` 24, off at `Y.OFF_HOURS` 72), and `keep` a FluidAgeing age on the keeper's ledger from which, once done, it goes Spent on the shelf. A culture off the shelf carries its run in modData `tpyRun` (`Y.startRun` at its recipe; work, `fedAt`, `done`), its frost record in `tpyFrost` and its start in `tpyStart`, so it goes hungry wherever it is. Each jar on the shelf has its own frost record (`frost`, from the item's when put on, back to it when taken off part way); `Y.advanceJar` counts the stretch's progress first, then `Y.frostJar`: frozen through (`Frost.frozenThrough`), a Fermenting Culture's `fedAt` moves back to hungry; done, its `keep` moves 1/48 of its days to Spent an hour. `42/media/lua/server/TraditionalPreservationYeastWorld.lua` steps every loaded shelf (TP Core's `Station.tracker`, scanning for new ones) and layers one attached sprite a jar; `42/media/lua/client/TraditionalPreservationYeastShelfUI.lua` is the menu and the Fermenting Shelf window (TP Core's `InfoWindow`: `band`, `stationBlock`, `holds` with a drag onto the cells, `pieceListBlock`, `buttonRow`; `PiecesUI`), and `TimedActions/TPYShelf.lua` the put, take and refresh. The ferment time comes from the sandbox's Ferment Days on `OnInitGlobalModData`; a start takes its share (`Y.STARTS`), a fed culture `Y.RAISE_HOURS` (24).

@@ -5,6 +5,7 @@ TraditionalPreservationYeast = TraditionalPreservationYeast or {}
 local Y = TraditionalPreservationYeast
 local Weather = require "TraditionalPreservationCore/Weather"
 local Fire = require "TraditionalPreservationCore/Fire"
+local Frost = require "TraditionalPreservationCore/Frost"
 
 Y.FERMENT_HOURS = 120  -- five 24-hour in-game days at the best temperature
 Y.MOD_DATA_KEY = "TraditionalPreservationYeast"
@@ -36,6 +37,13 @@ end
 
 local PROCESSES = { [PROCESS] = Y.cultureRate }
 
+-- Frost (TP Core's Frost, by place): a culture freezes at 0 C, where its work pauses. A Fermenting Culture frozen
+-- through goes hungry; every hour frozen takes Active Culture, Hopped Culture and wet Yeast Cakes 1/48 of the way to
+-- Spent (Frost.STARTER_RUIN_HOURS). Dried Yeast Cakes have no water to freeze; a Fed Culture rising only waits.
+Y.FROST = Frost.point(0)
+-- Item modData: a culture's frost record (TP Core's Frost), kept.
+Y.FROST_KEY = "tpyFrost"
+
 -- One total per place ("cultureOpen", "cultureOpenRate").
 function Y.newLedger(now)
     return Weather.newLedger(now, PROCESSES)
@@ -57,6 +65,12 @@ function Y.applySandbox()
     if not options then return end
     if options.FermentDays then Y.FERMENT_HOURS = options.FermentDays * 24 end
     if options.TemperatureSensitivity then Y.SENSITIVITY = Weather.sensitivity(options.TemperatureSensitivity) end
+end
+
+-- The sandbox's "Starters freeze"; off, frost does a culture no harm (its record goes on counting).
+function Y.frostDamage()
+    local options = SandboxVars and SandboxVars.TraditionalPreservationYeast
+    return not options or options.FrostDamage ~= false
 end
 
 Events.OnInitGlobalModData.Add(Y.applySandbox)

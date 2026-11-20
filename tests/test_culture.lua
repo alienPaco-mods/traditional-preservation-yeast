@@ -30,6 +30,8 @@ local function item(fullType, jar)
     function self:setCustomName() end
     function self:getOutermostContainer() return nil end
     function self:getWorldItem() return nil end
+    function self:isCooked() return self.cooked == true end
+    function self:isBurnt() return self.burnt == true end
     return self
 end
 

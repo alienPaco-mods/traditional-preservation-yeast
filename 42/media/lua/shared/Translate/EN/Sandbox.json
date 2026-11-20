@@ -7,5 +7,7 @@
   "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option1": "Off",
   "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option2": "Forgiving",
   "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option3": "Normal",
-  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option4": "Harsh"
+  "Sandbox_TraditionalPreservationYeast_TemperatureSensitivity_option4": "Harsh",
+  "Sandbox_TraditionalPreservationYeast_FrostDamage": "Starters freeze",
+  "Sandbox_TraditionalPreservationYeast_FrostDamage_tooltip": "A culture freezes at 0°C. A Fermenting Culture frozen for six hours in all goes hungry and wants a refresh; each hour frozen takes Active Culture, Hopped Culture and wet Yeast Cakes a share of their days, two days of frost spending them. Dried Yeast Cakes take no harm. A basement never freezes, nor a place by a lit fire or banked embers. Off, the cold only pauses them."
 }

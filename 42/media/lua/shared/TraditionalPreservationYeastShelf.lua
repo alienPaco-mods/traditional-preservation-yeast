@@ -8,7 +8,8 @@
 -- on the shelf at once (a use of flour and REFRESH_WATER_L of water a jar). What it was started with sets how long it
 -- takes (STARTS: plain flour and water, fruit, potato water). A Fed Culture rises in RAISE_HOURS and wants no refresh.
 -- Done, a jar keeps by place as Active Culture does (CULTURE_KEEPER, from the moment it was done) and goes Spent on
--- the shelf as off it.
+-- the shelf as off it. Frost (Y.FROST): a Fermenting Culture frozen through goes hungry, on the shelf or off it; a done
+-- jar takes 1/48 of its days to Spent an hour frozen, as Active Culture does; a Fed Culture rising only waits.
 TraditionalPreservationYeast = TraditionalPreservationYeast or {}
 local Y = TraditionalPreservationYeast
 local Station = require "TraditionalPreservationCore/Station"
@@ -17,12 +18,13 @@ local Weather = require "TraditionalPreservationCore/Weather"
 local FluidAgeing = require "TraditionalPreservationCore/FluidAgeing"
 local Uses = require "TraditionalPreservationCore/Uses"
 local Container = require "TraditionalPreservationCore/Container"
+local Frost = require "TraditionalPreservationCore/Frost"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 -- Save key in the shelf's movableData: never rename it once the mod is out. { jars = { jar ... }, nextId }; a jar is
 -- { id, kind ("culture" or "fed"), jar (the jar's full type), start (STARTS), work (a FluidAgeing age), fedAt (work
 -- hours at its last feed), done (hours of progress), off, keep (a FluidAgeing age on the keeper's ledger),
--- keptAtDone (keep's hours when it was done) }.
+-- keptAtDone (keep's hours when it was done), frost (its frost record, TP Core's Frost) }.
 Y.SHELF_KEY = "tpyShelf"
 Y.SHELF_JARS = Tiles.JAR_SLOTS
 Y.HUNGRY_HOURS = 24
@@ -76,16 +78,30 @@ function Y.jarState(jar)
     return "working"
 end
 
--- Brings one jar up to now at place. Its progress counts only while it is fed; done part way through a stretch, its
--- keeping starts at that point of the stretch, so a long catch-up keeps it as short looks would.
-function Y.advanceJar(jar, now, place, fire, station, ledger, keepLedger)
-    local workWas, keptWas = jar.work.age, jar.keep.age
-    FluidAgeing.advance(jar.work, Y.WORK, ledger, now, place)
-    FluidAgeing.advance(jar.keep, Y.CULTURE_KEEPER.ageing, keepLedger, now, place)
-    if station then
-        FluidAgeing.noteFire(jar.work, fire, station, now)
-        FluidAgeing.noteFire(jar.keep, fire, station, now)
+-- A Fermenting Culture frozen through (TP Core's Frost.THROUGH_HOURS in all) goes hungry: its last feed moves back,
+-- so one refresh puts it right. culture: a jar on the shelf or a run off it (fedAt, work); frost its frost record.
+local function hungryIfFrozenThrough(culture, frost, hours)
+    if Frost.frozenThrough(frost, hours) then culture.fedAt = math.min(culture.fedAt, culture.work.age - Y.HUNGRY_HOURS) end
+end
+
+-- What hours of frost (counted on the jar's frost record already) do to a jar: a Fermenting Culture frozen through
+-- goes hungry; a done jar moves 1/48 of its days nearer Spent an hour (never past it); a Fed Culture rising and a jar
+-- gone off take nothing. Also the console's TPY.frost.
+function Y.frostJar(jar, hours)
+    if hours <= 0 or jar.off then return end
+    if Y.jarDone(jar) then
+        local spentHours = Y.CULTURE_DAYS[outputOf(jar)][2] * 24
+        jar.keep.age = math.min(jar.keep.age + hours / Frost.STARTER_RUIN_HOURS * spentHours,
+            math.max(jar.keep.age, jar.keptAtDone + spentHours))
+    elseif jar.kind == "culture" then
+        hungryIfFrozenThrough(jar, jar.frost, hours)
     end
+end
+
+-- A jar's progress over the stretch just counted (its work from workWas, its keeping from keptWas): only while it is
+-- fed; done part way through, its keeping starts at that point of the stretch, so a long catch-up keeps it as short
+-- looks would.
+local function advanceWork(jar, workWas, keptWas)
     if jar.off or Y.jarDone(jar) then return end
     local hours = Y.jarHours(jar)
     if jar.done >= hours then
@@ -103,6 +119,21 @@ function Y.advanceJar(jar, now, place, fire, station, ledger, keepLedger)
     end
     jar.done = jar.done + gain
     if jar.kind == "culture" and jar.work.age - jar.fedAt >= Y.OFF_HOURS then jar.off = true end
+end
+
+-- Brings one jar up to now at place: its progress (advanceWork), then its frost (Y.frostJar), so the stretch's
+-- progress counts as it was.
+function Y.advanceJar(jar, now, place, fire, station, ledger, keepLedger)
+    local workWas, keptWas = jar.work.age, jar.keep.age
+    FluidAgeing.advance(jar.work, Y.WORK, ledger, now, place)
+    FluidAgeing.advance(jar.keep, Y.CULTURE_KEEPER.ageing, keepLedger, now, place)
+    if station then
+        FluidAgeing.noteFire(jar.work, fire, station, now)
+        FluidAgeing.noteFire(jar.keep, fire, station, now)
+    end
+    local frozen = Frost.see(jar, "frost", Y.FROST, now, jar.work)
+    advanceWork(jar, workWas, keptWas)
+    if Y.frostDamage() then Y.frostJar(jar, frozen) end
 end
 
 -- Where the shelf stands: by a fire, banked embers, or a Weather place; and the fire.
@@ -130,16 +161,24 @@ Y.SHELF_TAKES = { [Y.FERMENTING] = true, [Y.FED] = true }
 
 -- A Fermenting Culture's run off the shelf (RUN_KEY): { done, fedAt, work }. Its work goes on counting wherever it
 -- is, so it goes hungry, and off, off the shelf too; only its progress waits for the shelf. Made at its recipe (Y.startRun)
--- or when it comes off part way.
+-- or when it comes off part way. Its frost counts from the start too (FROST_KEY).
 function Y.startRun(item, now, place)
-    item:getModData()[Y.RUN_KEY] = { done = 0, fedAt = 0, work = FluidAgeing.newFluidAge(Y.WORK, Y.getLedger(), now, place) }
+    local modData = item:getModData()
+    modData[Y.RUN_KEY] = { done = 0, fedAt = 0, work = FluidAgeing.newFluidAge(Y.WORK, Y.getLedger(), now, place) }
+    modData[Y.FROST_KEY] = Frost.newRecord(Y.FROST, now, place)
 end
 
--- The run brought up to now, at the place it was last seen in (where it was made or came off); a fed culture's has
--- no work. Nil for one never on the shelf and made before runs were kept.
+-- The run brought up to now, at the place it was last seen in (where it was made or came off), its frost with it
+-- (FROST_KEY: frozen through, it went hungry off the shelf too); a fed culture's has no work, and waits frozen. Nil
+-- for one never on the shelf and made before runs were kept.
 local function runNow(item, now)
-    local run = item:getModData()[Y.RUN_KEY]
-    if run and run.work then FluidAgeing.advance(run.work, Y.WORK, Y.getLedger(), now, run.work.place) end
+    local modData = item:getModData()
+    local run = modData[Y.RUN_KEY]
+    if run and run.work then
+        FluidAgeing.advance(run.work, Y.WORK, Y.getLedger(), now, run.work.place)
+        local frozen, frost = Frost.see(modData, Y.FROST_KEY, Y.FROST, now, run.work)
+        if Y.frostDamage() then hungryIfFrozenThrough(run, frost, frozen) end
+    end
     return run
 end
 
@@ -160,6 +199,9 @@ function Y.putJar(record, item, now, place)
         keep = FluidAgeing.newFluidAge(Y.CULTURE_KEEPER.ageing, Y.CULTURE_KEEPER.ledger(), now, place),
     }
     if jar.kind == "culture" and work.age - fedAt >= Y.OFF_HOURS then jar.off = true end
+    -- Its frost goes on from the item's record, counted from here at the shelf's place.
+    jar.frost = modData[Y.FROST_KEY] and FluidAgeing.copy(modData[Y.FROST_KEY])
+    Frost.see(jar, "frost", Y.FROST, now, work)
     record.nextId = record.nextId + 1
     table.insert(record.jars, jar)
     return jar
@@ -213,6 +255,7 @@ function Y.jarOutput(jar, now, place)
     modData[Y.START_KEY] = jar.start ~= "plain" and jar.start or nil
     modData[Y.RUN_KEY] = jar.kind == "culture" and { done = jar.done, fedAt = jar.fedAt, work = FluidAgeing.copy(jar.work) }
         or { done = jar.done }
+    modData[Y.FROST_KEY] = jar.frost and FluidAgeing.copy(jar.frost)
     Y.nameStart(item)
     return item
 end

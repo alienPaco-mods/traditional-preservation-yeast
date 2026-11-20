@@ -78,9 +78,10 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 
 - **Ferments while you're away**, even in unloaded areas. Leave it running on a long trip.
 - **Warmth matters.** Best at 18–30 C; at 0 C and below a culture stops and waits (*Paused here (frozen)*). Any lit fire within 2 tiles on the same floor (a fireplace, an antique stove, a campfire, TP Core's Stone Hearth) holds a shelf in a shut room at 28 C, banked embers at 24 C, for as long as the fuel lasts. The Almanac (chapter 6) has every place by month; hover a fermenting culture for its real time left.
+- **Frost bites, a little.** A culture freezes at 0 C. A Fermenting Culture frozen **6 hours in all** goes hungry: one refresh and it goes on. Active Culture, Hopped Culture and wet Yeast Cakes lose **1/48 of their days** for every hour frozen, so two days of frost spend a fresh one; a done jar waiting on the shelf the same. A Fed Culture only waits, and **Dried Yeast Cakes don't care**. A basement never freezes, nor a shelf by the fire.
 - **Your own jar comes back**, the same kind you put in. **Pour Out Culture** empties any culture, spent ones too.
 - **A finished culture starts going off the moment it's done**, on the shelf too. By a fire it is spent in about a day: collect it.
-- **Wet cakes keep longer than the culture** (5 fresh, 8 to Spent in a cellar), and on the cloth they age more slowly as they dry: laid fresh where the air moves they dry long before they're Spent, in any month (the Almanac). Shaped from an old culture, or left in a shut room, they go off on the cloth and come back as nothing. Taken off early they come back wet, as old as they are. **Dried cakes keep.**
+- **Wet cakes keep longer than the culture** (5 fresh, 8 to Spent in a cellar), and on the cloth they age more slowly as they dry: laid fresh where the air moves they dry long before they're Spent from April to October; in winter the frost spends them first, so dry them in the basement or by a fire (the Almanac). Shaped from an old culture, or left in a shut room, they go off on the cloth and come back as nothing. Taken off early they come back wet, as old as they are. **Dried cakes keep.**
 - **Too hot kills cakes:** an hour above 35 C on the cloth and they're dead.
 - **The Vinegar mod's fermentation vessel** takes the Yeast too: one full packet a run.
 
@@ -95,14 +96,14 @@ Days a culture takes, started on the first of the month (the grid off; the game'
 | Jan | 77 | 79 | 84 | 24 | 11 | 20 |
 | Feb | 54 | 52 | 55 | 25 | 7 | 13 |
 | Mar | 29 | 27 | 28 | 24 | 6 | 10 |
-| Apr | 16 | 15 | 15 | 19 | 5 | 6 |
+| Apr | 17 | 15 | 15 | 19 | 5 | 6 |
 | May | 9 | 8 | 9 | 16 | 5 | 5 |
 | Jun | 5 | 5 | 5 | 11 | 5 | 5 |
 | Jul | 6 | 5 | 5 | 9 | 5 | 5 |
 | Aug | 7 | 5 | 6 | 8 | 5 | 5 |
 | Sep | 7 | 6 | 6 | 8 | 5 | 5 |
-| Oct | 13 | 10 | 12 | 9 | 5 | 6 |
-| Nov | 96 | 67 | 106 | 12 | 6 | 8 |
+| Oct | 15 | 10 | 12 | 9 | 5 | 6 |
+| Nov | 98 | 67 | 106 | 12 | 6 | 8 |
 | Dec | 92 | 97 | 102 | 17 | 10 | 21 |
 
 **By a fire or banked embers in a shut room**, or in any room **while the grid is on** (22 C): **5 days in any month**. Under an open roof a shelf is as the open air.
@@ -111,14 +112,16 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 
 | Month | Culture keeps, outdoors | Culture keeps, shut room | Culture keeps, basement | Cakes dry, outdoors | Cakes dry, aired room | Cakes dry, basement |
 |---|---|---|---|---|---|---|
-| Jan | 53 | 55 | 14 | 76 | 79 | 21 |
-| Apr | 12 | 11 | 12 | 16 | 16 | 18 |
+| Jan | 2 | 2 | 14 | spent | spent | 21 |
+| Apr | 10 | 11 | 12 | 16 | 16 | 18 |
 | Jun | 4 | 4 | 9 | 8 | 7 | 11 |
 | Aug | 2 | 3 | 6 | 7 | 7 | 8 |
-| Oct | 9 | 7 | 7 | 15 | 12 | 9 |
-| Nov | 41 | 17 | 9 | 107 | 113 | 11 |
+| Oct | 8 | 7 | 7 | 15 | 12 | 9 |
+| Nov | 5 | 15 | 9 | spent | spent | 11 |
 
-> *Margin note:* most of a winter culture's three months are spent waiting. An unheated room in January sits a little below freezing, and the jar is *Paused here (frozen)* until a thaw. It starts again where it stopped, none the worse.
+Spent: the frost spent them before they dried. In winter a finished culture lasts about two days anywhere above ground; keep it in the basement.
+
+> *Margin note:* most of a winter culture's three months are spent waiting. An unheated room in January sits a little below freezing, and the jar is *Paused here (frozen)* until a thaw. It starts again where it stopped, but a night frozen through leaves it hungry: refresh it after a hard frost.
 
 > *Margin note:* a shut room follows the last three days, so it doesn't keep the summer long: by November it is near the cold outside, and a culture there takes about 67 days. Set it by the fire from October.
 
@@ -184,6 +187,7 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 | Shelf won't place | It must go against a wall |
 | Can't add a culture | The shelf already has 5 (waiting, fermenting or uncollected) |
 | Culture reads (Spent) | It kept too long or too warm: pour it out and start again, or feed it before it goes |
+| A jar went hungry overnight | It froze through (6 hours below 0 C): refresh it. A basement or a fire keeps it from freezing |
 | Cakes won't dry | A shut room's air doesn't move: open a window. Or it's frozen. The Drying Cloth window says which |
 | Cakes came off as nothing | They died: above 35 C for an hour |
 | Steep Hops greyed out | It takes a full Cooking Pot (not a saucepan): 1.5 L of clean water and nothing else |
@@ -198,6 +202,7 @@ Days an **Active Culture** keeps before it's Spent (a Hopped Culture about twice
 |---|---|---|
 | Fermenting time (days) | 5 | Days a culture takes at the best temperature (0.5–30). Running batches update after a restart |
 | Temperature sensitivity | Normal | Off / Forgiving / Normal / Harsh. Off ignores the weather entirely |
+| Starters freeze | On | Frost makes a Fermenting Culture hungry and spends kept cultures and wet cakes. Off, the cold only pauses them |
 
 ---
 
@@ -230,11 +235,12 @@ One process, culturing, laid out by place as the game's planting seasons: the mo
 | Command | What it does |
 |---|---|
 | `TPY.weather()` | The temperature in each place (open air, under an open roof, a shut room, an aired room, a basement, by a fire, by banked embers), how fast a culture works there, and how many days it takes. |
-| `TPY.cultures()` | Every culture and wet cake on you or near: the jar, the place, and how long it keeps there. |
+| `TPY.cultures()` | Every culture and wet cake on you or near: the jar, the place, how long it keeps there, and how long it has been frozen. |
 | `TPY.here()` | Which kind of place you're standing in. |
 | `TPY.age(hours)` | Gives every shelf this many hours of perfect fermenting weather. Jars go hungry by it too. |
 | `TPY.fast(hours)` | Test timer: a plain culture takes this many hours (fruit and potato their share). `TPY.fast()` goes back to the sandbox time. |
-| `TPY.shelf()` | Every jar on the Fermenting Shelves near you: what it's doing, its progress and the hours since it was fed. |
+| `TPY.shelf()` | Every jar on the Fermenting Shelves near you: what it's doing, its progress, the hours since it was fed and the hours frozen. |
+| `TPY.frost(hours)` | Freezes the cultures on you or near, and the jars on the shelves near you, for `hours` (default 6): 6 makes a Fermenting Culture hungry, 48 spends a culture. |
 | `TPY.give(name, n)` | Spawns `n` of: `"culture"`, `"active"`, `"fed"`, `"hopped"`, `"cakes"`, `"dried"`, `"hops"`, `"flour"`, `"potato"`, `"apple"`, or any full type such as `"Base.Yeast"`. `TPY.give()` lists them. |
 | `TPY.kit(kind)` | The things a test needs: `"build"` (the Fermenting Shelf), `"culture"` (a culture in each kind of jar, and flour for the refreshes), `"starters"` (an apple, a potato and a pot of water for the quicker starts), `"cakes"` (cultures, cornmeal and a Drying Cloth's makings), `"hops"` (hops, a pot of water, a jar, flour and a culture) or `"all"`. `TPY.kit()` lists them. |
 | `TPC.cloth()`, `TPC.dryCloth(hours)` | TP Core's: the Drying Cloths near you, and drying their wet lots this many hours. |

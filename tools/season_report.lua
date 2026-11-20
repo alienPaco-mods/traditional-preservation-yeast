@@ -48,14 +48,20 @@ local days = readDays(arg[1] or "tools/climate_year.csv")
 -- The ledger starts as a long-running save's would on 1 January.
 Y.getLedger().seasonTemperature, Y.getLedger().groundTemperature = settle(days)(days[1].month, days[1].offset)
 
--- Keeping and drying run on their own ledgers (the culture's keeper, the cloth's), started the same way.
+-- Keeping, drying and frost run on their own ledgers (the culture's keeper, the cloth's, TP Core's frost), started
+-- the same way.
 local DryingCloth = require "TraditionalPreservationCore/DryingCloth"
-for _, ledger in ipairs({ Y.CULTURE_KEEPER.ledger(), DryingCloth.getLedger() }) do
+for _, ledger in ipairs({ Y.CULTURE_KEEPER.ledger(), DryingCloth.getLedger(), require("TraditionalPreservationCore/Frost").ledger() }) do
     ledger.seasonTemperature, ledger.groundTemperature = Y.getLedger().seasonTemperature, Y.getLedger().groundTemperature
 end
 local KEEP_PLACES = { "Open", "Covered", "Sheltered", "AiredRoom", "Basement" }
 -- A shut room's still air dries nothing (the cloth's rule), so it has no column.
 local CLOTH_PLACES = { "Open", "Covered", "AiredRoom", "Basement" }
+
+-- Keeping goes through the culture's own look (Y.keepCulture: its name and its frost), which wants these.
+getText = getText or function(key, name) return name or key end
+getItemNameFromFullType = getItemNameFromFullType or function(fullType) return fullType end
+local Frost = require "TraditionalPreservationCore/Frost"
 
 local function keptItem(fullType)
     local days = Y.CULTURE_DAYS[fullType]
@@ -68,6 +74,13 @@ local function keptItem(fullType)
     function item:getOffAgeMax() return self.offAgeMax end
     function item:setOffAge(x) self.offAge = x end
     function item:setOffAgeMax(x) self.offAgeMax = x end
+    function item:isCooked() return false end
+    function item:isBurnt() return false end
+    function item:getName() return self.name end
+    function item:setName(x) self.name = x end
+    function item:setCustomName() end
+    function item:getOutermostContainer() return nil end
+    function item:getWorldItem() return nil end
     return item
 end
 
@@ -127,10 +140,11 @@ for index, day in ipairs(days) do
             Y.advance(Y.getLedger(), H.hours, temperature)
             Y.CULTURE_KEEPER.recordWeather(H.hours, temperature)
             DryingCloth.recordWeather(H.hours, temperature)
+            Frost.recordWeather(H.hours, temperature)
         end
         for _, keep in ipairs(keeps) do
             if not keep.done then
-                Y.CULTURE_KEEPER.keep(keep.item, H.hours, keep.place)
+                Y.keepCulture(keep.item, H.hours, keep.place)
                 if keep.item:getAge() >= keep.item:getOffAgeMax() then
                     keep.done = true
                     keepResults[keep.key] = (H.hours - keep.startHour) / 24

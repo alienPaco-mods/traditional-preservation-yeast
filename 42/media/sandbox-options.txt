@@ -17,3 +17,10 @@ option TraditionalPreservationYeast.TemperatureSensitivity {
     translation = TraditionalPreservationYeast_TemperatureSensitivity,
     valueTranslation = TraditionalPreservationYeast_TemperatureSensitivity,
 }
+
+option TraditionalPreservationYeast.FrostDamage {
+    type = boolean,
+    default = true,
+    page = TraditionalPreservationYeast,
+    translation = TraditionalPreservationYeast_FrostDamage,
+}
