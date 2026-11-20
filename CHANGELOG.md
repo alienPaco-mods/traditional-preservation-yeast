@@ -1,6 +1,11 @@
 # Changelog: Traditional Preservation (Yeast)
 
 
+## 0.6.6
+- Yeast cakes take a fifth of the Drying Cloth's room a batch (`Y.CAKE_ROOM` 10 of 50; TP Core 0.1.44's room): five
+  batches a cloth as before, and they share it with kefir grains by room. Each batch stays its own lot (`perLot` 1),
+  so each keeps its own age.
+
 ## 0.6.5
 - Yeast cakes on the Drying Cloth show in Cloth Info's cells as the item's icon lays them at twice its size, cut to the cell: two behind, high, the third laid on top of them, in the series' pattern colours with a cross cut in each (TP Core 0.1.39's patterns);
   `TPCell_YeastCakes`, and `TPCell_Jar` for the Fermenting Shelf's window.

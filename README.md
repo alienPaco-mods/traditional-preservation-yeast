@@ -22,7 +22,7 @@ Enable **Traditional Preservation (Yeast)** for your existing save from
 4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar, all the shelf's at once (below).
 5. After five in-game days at a good temperature, *Take Done*: an **Active Culture** per jar, in the jar it went on in.
 6. **Shape Yeast Cakes** (Cooking): an Active Culture + 3 uses of Cornmeal or Flour → wet **Yeast Cakes**, and the jar back. Gives 3 Cooking XP.
-7. **Lay them on a Drying Cloth** (TP Core: a Sheet and 2 Stones, Build menu, Furniture): right-click it, *Lay Yeast Cakes on the Cloth*. One batch of cakes to a lot, five lots a cloth.
+7. **Lay them on a Drying Cloth** (TP Core: a Sheet and 2 Stones, Build menu, Furniture): right-click it, *Lay Yeast Cakes on the Cloth*. A cloth takes five batches of cakes (each a fifth of it), or any mix with kefir grains; each batch is its own lot, with its own clock and age.
 8. About a week later at a good temperature, *Take Off the Finished Lots*: **Dried Yeast Cakes**, which keep. **Crumble Yeast Cakes** (Cooking) makes them one vanilla `Base.Yeast`, a full packet of 10 uses.
 
 **Pour Out Culture** (any culture, fresh, fermenting, fed or spent) gives its jar back empty.

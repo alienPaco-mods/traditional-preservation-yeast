@@ -183,7 +183,8 @@ end
 Y.CAKE_DRY_HOURS = 168
 Y.CAKE_KILL_C = 35
 Y.CAKE_DRY_CURVE = { { 0, 0 }, { 5, 0.3 }, { 10, 0.6 }, { 15, 1 }, { 25, 1 }, { 30, 0.8 }, { 35, 0.6 } }
-local CAKE_LOTS = DryingCloth.LOTS
+local CAKE_SPOTS = DryingCloth.SPOTS
+Y.CAKE_ROOM = 10   -- a batch of cakes takes a fifth of the cloth's room
 local CAKE_SPENT_DAYS = Y.CULTURE_DAYS[Y.CAKES][2]
 Y.CAKE_AGE_CURVE = { { -2, 0 }, { 4, 0.3 }, { 10, 0.55 }, { 15, 1 }, { 20, 1.67 } }
 local CAKE_AGEING = Y.CULTURE_KEEPER.addAgeing("cakeKeep", Y.CAKE_AGE_CURVE)
@@ -195,9 +196,9 @@ function Y.cakeLotAge(lot)
 end
 
 Y.CAKES_ON_CLOTH = DryingCloth.register({
-    name = "yeastCakes", title = "IGUI_TraditionalPreservationYeast_CakesTitle", types = { [Y.CAKES] = true }, perLot = 1,
+    name = "yeastCakes", title = "IGUI_TraditionalPreservationYeast_CakesTitle", types = { [Y.CAKES] = true }, room = Y.CAKE_ROOM, perLot = 1,
     hours = Y.CAKE_DRY_HOURS, curve = Y.CAKE_DRY_CURVE, killAbove = Y.CAKE_KILL_C, pattern = "media/textures/TPCell_YeastCakes.png",
-    sprite = function(lot, state) return Tiles.PREFIX .. (Tiles.FIRST_CAKE + Tiles.CAKE_STATES[state] * CAKE_LOTS + lot) end,
+    sprite = function(spot, state) return Tiles.PREFIX .. (Tiles.FIRST_CAKE + Tiles.CAKE_STATES[state] * CAKE_SPOTS + spot) end,
     layable = function(item) return Y.isSpent(item) and "IGUI_TraditionalPreservationYeast_CakesSpent" or nil end,
     lay = function(items, now, place)
         return { age = items[1]:getAge(), keep = FluidAgeing.newFluidAge(Y.CULTURE_KEEPER.ageing, Y.CULTURE_KEEPER.ledger(), now, place) }

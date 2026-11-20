@@ -53,7 +53,7 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar. Miss a day and a jar goes hungry and stops; miss three and it has gone off.
 5. Come back in **5 days**. **Take Done**: the **Active Culture (Fresh)**. It's alive and won't wait: about 3 days at 20 C before it's **Spent**.
 6. **Shape Yeast Cakes** from it, and get your jar back.
-7. **Build a Drying Cloth** (Build menu, Furniture: a Sheet and 2 Stones) where the air moves: outdoors, under a roof, by an open window or by a fire. Right-click it and **lay the cakes on**. Five lots a cloth.
+7. **Build a Drying Cloth** (Build menu, Furniture: a Sheet and 2 Stones) where the air moves: outdoors, under a roof, by an open window or by a fire. Right-click it and **lay the cakes on**. A cloth takes five batches.
 8. About **a week** later, **take off the finished lots** and **Crumble Yeast Cakes**: one full Yeast packet (10 uses) a lot. Dried cakes keep; crumble them when you need yeast.
 
 ### Keeping the line: hops
