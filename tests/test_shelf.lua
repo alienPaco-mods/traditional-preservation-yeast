@@ -1,5 +1,5 @@
 -- Checks the Fermenting Shelf with stand-ins for the engine: the World drawing each jar in its look and jar, the
--- right-click menu (status, Info, Put rows, Refresh the Cultures, Take Done, Take Everything Off) and its hand jobs
+-- right-click menu (status, Info, Put rows, Refresh Cultures, Take Done, Take Everything Off) and its hand jobs
 -- (TPYShelf), what Shelf Info lists, its drop square, and that a shelf holding anything stays put. Run from the mod
 -- folder: luajit tests/test_shelf.lua
 local H = dofile((os.getenv("TPCORE") or "../TraditionalPreservationCore") .. "/tests/harness.lua")
@@ -223,8 +223,8 @@ for _ = 1, 25 do
     H.fire("EveryTenMinutes")
 end
 context, menu = menuFor(empty)
-local refresh = named(menu, "Refresh the Cultures (2)")
-check("hungry jars: Refresh the Cultures (2), greyed without flour", refresh and refresh.isDisabled
+local refresh = named(menu, "Refresh Cultures (2)")
+check("hungry jars: Refresh Cultures (2), greyed without flour", refresh and refresh.isDisabled
     and refresh.toolTip.description:find("no flour", 1, true) ~= nil)
 ui.carried = { flour(1) }
 context, menu = menuFor(empty)
@@ -250,10 +250,31 @@ check("a row a jar, named by its start", #view.rows == 2 and view.rows[1].name =
     and view.rows[2].name == "FermentingYeastJar (Fruit)")
 local hungryRow
 for _, row in ipairs(view.rows) do if row.status.state == "hungry" then hungryRow = row end end
-check("a hungry row says so, and when it goes off", hungryRow.text == "Hungry: refresh it" and hungryRow.note:find("Goes off in", 1, true) ~= nil)
+check("a hungry row says so, and when it goes off in amber at its right", hungryRow.text == "Hungry: refresh it"
+    and hungryRow.warning:find("Off in", 1, true) ~= nil and hungryRow.note == nil)
+local InfoWindow = require "TraditionalPreservationCore/InfoWindow"
+local function bandWord(v) local word, text, look = ShelfUI.band(v) return word:match("Band(%a+)$"), text, look end
+local word, _, look = bandWord(view)
+check("a hungry jar: hungry, amber", word == "Hungry" and look == InfoWindow.BAND_WAITING)
+local function row(state, extra)
+    local status = { state = state }
+    for k, v in pairs(extra or {}) do status[k] = v end
+    return { status = status }
+end
+check("empty: grey", bandWord({ rows = {}, hungry = 0 }) == "Empty")
+check("a jar gone off goes first", bandWord({ rows = { row("off"), row("hungry") }, hungry = 1 }) == "Lost")
+check("every jar done: done", bandWord({ rows = { row("done"), row("done") }, hungry = 0 }) == "Done")
+check("none working: waiting", bandWord({ rows = { row("working") }, hungry = 0 }) == "Waiting")
+local text
+word, text = bandWord({ rows = { row("working", { hungryIn = 20 }), row("working") }, hungry = 0, soonest = 50 })
+check("fermenting: the next to go hungry, sooner than done", word == "Fermenting" and text:find("hungry in", 1, true) ~= nil)
+word, text = bandWord({ rows = { row("working", { hungryIn = 20 }) }, hungry = 0, soonest = 5 })
+check("or the next done, when that is sooner", text:find("done in", 1, true) ~= nil)
+check("the jars as five cells", ShelfUI.holding(view).cells == 5 and ShelfUI.holding(view).filled == 2)
 check("both on the Fermenting tab", view.rows[1].tab == view.rows[2].tab)
 local judged = ShelfUI.dropJudge(shelfRecord, { culture(), newItem(Y.ACTIVE) })
-check("the drop square takes cultures only, saying why not the rest", #judged.take == 1 and judged.refused == "Only Fermenting and Fed Cultures go on the shelf.")
+check("the cells take cultures only, a cell a jar, saying why not the rest", #judged.take == 1 and judged.cells == 1
+    and judged.refused == "Only Fermenting and Fed Cultures go on the shelf.")
 local full = { jars = { 1, 2, 3, 4, 5 } }
 check("and refuses on a full shelf", #ShelfUI.dropJudge(full, { culture() }).take == 0)
 

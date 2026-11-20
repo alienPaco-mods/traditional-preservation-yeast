@@ -4,7 +4,7 @@
 -- TraditionalPreservationYeast.lua, whose Y it adds to.
 -- A jar's work is a FluidAgeing age on the culture's ledger: hours at full speed at the shelf's place (frozen it
 -- waits). A Fermenting Culture wants feeding: HUNGRY_HOURS of work after it was made or last refreshed it stops
--- (hungry), and OFF_HOURS after it has gone off and is only good for pouring out. Refresh the Cultures feeds every one
+-- (hungry), and OFF_HOURS after it has gone off and is only good for pouring out. Refresh Cultures feeds every one
 -- on the shelf at once (a use of flour and REFRESH_WATER_L of water a jar). What it was started with sets how long it
 -- takes (STARTS: plain flour and water, fruit, potato water). A Fed Culture rises in RAISE_HOURS and wants no refresh.
 -- Done, a jar keeps by place as Active Culture does (CULTURE_KEEPER, from the moment it was done) and goes Spent on
@@ -178,7 +178,7 @@ function Y.takeJar(record, id)
     end
 end
 
--- The jars Refresh the Cultures feeds: Fermenting Cultures neither done nor gone off.
+-- The jars Refresh Cultures feeds: Fermenting Cultures neither done nor gone off.
 function Y.refreshable(record)
     local jars = {}
     for _, jar in ipairs(record.jars) do

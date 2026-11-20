@@ -1,7 +1,8 @@
 -- Traditional Preservation (Yeast) B42: the Fermenting Shelf's right-click menu (what it holds, Info, Put rows for the
--- cultures carried, Refresh the Cultures, Take Done, Take Everything Off; TPYShelf does the hand jobs) and Shelf Info,
--- its info window (TP Core's InfoWindow, a row a jar in TP Core's scrolling list, a tab for Fermenting and one for Fed
--- cultures when both are on it, the buttons and the drop square). Also the look that keeps Active Culture by place
+-- cultures carried, Refresh Cultures, Take Done, Take Everything Off; TPYShelf does the hand jobs) and Shelf Info,
+-- its info window (TP Core's InfoWindow on the settled look: band, Station block, the jars as cells taking a drag, a
+-- row a jar in TP Core's scrolling list, a tab for Fermenting and one for Fed cultures when both are on it, the
+-- buttons). Also the look that keeps Active Culture by place
 -- (TP Core's PlaceKeepingUI). A shelf holding anything stays where it is; none is put down in front of a door.
 require "TimedActions/TPYShelf"
 local InfoWindow = require "TraditionalPreservationCore/InfoWindow"
@@ -19,6 +20,11 @@ local Y = TraditionalPreservationYeast
 local KEY = "IGUI_TraditionalPreservationYeast_"
 local MENU = "ContextMenu_TraditionalPreservationYeast_"
 local SHELF_ICON = "media/textures/Item_FermentingShelf.png"
+local STATION_ICON = "media/textures/TPStation_FermentingShelf.png"   -- Shelf Info's Station block (TP Core's tools/station_icons.py)
+local JAR_CELL = "media/textures/TPCell_Jar.png"                       -- the jars' cells (TP Core's tools/cell_patterns.py)
+local CELL_COLOUR = { 0.78, 0.74, 0.55 }
+local REFRESH_ICON = "media/textures/Item_FermentingCulture_glass.png"
+local DONE_ICON, RETURNED_ICON = "media/textures/Item_ActiveCulture_glass.png", "media/ui/Entity/Icon_Returned_48x48.png"
 local COLOURS = { working = { 0.35, 0.7, 0.35 }, hungry = { 0.8, 0.6, 0.2 }, off = { 0.6, 0.3, 0.25 },
     done = { 0.35, 0.7, 0.35 }, spent = { 0.6, 0.3, 0.25 } }
 -- The icon a jar's row shows, by what it is now (tools/build_shelf_tileset.py, ICON_ITEMS).
@@ -30,12 +36,6 @@ local isShelf = Station.kinds(Tiles.PREFIX, Tiles.FACE_COUNT, { shelf = 0 })
 ShelfUI.isShelf = isShelf
 
 local function say(key, ...) return UI.say(KEY .. key, ...) end
-
--- The icon of an item by its full type, for the drop square (nil if the item is gone).
-local function itemIcon(fullType)
-    local script = getScriptManager():FindItem(fullType)
-    return script and script:getNormalTexture()
-end
 
 local function shelfNow(station)
     if TraditionalPreservationYeastWorld then TraditionalPreservationYeastWorld.refresh(station) end
@@ -72,6 +72,13 @@ function ShelfUI.noteText(status)
     return nil
 end
 
+-- The row's warning, amber at its right (all_info_mock): when a working jar goes hungry, or a hungry one off.
+function ShelfUI.warningText(status)
+    if status.hungryIn then return say("JarHungryIn", UI.shortDuration(status.hungryIn)) end
+    if status.offIn then return say("JarOffInShort", UI.shortDuration(status.offIn)) end
+    return nil
+end
+
 local function drawPopup(tooltip, jar, status, place, placeC)
     UI.drawTooltip(tooltip, function(layout)
         if jar.kind == "culture" then UI.addLine(layout, KEY .. "StartedWith", say("StartName_" .. jar.start)) end
@@ -92,7 +99,8 @@ function ShelfUI.jarRow(jar, place, placeC)
     local fed = jar.kind == "fed"
     return {
         icon = iconOf(jar, status.state), name = ShelfUI.jarName(jar), share = status.progress,
-        colour = COLOURS[status.state], text = ShelfUI.barText(status), note = ShelfUI.noteText(status),
+        colour = COLOURS[status.state], text = ShelfUI.barText(status), warning = ShelfUI.warningText(status),
+        note = not ShelfUI.warningText(status) and ShelfUI.noteText(status) or nil,
         tab = getItemNameFromFullType(fed and Y.FED or Y.FERMENTING), tabOrder = fed and 2 or 1,
         popup = function(tooltip) drawPopup(tooltip, jar, status, place, placeC) end,
         status = status,
@@ -121,7 +129,38 @@ function ShelfUI.view(record, place)
         waitText = say("NoneDoneStopped")
     end
     return { place = place, placeC = placeC, rows = rows, doneIds = doneIds, allIds = allIds, hungry = hungry,
-        refreshable = #Y.refreshable(record), waitText = waitText, count = #record.jars }
+        refreshable = #Y.refreshable(record), waitText = waitText, count = #record.jars, soonest = soonest }
+end
+
+-- The band (all_info_mock), the worst first: empty; a jar gone off or Spent; a jar hungry; all done; none working
+-- (too cold); else fermenting, with the next jar to go hungry or be done. Returns the word's key, the finished text
+-- and the colours.
+function ShelfUI.band(view)
+    local count, lost, done, working, hungryIn = #view.rows, 0, 0, 0, nil
+    for _, row in ipairs(view.rows) do
+        local state = row.status.state
+        if state == "off" or state == "spent" then lost = lost + 1 end
+        if state == "done" then done = done + 1 end
+        if state == "working" then working = working + 1 end
+        if row.status.hungryIn then hungryIn = math.min(hungryIn or math.huge, row.status.hungryIn) end
+    end
+    if count == 0 then return KEY .. "BandEmpty", say("BandEmptyText"), InfoWindow.BAND_IDLE end
+    if lost > 0 then return KEY .. "BandLost", say("BandLostText", tostring(lost), tostring(count)), InfoWindow.BAND_AT_RISK end
+    if view.hungry > 0 then
+        return KEY .. "BandHungry", say("BandHungryText", tostring(view.hungry), tostring(count)), InfoWindow.BAND_WAITING
+    end
+    if done == count then return KEY .. "BandDone", say("BandDoneText"), InfoWindow.BAND_WORKING end
+    if not view.soonest then return KEY .. "BandWaiting", say("BandWaitingText"), InfoWindow.BAND_WAITING end
+    if hungryIn and hungryIn < view.soonest then
+        return KEY .. "BandFermenting", say("BandHungryInText", tostring(count), UI.shortDuration(hungryIn)), InfoWindow.BAND_WORKING
+    end
+    return KEY .. "BandFermenting", say("BandDoneInText", tostring(count), UI.shortDuration(view.soonest)), InfoWindow.BAND_WORKING
+end
+
+-- The jars as Holds' cells: one a jar, out of the shelf's five.
+function ShelfUI.holding(view)
+    return { kind = "cells", name = say("InfoJarsCells"), amount = say("InfoHoldsValue", tostring(view.count), tostring(Y.SHELF_JARS)),
+        cells = Y.SHELF_JARS, filled = view.count, share = view.count / Y.SHELF_JARS, colour = CELL_COLOUR, pattern = JAR_CELL }
 end
 
 local function viewOf(station)
@@ -129,7 +168,7 @@ local function viewOf(station)
     return ShelfUI.view(record, place)
 end
 
--- Why Refresh the Cultures can't be done now, or nil.
+-- Why Refresh Cultures can't be done now, or nil.
 function ShelfUI.refreshRefusal(view, playerObj)
     if view.refreshable == 0 then return say("NothingToRefresh") end
     local can, short = Y.refreshesCarried(playerObj, view.refreshable)
@@ -165,7 +204,7 @@ local function carriedCultures(playerObj, fullType)
     return UI.findItems(playerObj, function(item) return item:getFullType() == fullType end)
 end
 
--- What Shelf Info's drop square makes of a dragged selection: the cultures it would put on, as many as fit.
+-- What Shelf Info's cells make of a dragged selection: the cultures it would put on, as many as fit (a cell a jar).
 function ShelfUI.dropJudge(record, items)
     local take, refused = {}, nil
     local room = Y.shelfRoom(record)
@@ -178,9 +217,9 @@ function ShelfUI.dropJudge(record, items)
             table.insert(take, item)
         end
     end
-    if #take == 0 then return { take = take, lines = { refused or say("Full") }, refused = refused } end
+    if #take == 0 then return { take = take, lines = { refused or say("Full") }, refused = refused, cells = 0 } end
     local lines = { say("DropPut", tostring(#take), tostring(#items)), say("DropRoom", tostring(room)) }
-    return { take = take, lines = lines, refused = #take < #items and refused or nil }
+    return { take = take, lines = lines, refused = #take < #items and refused or nil, cells = #take, pattern = JAR_CELL }
 end
 
 -- Shelf Info
@@ -195,34 +234,40 @@ end
 
 function ShelfWindow:refresh()
     self.shelfView = viewOf(self.station)
+    local station, playerObj = self.station, self.playerObj
+    self.drop = self.drop or { judge = function(items) return ShelfUI.dropJudge(Y.shelfOf(station), items) end,
+        drop = function(take) ShelfUI.put(playerObj, station, take) end }
 end
 
+-- Shelf Info on the settled look (all_info_mock): the band, the Station block with the working rate, the jars as
+-- cells with the barm lore beside them (cultures dragged onto them go on), a row a jar (when it goes hungry in amber
+-- at its right), Refresh Cultures, Take Done and Take All, then notes.
 function ShelfWindow:render()
     ISCollapsableWindow.render(self)
     if self.isCollapsed or not self.shelfView then return end
     local view = self.shelfView
     local station, playerObj = self.station, self.playerObj
-    local y = self:top()
-    y = self:row(y, KEY .. "InfoPlace", UI.placeText(view.place, view.placeC))
-    y = self:row(y, KEY .. "InfoRate", UI.percent(Y.cultureRate(view.placeC)))
-    y = self:row(y, KEY .. "InfoHolds", say("InfoHoldsValue", tostring(view.count), tostring(Y.SHELF_JARS)))
-    y = self:pieceList(y, KEY .. "InfoJars", view.rows)
+    local word, text, look = ShelfUI.band(view)
+    local y = self:band(getText(word), text, look[1], look[2])
+    y = self:stationBlock(y, STATION_ICON, view.place, view.placeC, { { KEY .. "InfoRate", UI.percent(Y.cultureRate(view.placeC)) } })
+    y = self:section(y, "IGUI_TraditionalPreservationCore_SectionHolds")
+    local holding = ShelfUI.holding(view)
+    holding.drop = self.drop
+    y = self:holds(y, { holding }, say("ShelfLore"))
+    if view.count > 0 then
+        y = self:pieceListBlock(y, KEY .. "InfoJars", say("InfoJarsCount", tostring(view.count)), view.rows)
+    end
     local refusal = ShelfUI.refreshRefusal(view, playerObj)
     local done, all = view.doneIds, view.allIds
     y = self:buttonRow(y, {
-        { title = UI.say(MENU .. "Refresh", tostring(view.refreshable)), enabled = refusal == nil,
+        { title = UI.say(MENU .. "Refresh", tostring(view.refreshable)), icon = REFRESH_ICON, enabled = refusal == nil,
           tooltip = refusal or ShelfUI.refreshHelp(view), onClick = function() ShelfUI.refresh(playerObj, station) end },
-        { title = UI.say(MENU .. "TakeDone", tostring(#done)), enabled = #done > 0,
+        { title = UI.say(MENU .. "TakeDone", tostring(#done)), icon = DONE_ICON, enabled = #done > 0,
           tooltip = #done == 0 and view.waitText or nil, onClick = function() ShelfUI.take(playerObj, station, done) end },
-        { title = UI.say(MENU .. "TakeAllCount", tostring(#all)), enabled = #all > 0,
+        { title = UI.say(MENU .. "TakeAllCount", tostring(#all)), icon = RETURNED_ICON, enabled = #all > 0,
           tooltip = #all > #done and say("TakeAllHelp") or nil, onClick = function() ShelfUI.take(playerObj, station, all) end },
     })
-    y = self:dropZone(y, say("DropIdle"), function(items) return ShelfUI.dropJudge(Y.shelfOf(station), items) end,
-        function(take) ShelfUI.put(playerObj, station, take) end, itemIcon(Y.FERMENTING))
-    local notes = { say("NoteRefresh", tostring(Y.HUNGRY_HOURS), tostring(Y.OFF_HOURS)) }
-    if view.hungry > 0 then table.insert(notes, 1, say("NoteHungry", tostring(view.hungry))) end
-    if view.count == 0 then table.insert(notes, 1, say("NoteEmpty")) end
-    self:drawNotes(y, notes)
+    self:drawNotes(y, { say("NoteRefresh", tostring(Y.HUNGRY_HOURS), tostring(Y.OFF_HOURS)), say("NoteDrag") })
 end
 
 function ShelfUI.open(playerObj, station)
@@ -264,7 +309,7 @@ local function addShelfMenu(context, playerObj, station)
 
     if view.refreshable > 0 then
         local refresh = menu:addOption(UI.say(MENU .. "Refresh", tostring(view.refreshable)), playerObj, ShelfUI.refresh, station)
-        refresh.iconTexture = getTexture("media/textures/Item_FermentingCulture_glass.png")
+        refresh.iconTexture = getTexture(REFRESH_ICON)
         local refusal = ShelfUI.refreshRefusal(view, playerObj)
         if refusal then UI.disable(refresh, refusal) else UI.tooltip(refresh, ShelfUI.refreshHelp(view)) end
     end
@@ -272,7 +317,7 @@ local function addShelfMenu(context, playerObj, station)
     -- Take Done is always there: greyed until a jar is done, saying when the next will be.
     local done, all = view.doneIds, view.allIds
     local finished = menu:addOption(UI.say(MENU .. "TakeDone", tostring(#done)), playerObj, ShelfUI.take, station, done)
-    finished.iconTexture = getTexture("media/textures/Item_ActiveCulture_glass.png")
+    finished.iconTexture = getTexture(DONE_ICON)
     if #done == 0 then UI.disable(finished, view.waitText) end
     if #all > #done then
         local takeAll = menu:addOption(getText(MENU .. "TakeAll"), playerObj, ShelfUI.take, station, all)

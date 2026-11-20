@@ -1,5 +1,16 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.6.7
+- **Fermenting Shelf Info built to the approved mock** (`art/all_info_mock.png`): a band (Empty, Lost, Hungry, Done,
+  Waiting, Fermenting with the next jar to go hungry or be done; worst first), the Station block (outline icon, Place,
+  Season, Working Rate), the five jars as cells in the jar pattern with the barm lore beside them, cultures dragged
+  onto them go on (the drop square is gone), each row's "Hungry in" or "Off in" as an amber warning at its right,
+  and Refresh the Cultures, Take Done and Take All with their icons.
+- Make Fermenting Culture and with Fruit get **One / All (n)** on the water container's right-click, as with Potato
+  Water (TP Core's RecipeUI): All counts every jar type in reach, where the crafting window's MAX counts only the
+  type in its jar slot (vanilla's hand-craft panel is always manual select).
+- The button and menu row read **Refresh Cultures (n)** (was Refresh the Cultures), so Shelf Info's three buttons sit
+  in one row.
 
 ## 0.6.6
 - Yeast cakes take a fifth of the Drying Cloth's room a batch (`Y.CAKE_ROOM` 10 of 50; TP Core 0.1.44's room): five

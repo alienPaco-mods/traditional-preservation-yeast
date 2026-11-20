@@ -36,7 +36,7 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 | Build a **Fermenting Shelf** | 2 planks, 4 nails, hammer (kept). Carpentry 2. Against a wall | The shelf |
 | **Make Fermenting Culture** (Cooking) | An empty jar (glass or ceramic) + 5 uses of flour + half a litre of water from any container | 1 Fermenting Culture |
 | Right-click the shelf, **Put** them on | Up to 5 jars | |
-| **Refresh the Cultures** once a day | A use of flour + 0.1 L water a jar | |
+| **Refresh Cultures** once a day | A use of flour + 0.1 L water a jar | |
 | Wait **5 in-game days** (in warm weather) | | 1 **Active Culture** per jar, in its jar (**Take Done**) |
 | **Shape Yeast Cakes** (Cooking) | An Active Culture + 3 uses of Cornmeal or Flour | Wet **Yeast Cakes** + the jar back |
 | Lay them on a **Drying Cloth** (TP Core) | A Sheet and 2 Stones make the cloth | |
@@ -49,8 +49,8 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 
 1. **Build the shelf** from the Build menu (Furniture). It mounts **against a wall**.
 2. **Make Fermenting Culture** in the crafting menu: an empty Jar, Ceramic Jar or Glazed Ceramic Jar + 5 flour uses + half a litre of water from a bottle, pot or any container (the container is kept).
-3. **Right-click the shelf** and put up to **5 cultures** on it (or drop them on the square in the **Fermenting Shelf Info** window).
-4. **Refresh the Cultures** about once a day: a use of flour and 0.1 L of water a jar. Miss a day and a jar goes hungry and stops; miss three and it has gone off.
+3. **Right-click the shelf** and put up to **5 cultures** on it (or drag them onto the jars in the **Fermenting Shelf Info** window).
+4. **Refresh Cultures** about once a day: a use of flour and 0.1 L of water a jar. Miss a day and a jar goes hungry and stops; miss three and it has gone off.
 5. Come back in **5 days**. **Take Done**: the **Active Culture (Fresh)**. It's alive and won't wait: about 3 days at 20 C before it's **Spent**.
 6. **Shape Yeast Cakes** from it, and get your jar back.
 7. **Build a Drying Cloth** (Build menu, Furniture: a Sheet and 2 Stones) where the air moves: outdoors, under a roof, by an open window or by a fire. Right-click it and **lay the cakes on**. A cloth takes five batches.
@@ -67,10 +67,10 @@ Vanilla yeast is loot-only. Once the stores are picked clean, no more bread. Thi
 ## 4. The Fermenting Shelf
 
 - **Each jar keeps its own clock.** One put on later finishes later. **Holds 5 jars.**
-- **Feed it like a real starter.** A Fermenting Culture is hungry after **24 hours of work** since it was made or last refreshed, and stops; after **72** it has gone off (take it off for the empty jar). Warm, that is a day and three days; in a cool basement, longer; frozen, it waits. **Refresh the Cultures** feeds every jar on the shelf at once. It goes hungry off the shelf too, so taking jars off doesn't skip a refresh.
+- **Feed it like a real starter.** A Fermenting Culture is hungry after **24 hours of work** since it was made or last refreshed, and stops; after **72** it has gone off (take it off for the empty jar). Warm, that is a day and three days; in a cool basement, longer; frozen, it waits. **Refresh Cultures** feeds every jar on the shelf at once. It goes hungry off the shelf too, so taking jars off doesn't skip a refresh.
 - **Quicker starts.** **Make Fermenting Culture with Fruit** (an Apple, Pear, Peach, Cherry, Grapes or Dried Apricots too): 4 days. **with Potato Water**: 3.5 days. Potato Water: **Mash Potato in Water** (a full Cooking Pot, 1.5 L, + a Potato), then half an hour on the heat; the pot starts three jars, none left over. Right-click the pot for **One** or **All**.
 - **The jars show how they're doing:** pale when fresh, amber from halfway, sunk with grey liquid on top when hungry, mouldy when gone off, **dark brown when done**, in the jar you used: glass, ceramic or glazed (a ceramic jar shows it on its cloth). A fed jar carries a hop sprig.
-- **The Fermenting Shelf window tells you the rest:** where it stands, the temperature and working rate there, and a row for each jar with its time left and when it goes hungry. A shelf with anything on it can't be picked up.
+- **The Fermenting Shelf window tells you the rest:** how the shelf is doing at the top, where it stands, the temperature and working rate there, and a row for each jar with its time left and, in amber, when it goes hungry. A shelf with anything on it can't be picked up.
 
 ---
 
