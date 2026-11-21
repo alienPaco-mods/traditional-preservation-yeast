@@ -6,6 +6,7 @@
 -- (TP Core's PlaceKeepingUI). A shelf holding anything stays where it is; none is put down in front of a door.
 require "TimedActions/TPYShelf"
 local InfoWindow = require "TraditionalPreservationCore/InfoWindow"
+local StationReport = require "TraditionalPreservationCore/StationReport"
 local PiecesUI = require "TraditionalPreservationCore/PiecesUI"
 local UI = require "TraditionalPreservationCore/UI"
 local Station = require "TraditionalPreservationCore/Station"
@@ -273,6 +274,7 @@ end
 function ShelfUI.open(playerObj, station)
     InfoWindow.open(ShelfWindow, playerObj, station)
 end
+StationReport.add(ShelfWindow, function(isoObject) return isShelf(isoObject) and isoObject or nil end)
 
 -- The menu
 

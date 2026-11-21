@@ -1,5 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.6.10
+- **In TP Core's station report** (written on each save, for the long-save log): the Fermenting Shelf window take part
+  (`StationReport.add`). Needs TP Core 0.1.56.
+
 ## 0.6.9
 - **Standing on the Drying Cloth** (user, session 77): yeast cakes lying on TP Core's cloth take vanilla's rug depth
   (`common/media/tileDepthTextureAssignments.txt`, written by `tools/build_shelf_tileset.py`), as the cloth does, so
