@@ -18,7 +18,7 @@ These console commands load only when the game runs in **debug mode** (launch op
 
 **Typical check:** `TPY.fast(20)`, `TPY.give("culture", 5)`, *Put Fermenting Culture on the Shelf*, All, then `TPY.age(10)`. The jars should turn amber at halfway, and `TPY.age(10)` again finishes them: five Active Culture (Fresh) to take. **Hunger:** fresh jars and `TPY.age(24)`: hungry (sunk, grey on top), stopped; *Refresh Cultures* with flour and water carried feeds them. `TPY.age(72)` unfed: gone off.
 
-**Cakes:** `TPY.kit("cakes")`, build the Drying Cloth, Shape Yeast Cakes twice and lay both lots. TP Core's `TPC.cloth()` shows the lots and `TPC.dryCloth(168)` dries them; take them off as Dried Yeast Cakes and crumble one into Yeast.
+**Cakes:** `TPY.kit("cakes")`, spread the Drying Cloth (right-click the floor), Shape Yeast Cakes twice and lay both lots. TP Core's `TPC.cloth()` shows the lots and `TPC.dryCloth(168)` dries them; take them off as Dried Yeast Cakes and crumble one into Yeast.
 
 **Frost:** a fresh jar on the shelf, `TPY.frost(5)`: still working; `TPY.frost(1)`: hungry, and one refresh feeds it. An Active Culture (Fresh) in hand, `TPY.frost(24)`: half its days gone (`TPY.cultures()`); `TPY.frost(24)` again: Spent.
 
