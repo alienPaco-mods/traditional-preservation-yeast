@@ -1,5 +1,10 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.6.9
+- **Standing on the Drying Cloth** (user, session 77): yeast cakes lying on TP Core's cloth take vanilla's rug depth
+  (`common/media/tileDepthTextureAssignments.txt`, written by `tools/build_shelf_tileset.py`), as the cloth does, so
+  a character standing there is drawn over them too.
+
 ## 0.6.8
 Needs TP Core 0.1.52 (its `Frost`).
 - **Frost** (session 76): a culture freezes at 0 C, where its work already pauses, counted by place on TP Core's frost

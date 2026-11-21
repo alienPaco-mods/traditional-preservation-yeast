@@ -377,6 +377,10 @@ def main():
             tiles[cake_index(lot, state)] = draw_cakes(lot, state)
     pzart.write_pack(media / "texturepacks" / f"{NAME}.pack", tiles, NAME, TILESET, PAGE_SIZE)
     pzart.write_tiles(media / f"{NAME}.tiles", [(TILESET, COLUMNS, ROWS)], TILE_PROPS)
+    # The cakes lie on TP Core's Drying Cloth: its rug depth, so a character standing there is drawn over them too.
+    pzart.write_depth_assignments(media.parent.parent / "common" / "media" / "tileDepthTextureAssignments.txt",
+                                  {f"{TILESET}_{cake_index(lot, state)}": pzart.RUG_DEPTH
+                                   for state in CAKE_STATES for lot in range(len(cloth_art.LOTS))})
     pzart.write_build_icon(tiles[0], media / "textures" / "Item_FermentingShelf.png")
     cakes = draw_cakes(2, "wet")
     pzart.write_build_icon(cakes, media / "textures" / "Item_YeastCakes.png", ICON_SIZE)

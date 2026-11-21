@@ -1,7 +1,7 @@
 name=Traditional Preservation (Yeast)
 id=TraditionalPreservationYeast
 author=alienPaco
-modversion=0.6.8
+modversion=0.6.9
 versionMin=42.22
 description=Build a Fermenting Shelf and ferment flour and water in a jar, refreshed daily, into a live culture in about five in-game days (quicker started with fruit or potato water), dry it into yeast cakes on TP Core's Drying Cloth, and crumble them into vanilla yeast. Hops keep a culture going. B42 prototype.
 icon=icon.png

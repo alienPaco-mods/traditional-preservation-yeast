@@ -1,4 +1,4 @@
-# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.8)
+# Traditional Preservation (Yeast) — Build 42 prototype (v0.6.9)
 
 **Status: experimental.** Back up your save before enabling.
 

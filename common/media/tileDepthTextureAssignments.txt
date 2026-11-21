@@ -1,0 +1,19 @@
+tileDepthTextureAssignments
+{
+    VERSION = 1,
+    traditionalpreservationyeast_01_464 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_465 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_466 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_467 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_468 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_469 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_470 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_471 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_472 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_473 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_474 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_475 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_476 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_477 = floors_rugs_01_0,
+    traditionalpreservationyeast_01_478 = floors_rugs_01_0,
+}
