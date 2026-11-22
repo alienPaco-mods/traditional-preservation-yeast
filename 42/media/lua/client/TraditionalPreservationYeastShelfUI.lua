@@ -12,6 +12,7 @@ local UI = require "TraditionalPreservationCore/UI"
 local Station = require "TraditionalPreservationCore/Station"
 local Weather = require "TraditionalPreservationCore/Weather"
 local PlaceKeepingUI = require "TraditionalPreservationCore/PlaceKeepingUI"
+local KeepingTooltip = require "TraditionalPreservationCore/KeepingTooltip"
 local Tiles = require "TraditionalPreservationYeast/Tiles"
 
 TraditionalPreservationYeastShelfUI = TraditionalPreservationYeastShelfUI or {}
@@ -354,3 +355,7 @@ UI.keepDoorsFree(Tiles.STATIONS)
 
 -- Active Culture catches up on its keeping, and its name with it, as it is carried and as containers are opened.
 PlaceKeepingUI.watch({ keep = TraditionalPreservationYeast.keepCulture }, TraditionalPreservationYeast.CULTURE_DAYS)
+-- Its tooltip says how long it keeps where it is (TP Core's KeepingTooltip).
+KeepingTooltip.add(TraditionalPreservationYeast.CULTURE_DAYS, function(item)
+    return KeepingTooltip.keeperLines(TraditionalPreservationYeast.CULTURE_KEEPER, item)
+end)

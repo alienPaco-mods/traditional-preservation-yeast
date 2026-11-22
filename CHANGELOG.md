@@ -1,5 +1,9 @@
 # Changelog: Traditional Preservation (Yeast)
 
+## 0.6.11
+- **Active Culture's, Hopped Culture's and Yeast Cakes' tooltip says how long they keep where they are** (TP Core's
+  keeping lines; sandbox *Keeping in item tooltips*). Needs TP Core 0.1.57.
+
 ## 0.6.10
 - **In TP Core's station report** (written on each save, for the long-save log): the Fermenting Shelf window take part
   (`StationReport.add`). Needs TP Core 0.1.56.
